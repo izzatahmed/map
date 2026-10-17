@@ -122,7 +122,7 @@ function renderFilterBar(){
     bar.appendChild(b);
   });
   var hubBtn=document.createElement('button');
-  hubBtn.textContent=ar?'★ إبراز مركزية سورة الأنعام (35%)':'★ Highlight Surah Al-An'am Hub (35%)';
+  hubBtn.textContent=ar?'★ إبراز مركزية سورة الأنعام (35%)':'★ Highlight Surah Al-An\u2019am Hub (35%)';
   hubBtn.style.cssText='padding:5px 13px;border-radius:16px;border:2px solid #d97706;background:#d97706;color:#fff;cursor:pointer;font-size:0.85rem;font-weight:700';
   hubBtn.onclick=function(){
     activeFilter='ALL';
@@ -142,7 +142,7 @@ window.netLabels=function(){var ar=isAr(),fs=NET.fs||[17,14];G.forEach(function(
   if(side===0)y+=sn>0?size*0.8:0;else y+=size*0.35;
   t.setAttribute('x',Math.round(x));t.setAttribute('y',Math.round(y));t.setAttribute('text-anchor',side===0?'middle':((side>0)!==ar?'start':'end'))});
   renderFilterBar();
-  if(cur)info(cur);else document.getElementById('netinfo').textContent=ar?'اختر عقدة أو اضغط على زر «إبراز مركزية سورة الأنعام».':'Select a node or click "Highlight Surah Al-An'am Hub".'};netLabels()}catch(err){console.error(err)}})();
+  if(cur)info(cur);else document.getElementById('netinfo').textContent=ar?'اختر عقدة أو اضغط على زر «إبراز مركزية سورة الأنعام».':'Select a node or click "Highlight Surah Al-An\u2019am Hub".'};netLabels()}catch(err){console.error(err)}})();
 /* البحث في الموسوعة: يبدأ بالبحث في عناوين الموضوعات وكلماتها المفتاحية من السجل، ثم يُحمَّل عند أول استعمال
    فهرس كامل (assets/search.js) يبحث في نصوص الأقسام، ويردّ الكلمة إلى جذرها القرآني (مدونة ليدز)
    فيجد الأقسام التي تستشهد بآيات من الجذر نفسه، على طريقة المعاجم المفهرسة لألفاظ القرآن الكريم.
