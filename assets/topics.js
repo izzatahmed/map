@@ -3,959 +3,8151 @@
 window.SEARCH_V="86";
 window.PILLARS={"aqida": {"ar": "العقيدة", "en": "Creed", "c": "#c0392b", "f": "aqida.html"}, "tashri": {"ar": "التشريع", "en": "Law", "c": "#d35400", "f": "tashri.html"}, "qasas": {"ar": "القصص", "en": "Stories", "c": "#16a085", "f": "qasas.html"}, "akhlaq": {"ar": "الأخلاق", "en": "Character", "c": "#8e44ad", "f": "akhlaq.html"}, "manhaj": {"ar": "منهج القراءة", "en": "Reading method", "c": "#2980b9", "f": "manhaj.html"}};
 window.AXES={"creed":["#c0392b", "العقيدة", "Creed"],"asma":["#3949ab", "الأسماء الحسنى", "Divine Names"],"pillars":["#795548", "أركان الإيمان", "Articles of faith"],"last":["#34495e", "اليوم الآخر", "The Last Day"],"formula":["#27ae60", "الصيغ المتكررة", "Recurring formulas"],"character":["#8e44ad", "الأخلاق", "Character"],"worship":["#d35400", "العبادات", "Worship"],"grad":["#c59b27", "التدرج في التشريع", "Gradual legislation"],"cov":["#2980b9", "الهيمنة والعهد", "Guardianship and covenant"],"story":["#16a085", "القصص والأمثال", "Stories and parables"]};
+window.REL_TYPES={
+  "EXPLICIT_REF": {
+    "ar": "إحالة نصية صريحة (Pointer)",
+    "en": "Explicit Referential Pointer",
+    "color": "#d97706",
+    "dash": "",
+    "directed": true
+  },
+  "LEGISLATIVE_STAGE": {
+    "ar": "تدرج تشريعي / تخصيص وتقييد",
+    "en": "Legislative Progression / Specification",
+    "color": "#c0392b",
+    "dash": "",
+    "directed": true
+  },
+  "DOCTRINAL_ROOT": {
+    "ar": "تأصيل عقدي ومفهومي",
+    "en": "Doctrinal & Conceptual Grounding",
+    "color": "#2980b9",
+    "dash": "",
+    "directed": true
+  },
+  "NARRATIVE_PARALLEL": {
+    "ar": "تكامل قصصي وشبكة سردية",
+    "en": "Narrative Parallel & Scene Matrix",
+    "color": "#16a085",
+    "dash": "",
+    "directed": false
+  },
+  "CONTRAST_PAIR": {
+    "ar": "تقابل ومثاني (أزواج متقابلة)",
+    "en": "Antithetical / Paired Concept (Mathani)",
+    "color": "#8e44ad",
+    "dash": "6 4",
+    "directed": false
+  },
+  "LEXICAL_FORMULA": {
+    "ar": "اشتراك جذري / صيغة متكررة",
+    "en": "Shared Root / Recurring Formula",
+    "color": "#27ae60",
+    "dash": "2 3",
+    "directed": false
+  }
+};
 window.TOPICS=[
-  {"id": "tw", "f": "tawhid.html", "ar": "التوحيد", "en": "Tawhid", "ax": "creed", "p": "aqida", "k": "لا إله إلا الله شرك عقيدة", "d": ["مركز الشبكة", "The hub"]},
-  {"id": "hd", "f": "huda.html", "ar": "الهدى", "en": "Guidance", "ax": "creed", "p": "aqida", "k": "هدى هداية اهتدى يهدي المهتدين الصراط المستقيم اهدنا", "d": ["307 ألفاظ في 261 آية", "307 occurrences in 261 verses"]},
-  {"id": "dl", "f": "dalal.html", "ar": "الضلال", "en": "Misguidance", "ax": "creed", "p": "aqida", "k": "ضلال ضل الضالين يضل ضلالة أضل غي", "d": ["191 لفظاً في 170 آية", "191 occurrences in 170 verses"]},
-  {"id": "im", "f": "iman.html", "ar": "الإيمان", "en": "Faith", "ax": "creed", "p": "aqida", "k": "إيمان آمنوا مؤمن مؤمنون يؤمنون أركان الإيمان iman belief believers", "d": ["811 لفظاً في 667 آية", "811 occurrences in 667 verses"]},
-  {"id": "kf", "f": "kufr.html", "ar": "الكفر", "en": "Disbelief", "ax": "creed", "p": "aqida", "k": "كفر كافر كافرون الذين كفروا كفور كفران جحود kufr kafir ingratitude", "d": ["506 ألفاظ في 448 آية", "506 occurrences in 448 verses"]},
-  {"id": "nf", "f": "nifaq.html", "ar": "النفاق والمنافقون", "en": "Hypocrisy", "ax": "creed", "p": "aqida", "k": "نفاق منافق المنافقون المنافقين المنافقات نافقوا في قلوبهم مرض إنفاق hypocrisy hypocrites munafiq nifaq", "d": ["37 كلمة في 29 آية، كلها مدنية إلا واحدة", "37 words in 29 verses, all Medinan but one"]},
-  {"id": "ik", "f": "ikhlas.html", "ar": "الإخلاص", "en": "Sincerity", "ax": "creed", "p": "aqida", "k": "إخلاص مخلصين له الدين المخلصين خالص رياء حنيف ikhlas sincerity", "d": ["31 لفظاً في 30 آية، 25 منها مكية", "31 in 30 verses, 25 Meccan"]},
-  {"id": "as", "f": "asma.html", "ar": "الأسماء الحسنى", "en": "Divine Names", "ax": "asma", "p": "aqida", "k": "أسماء الله الحسنى الرحمن الرحيم الغفور العزيز الحكيم العليم السميع البصير التواب الحي القيوم الأحد الصمد غفور رحيم divine names asma husna", "d": ["نحو 80 اسماً و350 زوجاً", "About 80 names, 350 pairs"]},
-  {"id": "rh", "f": "rahman.html", "ar": "الرحمن الرحيم", "en": "Ar-Rahman ar-Rahim", "ax": "asma", "p": "aqida", "k": "الرحمن الرحيم رحمة البسملة رحيم الأرحام أرحم الراحمين عباد الرحمن rahman rahim mercy basmala", "d": ["الرحمن 57 (53 مكية)، والرحيم 114", "Rahman 57 (53 Meccan); Rahim 114"]},
-  {"id": "gf", "f": "ghafur.html", "ar": "الغفور، التواب، العفو", "en": "The Forgiving, the Relenting, the Pardoning", "ax": "asma", "p": "aqida", "k": "الغفور غفور رحيم الغفار غفارا غافر الذنب خير الغافرين واسع المغفرة أهل المغفرة ذو مغفرة الغفور الودود العزيز الغفار التواب التواب الرحيم قابل التوب يقبل التوبة توابا العفو عفوا غفورا عفوا قديرا عفو غفور عفا الله عنك خذ العفو واعف عنا واغفر لنا وارحمنا شديد العقاب وليعفوا وليصفحوا الأسماء الحسنى forgiving forgiver relenting pardoning pardon divine names ghafur tawwab afuww", "d": ["غافر الذنب وقابل التوب شديد العقاب", "Forgiver of sin and Accepter of repentance, severe in punishment"]},
-  {"id": "al", "f": "alim.html", "ar": "العليم الخبير", "en": "The All-Knowing, the All-Aware", "ax": "asma", "p": "aqida", "k": "العليم عليم بكل شيء عليم عليم بذات الصدور الخبير خبير بما تعملون علام الغيوب عالم الغيب والشهادة مفاتح الغيب علم الساعة لا يعزب عنه مثقال ذرة اللطيف لطيف خبير اللطيف الخبير لا تدركه الأبصار تقدير العزيز العليم سميع عليم عليم حكيم واسع عليم والله يعلم وأنتم لا تعلمون إلا من ارتضى من رسول وهو معكم أين ما كنتم الأسماء الحسنى knowing knower omniscient aware subtle unseen divine names alim khabir latif", "d": ["وعنده مفاتح الغيب لا يعلمها إلا هو", "With Him are the keys of the unseen; none knows them but He"]},
-  {"id": "sa", "f": "sami.html", "ar": "السميع البصير", "en": "The All-Hearing, the All-Seeing", "ax": "asma", "p": "aqida", "k": "السميع البصير سميع بصير سميع عليم سميع الدعاء سميع قريب بما تعملون بصير بصير بالعباد ليس كمثله شيء قد سمع الله أسمع وأرى بأعيننا على عيني يرى السمع والأبصار والأفئدة السمع والبصر والفؤاد ختم على سمعهم غشاوة صم بكم عمي لا يسمع ولا يبصر الأسماء الحسنى hearing seeing all-hearing all-seeing sight eyes divine names sami basir", "d": ["ليس كمثله شيء وهو السميع البصير", "Nothing is like Him, and He is the All-Hearing, the All-Seeing"]},
-  {"id": "az", "f": "aziz.html", "ar": "العزيز الحكيم", "en": "The Almighty, the Wise", "ax": "asma", "p": "aqida", "k": "العزيز الحكيم عزيز حكيم العزيز الرحيم قوي عزيز العزيز الحميد عزيز ذو انتقام العزة لله جميعا ولله العزة ولرسوله وللمؤمنين رب العزة أخذته العزة بالإثم الحكمة الكتاب والحكمة يؤتي الحكمة من يشاء آتينا لقمان الحكمة الكتاب الحكيم القرآن الحكيم أحكمت آياته أحكم الحاكمين خير الحاكمين إن الحكم إلا لله سبح لله تنزيل الكتاب من الله العزيز الحكيم الأسماء الحسنى almighty mighty wise wisdom judgment divine names aziz hakim", "d": ["سبح لله ما في السماوات والأرض وهو العزيز الحكيم", "Whatever is in the heavens and earth glorifies God; He is the Almighty, the Wise"]},
-  {"id": "hy", "f": "hayy.html", "ar": "الحي القيوم، الواحد الأحد", "en": "The Ever-Living, the Sustainer, the One", "ax": "asma", "p": "aqida", "k": "الحي القيوم الحي الذي لا يموت لا تأخذه سنة ولا نوم آية الكرسي الواحد القهار إله واحد إلهكم إله واحد لا تتخذوا إلهين اثنين الأحد الصمد قل هو الله أحد لا إله إلا هو لو كان فيهما آلهة إلا الله لفسدتا ثالث ثلاثة يحيي ويميت كل شيء هالك إلا وجهه يمسك السماوات والأرض أن تزولا وعنت الوجوه للحي القيوم الوحدانية الأسماء الحسنى ever-living living sustainer self-subsisting one oneness unique eternal refuge divine names hayy qayyum wahid ahad samad", "d": ["الله لا إله إلا هو الحي القيوم", "God: there is no god but He, the Ever-Living, the Sustainer"]},
-  {"id": "ml", "f": "malaika.html", "ar": "الملائكة", "en": "The Angels", "ax": "pillars", "p": "aqida", "k": "ملائكة ملك جبريل ميكال الروح الأمين أركان الإيمان angels malaika", "d": ["88 لفظاً في 86 آية", "88 occurrences in 86 verses"]},
-  {"id": "kt", "f": "kutub.html", "ar": "الكتب", "en": "The Books", "ax": "pillars", "p": "aqida", "k": "كتب الكتاب التوراة الإنجيل الزبور الصحف القرآن الفرقان أهل الكتاب كتب عليكم books scriptures", "d": ["كتب 319 لفظاً، والقرآن 70، والتوراة 18", "k-t-b 319; Qur'an 70; Torah 18"]},
-  {"id": "rs", "f": "rusul.html", "ar": "الرسل", "en": "Messengers", "ax": "pillars", "p": "aqida", "k": "رسل رسول الرسل الأنبياء نبي النبيين أسماء الأنبياء مرسلين messengers prophets", "d": ["رسل 513 لفظاً، و25 نبياً مسمّى", "r-s-l 513; 25 named prophets"]},
-  {"id": "ak", "f": "akhira.html", "ar": "اليوم الآخر", "en": "The Last Day", "ax": "last", "p": "aqida", "k": "اليوم الآخر يوم القيامة الآخرة الساعة البعث الميزان الصور القارعة الحاقة يوم الدين last day resurrection", "d": ["اليوم الآخر 26 آية (25 مدنية)، ويوم القيامة 70", "Last Day 26 (25 Medinan); Resurrection 70"]},
-  {"id": "jn", "f": "jannah.html", "ar": "الجنة", "en": "Paradise", "ax": "last", "p": "aqida", "k": "جنة جنات الفردوس نعيم رضوان اليوم الآخر الآخرة", "d": ["نحو 143 آية: غاية الطريق", "About 143 verses: the end of the path"]},
-  {"id": "nr", "f": "nar.html", "ar": "النار", "en": "The Fire", "ax": "last", "p": "aqida", "k": "نار جهنم جحيم سعير سقر لظى الحطمة الهاوية عذاب اليوم الآخر الآخرة", "d": ["«النار» و«جهنم» وستة أسماء", "The Fire, Jahannam and six names"]},
-  {"id": "tq", "f": "taqwa.html", "ar": "بناء التقوى", "en": "Building Taqwa", "ax": "formula", "p": "akhlaq", "k": "لعلكم تتقون لعلهم يتقون التقوى taqwa", "d": ["12 آية: 6 «لعلكم تتقون» و6 «لعلهم يتقون»", "12 verses: 6 \"that you may\" and 6 \"that they may\""]},
-  {"id": "yh", "f": "yuhibb.html", "ar": "ما يحبه الله", "en": "God loves", "ax": "formula", "p": "akhlaq", "k": "يحب محبة", "d": ["16 آية", "16 verses"]},
-  {"id": "ly", "f": "layuhibb.html", "ar": "ما لا يحبه الله", "en": "Does not love", "ax": "formula", "p": "akhlaq", "k": "لا يحب", "d": ["23 آية", "23 verses"]},
-  {"id": "tv", "f": "wiqaya.html", "ar": "التقوى", "en": "Taqwa", "ax": "character", "p": "akhlaq", "k": "تقوى التقوى اتقوا اتقى المتقين المتقون وقى وقاية تقي تقاة أتقاكم taqwa piety god-conscious mindful", "d": ["وقي: 258 كلمة في 237 آية", "w-q-y: 258 words in 237 verses"]},
-  {"id": "sr", "f": "sabr.html", "ar": "الصبر", "en": "Patience", "ax": "character", "p": "akhlaq", "k": "صابرين", "d": ["93 آية: التقوى + الصبر = الإحسان", "93 verses"]},
-  {"id": "sh", "f": "shukr.html", "ar": "الشكر", "en": "Gratitude", "ax": "character", "p": "akhlaq", "k": "تشكرون شكور", "d": ["69 آية: صبار شكور", "69 verses"]},
-  {"id": "ih", "f": "ihsan.html", "ar": "الإحسان", "en": "Ihsan", "ax": "character", "p": "akhlaq", "k": "محسنين", "d": ["غاية الطريق", "The summit"]},
-  {"id": "tb", "f": "tawba.html", "ar": "التوبة", "en": "Repentance", "ax": "character", "p": "akhlaq", "k": "توبة تاب توبوا التواب التوابين يتوب tawba repentance", "d": ["87 لفظاً في 69 آية", "87 occurrences in 69 verses"]},
-  {"id": "is", "f": "istighfar.html", "ar": "الاستغفار", "en": "Forgiveness", "ax": "character", "p": "akhlaq", "k": "استغفار استغفروا مغفرة غفور غفار يغفر istighfar forgiveness", "d": ["234 لفظاً في 202 آية، منها 42 استغفاراً", "234 occurrences; 42 of istighfar"]},
-  {"id": "sl", "f": "salat.html", "ar": "الصلاة", "en": "Prayer", "ax": "worship", "p": "tashri", "k": "صلاة أقيموا", "d": ["أربع مراحل للبناء", "Four stages"]},
-  {"id": "zk", "f": "zakat.html", "ar": "الزكاة", "en": "Zakat", "ax": "worship", "p": "tashri", "k": "صدقة إنفاق", "d": ["ثلاث مراحل", "Three stages"]},
-  {"id": "sy", "f": "siyam.html", "ar": "الصيام", "en": "Fasting", "ax": "worship", "p": "tashri", "k": "صوم رمضان", "d": ["11 آية", "11 verses"]},
-  {"id": "hj", "f": "hajj.html", "ar": "الحج", "en": "Hajj", "ax": "worship", "p": "tashri", "k": "حج الحج البيت الكعبة المسجد الحرام عمرة مناسك إبراهيم hajj pilgrimage", "d": ["12 لفظاً في 8 آيات، و20 للحجة", "12 in 8 verses; 20 for proof"]},
-  {"id": "du", "f": "dua.html", "ar": "الدعاء", "en": "Supplication", "ax": "worship", "p": "tashri", "k": "الدعاء دعاء ادعوني أستجب لكم أجيب دعوة الداع فإني قريب يجيب المضطر ادعوا ربكم تضرعا وخفية خوفا وطمعا ربنا رب اللهم فاستجبنا له فاستجاب الوسيلة التوسل دعوة الحق تدعون من دون الله يدعون من دونه دعواهم سميع الدعاء رب اشرح لي صدري رب زدني علما ربنا آتنا في الدنيا حسنة supplication prayer invocation du'a call upon answer", "d": ["وإذا سألك عبادي عني فإني قريب أجيب دعوة الداع إذا دعان", "When My servants ask you about Me, I am near; I answer the call of the caller when he calls Me"]},
-  {"id": "kh", "f": "khamr.html", "ar": "الخمر", "en": "Wine", "ax": "grad", "p": "tashri", "k": "تحريم الخمر ميسر تدرج", "d": ["ثلاث مراحل", "Three stages"]},
-  {"id": "rb", "f": "riba.html", "ar": "الربا", "en": "Riba", "ax": "grad", "p": "tashri", "k": "تحريم الربا بيع", "d": ["ثلاث مراحل وفرع الروم", "Three stages, Ar-Rum branch"]},
-  {"id": "jh", "f": "jihad.html", "ar": "القتال", "en": "Fighting", "ax": "grad", "p": "tashri", "k": "جهاد قتال تشريع القتال", "d": ["أربع مراحل", "Four stages"]},
-  {"id": "mw", "f": "mawarith.html", "ar": "المواريث والدَّين", "en": "Inheritance and debt", "ax": "grad", "p": "tashri", "k": "ميراث مواريث ورث وصية دين تداين آية الدين الكلالة الفروض النصف الربع الثمن الثلث السدس اليتامى قرض inheritance debt bequest", "d": ["من بعد وصية يوصي بها أو دين: 4 مرات", "After any bequest or debt: 4 times"]},
-  {"id": "zw", "f": "zawaj.html", "ar": "الزواج", "en": "Marriage", "ax": "grad", "p": "tashri", "k": "زواج نكاح زوج أزواج مهر صدقات ميثاق غليظ المحرمات تعدد الزوجات القوامة النشوز التحكيم marriage nikah dower", "d": ["زوج 76 (38 مكي و38 مدني)", "zawj 76: 38 Meccan, 38 Medinan"]},
-  {"id": "tl", "f": "talaq.html", "ar": "الطلاق والعدة والرضاع", "en": "Divorce and nursing", "ax": "grad", "p": "tashri", "k": "طلاق عدة رضاع رضاعة إيلاء ظهار لعان خلع متعة قروء حولين كاملين divorce idda nursing", "d": ["كلها مدنية، والمعروف 12 مرة", "All Medinan; ma'ruf 12 times"]},
-  {"id": "sb", "f": "sabbath.html", "ar": "السبت والعهد", "en": "Sabbath", "ax": "cov", "p": "tashri", "k": "سبت عهد بني إسرائيل", "d": ["الوصايا والوفاء بالعهد", "Commandments and covenants"]},
-  {"id": "ta", "f": "taam.html", "ar": "الحلال والحرام في الطعام", "en": "Lawful and unlawful food", "ax": "grad", "p": "tashri", "k": "الحلال الحرام حلالا طيبا الطيبات الخبائث الطعام الميتة الدم لحم الخنزير ما أهل لغير الله به المنخنقة الموقوذة المتردية النطيحة ما أكل السبع ذكيتم التذكية الذبائح النصب الأزلام المضطر غير باغ ولا عاد مخمصة اسم الله عليه بهيمة الأنعام الصيد صيد البحر الجوارح طعام الذين أوتوا الكتاب هادوا حرمنا كل ذي ظفر بحيرة سائبة وصيلة حام لا تحرموا لم تحرم ولا تسرفوا halal haram food slaughter carrion swine pork hunting dietary", "d": ["كلوا مما في الأرض حلالا طيبا", "Eat of what is on earth, lawful and good"]},
-  {"id": "qs", "f": "qisas.html", "ar": "القصاص والحدود والكفارات", "en": "Retaliation, penalties and expiations", "ax": "grad", "p": "tashri", "k": "القصاص الحدود الحد حدود الله العقوبات الكفارة الكفارات الدية الفدية القتل العمد الخطأ النفس بالنفس العين بالعين الجروح قصاص عفي له الولي سلطانا الحرابة يحاربون من خلاف ينفوا السرقة السارق والسارقة فاقطعوا أيديهما نكالا الزنا الزانية والزاني مائة جلدة القذف يرمون المحصنات ثمانين جلدة تحرير رقبة صيام شهرين متتابعين إطعام عشرة مساكين ستين مسكينا كفارة أيمانكم الظهار جزاء الصيد الردة retaliation qisas hudud penalties expiation kaffara blood money diya theft", "d": ["ولكم في القصاص حياة", "In retaliation there is life for you"]},
-  {"id": "ym", "f": "ayman.html", "ar": "الأيمان والنذور", "en": "Oaths and vows", "ax": "cov", "p": "tashri", "k": "اليمين الأيمان الحلف يحلفون حلاف القسم أقسم لا أقسم أقسموا بالله جهد أيمانهم اللغو عقدتم الأيمان كفارة أيمانكم واحفظوا أيمانكم عرضة لأيمانكم تحلة أيمانكم اليمين الغموس الحنث تحنث ضغثا نكثوا أيمانهم دخلا بينكم أيمانهم جنة إي وربي بلى وربي تالله لعمرك النذر نذرت نذورهم يوفون بالنذر الإيلاء عقدت أيمانكم oath oaths vow vows swear perjury expiation", "d": ["واحفظوا أيمانكم", "Keep your oaths"]},
-  {"id": "nz", "f": "nuzul.html", "ar": "أنزل ونزّل", "en": "Revelation", "ax": "cov", "p": "manhaj", "k": "نزول إنزال تنزيل نجوم", "d": ["كتاب جملة وكتاب نجوم", "At once vs. in stages"]},
-  {"id": "mu", "f": "musa.html", "ar": "قصة موسى", "en": "Moses", "ax": "story", "p": "qasas", "k": "موسى فرعون", "d": ["34 سورة", "34 surahs"]},
-  {"id": "ys", "f": "yusuf.html", "ar": "قصة يوسف", "en": "Joseph", "ax": "story", "p": "qasas", "k": "يوسف يعقوب أحسن القصص القميص السجن العزيز الرؤيا تأويل صبر جميل إخوة يوسف joseph yusuf jacob story", "d": ["111 آية متصلة، ويوسف 25 مرة من 27", "111 continuous verses"]},
-  {"id": "nh", "f": "nuh.html", "ar": "قصة نوح", "en": "Noah", "ax": "story", "p": "qasas", "k": "نوح الطوفان الفلك السفينة الجودي التنور قوم نوح ألف سنة إلا خمسين noah flood ark", "d": ["43 مرة في 28 سورة", "43 times in 28 surahs"]},
-  {"id": "ib", "f": "ibrahim.html", "ar": "قصة إبراهيم", "en": "Abraham", "ax": "story", "p": "qasas", "k": "إبراهيم الخليل ملة إبراهيم حنيفا آزر إسماعيل إسحاق البيت الذبيح abraham ibrahim", "d": ["69 مرة في 25 سورة", "69 times in 25 surahs"]},
-  {"id": "ka", "f": "kahf.html", "ar": "قصص سورة الكهف", "en": "The stories of Al-Kahf", "ax": "story", "p": "qasas", "k": "الكهف أصحاب الكهف الرقيم الفتية صاحب الجنتين موسى الخضر العبد الصالح مجمع البحرين ذو القرنين يأجوج ومأجوج السد kahf cave khidr dhul-qarnayn", "d": ["أربع قصص في نحو 70 آية", "Four stories in about 70 verses"]},
-  {"id": "ad", "f": "adam.html", "ar": "قصة آدم", "en": "Adam", "ax": "story", "p": "qasas", "k": "آدم خليفة الأسماء سجود الملائكة إبليس الجنة الشجرة الهبوط التوبة كلمات بني آدم ابنا آدم قابيل هابيل الغراب adam iblis", "d": ["25 مرة في 9 سور", "25 times in 9 surahs"]},
-  {"id": "ia", "f": "isa.html", "ar": "عيسى ابن مريم", "en": "Jesus son of Mary", "ax": "story", "p": "qasas", "k": "عيسى المسيح ابن مريم مريم آل عمران زكريا يحيى الحواريون الإنجيل المائدة الرفع متوفيك شبه لهم أحمد jesus mary messiah", "d": ["عيسى 25، ومريم 34", "Jesus 25, Mary 34"]},
-  {"id": "my", "f": "maryam.html", "ar": "قصة مريم", "en": "Mary", "ax": "story", "p": "qasas", "k": "مريم ابنة عمران امرأة عمران النذر زكريا المحراب الكفالة النخلة الصوم نساء القرآن امرأة فرعون أم موسى سورة مريم mary maryam women", "d": ["34 مرة، المرأة الوحيدة المسمّاة", "34 times; the only woman named"]},
-  {"id": "aq", "f": "aqwam.html", "ar": "هود وصالح ولوط وشعيب", "en": "Hud, Salih, Lot, Shu'ayb", "ax": "story", "p": "qasas", "k": "هود عاد صالح ثمود الناقة لوط قوم لوط المؤتفكات شعيب مدين أصحاب الأيكة الأحقاف الحجر إرم الرجفة الصيحة الظلة الكيل والميزان hud salih lot shuayb ad thamud midian", "d": ["أربعة أقوام ودعوة واحدة", "Four peoples, one call"]},
-  {"id": "ds", "f": "dawud.html", "ar": "داود وسليمان", "en": "David and Solomon", "ax": "story", "p": "qasas", "k": "داود داوود سليمان طالوت جالوت الزبور زبور الحرث الجبال الطير الحديد السابغات اللبوس القطر الريح الجن الشياطين النملة النمل الهدهد سبأ ملكة سبأ بلقيس العرش الصرح الصافنات الجسد الكرسي الخصم المحراب فصل الخطاب الخليفة أواب منطق الطير david solomon saul goliath psalms sheba hoopoe ant", "d": ["وكلاً آتينا حكماً وعلماً", "To each We gave judgment and knowledge"]},
-  {"id": "zy", "f": "zakariya.html", "ar": "زكريا ويحيى", "en": "Zechariah and John", "ax": "story", "p": "qasas", "k": "زكريا يحيى امرأة زكريا عاقر المحراب نداء خفيا ذرية طيبة سميع الدعاء خير الوارثين يرثني الموالي حصورا سيدا مصدقا بكلمة حنانا زكاة تقيا برا بوالديه آية الصمت ثلاث ليال رمزا فاستجبنا له zechariah zachariah john yahya", "d": ["هنالك دعا زكريا ربه", "There Zechariah called on his Lord"]},
-  {"id": "yn", "f": "yunus.html", "ar": "قصة يونس", "en": "Jonah", "ax": "story", "p": "qasas", "k": "يونس ذا النون ذو النون صاحب الحوت الحوت بطن الحوت الفلك المشحون فساهم المدحضين مليم مكظوم العراء اليقطين مغاضبا الظلمات لا إله إلا أنت سبحانك إني كنت من الظالمين قوم يونس مائة ألف jonah yunus dhul-nun whale fish nineveh", "d": ["لا إله إلا أنت سبحانك إني كنت من الظالمين", "There is no god but You; glory be to You"]},
-  {"id": "ay", "f": "ayyub.html", "ar": "أيوب والقصص القصيرة", "en": "Job and the short stories", "ax": "story", "p": "qasas", "k": "أيوب إسماعيل هارون إلياس إل ياسين آل ياسين اليسع ذو الكفل ذا الكفل إدريس الذبيح ضغثا ولا تحنث اركض برجلك مغتسل بارد وشراب مسني الضر مسني الشيطان أرحم الراحمين ومثلهم معهم إنا وجدناه صابرا نعم العبد إنه أواب صادق الوعد وزيرا ابن أم بعلا أحسن الخالقين ورفعناه مكانا عليا صديقا نبيا الأخيار job ishmael aaron elias elijah elisha dhul-kifl idris enoch", "d": ["إنا وجدناه صابراً نعم العبد إنه أواب", "We found him patient; an excellent servant"]},
-  {"id": "si", "f": "sira.html", "ar": "السيرة في القرآن الكريم", "en": "The Prophet's life in the Qur'an", "ax": "story", "p": "qasas", "k": "السيرة النبوية محمد أحمد زيد أبو لهب بدر أحد الأحزاب الخندق حنين تبوك الحديبية خيبر فتح مكة بنو النضير بنو قريظة الهجرة الغار ثاني اثنين المهاجرين والأنصار يثرب المدينة مكة بكة الإسراء انشقاق القمر غلبت الروم تحويل القبلة الإفك المباهلة بيعة الرضوان تحت الشجرة السكينة جنودا لم تروها يوم الفرقان الأسرى المخلفون الثلاثة الذين خلفوا مسجد الضرار حجة الوداع sira prophet muhammad badr uhud trench hijra hudaybiyah", "d": ["إلا تنصروه فقد نصره الله", "If you do not help him, God has helped him"]},
-  {"id": "gn", "f": "ibar.html", "ar": "قصص غير الأنبياء", "en": "Stories of non-prophets", "ax": "story", "p": "qasas", "k": "لقمان يا بني لا تشرك ولا تصعر خدك واقصد في مشيك أصحاب القرية رجل يسعى أقصى المدينة يا ليت قومي يعلمون فعززنا بثالث مؤمن آل فرعون يكتم إيمانه أتقتلون رجلا أن يقول ربي الله قارون على علم عندي فخسفنا به وبداره الأرض ويكأن أصحاب الأخدود النار ذات الوقود وما نقموا أصحاب الفيل طيرا أبابيل حجارة من سجيل لإيلاف قريش عبرة luqman qarun korah elephant trench ukhdud believer pharaoh", "d": ["وجاء من أقصى المدينة رجل يسعى", "A man came running from the farthest part of the city"]},
-  {"id": "sq", "f": "sidq.html", "ar": "الصدق والكذب", "en": "Truthfulness and lying", "ax": "character", "p": "akhlaq", "k": "صدق صادق الصادقين صدقهم الصدق صديق الصديقين صديقة مصدقا تصديق صدقة الصدقات كذب الكذب كاذب الكاذبين كذاب تكذيب كذبت المكذبين تكذبان افترى على الله كذبا كونوا مع الصادقين مقعد صدق قدم صدق لسان صدق بدم كذب المباهلة اللعان truth truthful sidq siddiq lie liar lying denial deny charity", "d": ["هذا يوم ينفع الصادقين صدقهم", "The day the truthful benefit from their truth"]},
-  {"id": "sm", "f": "sama.html", "ar": "السماء والأرض", "en": "Heaven and earth", "ax": "formula", "p": "aqida", "k": "السماء السماوات سماوات الأرض أرض السماوات والأرض سبع سماوات السماوات السبع طباقا ستة أيام استوى إلى السماء رتقا ففتقناهما دحاها طحاها سطحت فراشا مهادا مهدا قرارا ذلولا بساطا رواسي بغير عمد سقفا محفوظا السماء الدنيا البروج ابلعي أقلعي الأمانة بكت عليهم السماء يتفطرن انفطرت انشقت تبدل الأرض ملكوت فاطر بديع heaven heavens sky earth seven heavens six days creation", "d": ["إن في خلق السماوات والأرض... لآيات", "In the creation of the heavens and the earth are signs"]},
-  {"id": "hs", "f": "hasana.html", "ar": "الحسنات والسيئات", "en": "Good and bad deeds", "ax": "character", "p": "akhlaq", "k": "حسنة الحسنة حسنات الحسنات سيئة السيئة سيئات السيئات الحسنى السوأى السيئ عشر أمثالها إلا مثلها يذهبن السيئات يبدل الله سيئاتهم حسنات نكفر عنكم سيئاتكم تكفير ادفع بالتي هي أحسن يدرءون بالحسنة السيئة أسوة حسنة قرضا حسنا الموعظة الحسنة آتنا في الدنيا حسنة good deed bad deed evil hasana sayyia expiation", "d": ["إن الحسنات يذهبن السيئات", "Good deeds remove bad deeds"]},
-  {"id": "ud", "f": "adl.html", "ar": "العدل والظلم", "en": "Justice and injustice", "ax": "character", "p": "akhlaq", "k": "العدل القسط المقسطين القاسطون الظلم الظالمين الظالمون ظلموا أنفسهم ظلام للعبيد ومن أظلم الشرك لظلم عظيم قوامين بالقسط شهداء لله اعدلوا هو أقرب للتقوى بالعدل والإحسان الميزان القسطاس المطففين لا ينال عهدي الظالمين ولا تركنوا ظلوم جهول المظلوم ينتصرون justice injustice fairness oppression wrongdoing equity", "d": ["إن الله يأمر بالعدل والإحسان", "God commands justice and excellence"]},
-  {"id": "mn", "f": "amana.html", "ar": "الأمانة والوفاء بالعهد", "en": "Trust and keeping covenants", "ax": "character", "p": "akhlaq", "k": "الأمانة الأمانات أمين رسول أمين الروح الأمين القوي الأمين الخيانة الخائنين خوان تخونوا العهد عهد الله أوفوا بالعهد أوفوا بالعقود الميثاق ميثاقا غليظا ينقضون نكث الموثق لأماناتهم وعهدهم راعون ألست بربكم وإبراهيم الذي وفى صادق الوعد فانبذ إليهم على سواء trust trustworthiness betrayal covenant treaty promise fidelity", "d": ["والذين هم لأماناتهم وعهدهم راعون", "Those who are faithful to their trusts and covenants"]},
-  {"id": "wd", "f": "walidayn.html", "ar": "الوالدان وذوو القربى", "en": "Parents and relatives", "ax": "character", "p": "akhlaq", "k": "الوالدين الوالدان بر الوالدين وبالوالدين إحسانا ووصينا الإنسان بوالديه أف ولا تنهرهما جناح الذل رب ارحمهما كما ربياني صغيرا حملته أمه وهنا على وهن كرها وإن جاهداك وصاحبهما في الدنيا معروفا يا أبت يا أبانا ولوالدي ذوي القربى ذا القربى حقه الأرحام صلة الرحم تقطعوا أرحامكم أولو الأرحام يفر المرء من أخيه المودة في القربى parents mother father kinship relatives filial piety", "d": ["وبالوالدين إحسانا", "And excellence to parents"]},
-  {"id": "kb", "f": "kibr.html", "ar": "الكبر والتواضع", "en": "Arrogance and humility", "ax": "character", "p": "akhlaq", "k": "الكبر التكبر الاستكبار استكبر مستكبرون المتكبرين مثوى المتكبرين الكبرياء المتكبر مختال فخور مرحا ولا تصعر خدك علوا في الأرض بغير الحق أبى واستكبر أنا خير منه التواضع هونا اخفض جناحك أذلة على المؤمنين المخبتين الخاشعين لا يستكبرون البطر تزكية النفس arrogance pride humility conceit modesty", "d": ["تلك الدار الآخرة نجعلها للذين لا يريدون علوا في الأرض", "That home of the Hereafter We give to those who want no exaltation in the land"]},
-  {"id": "mf", "f": "maruf.html", "ar": "الأمر بالمعروف والنهي عن المنكر", "en": "Enjoining good and forbidding wrong", "ax": "character", "p": "akhlaq", "k": "الأمر بالمعروف النهي عن المنكر المعروف المنكر يأمرون بالمعروف وينهون عن المنكر كنتم خير أمة ولتكن منكم أمة لا يتناهون عن منكر فعلوه معذرة إلى ربكم أولو بقية عليكم أنفسكم أتأمرون الناس بالبر لم تقولون ما لا تفعلون قولا لينا بمصيطر وعاشروهن بالمعروف فإمساك بمعروف الحسبة الإنكار enjoin good forbid wrong ma'ruf munkar hisba commanding right", "d": ["كنتم خير أمة أخرجت للناس تأمرون بالمعروف وتنهون عن المنكر", "You are the best community brought forth for people: you enjoin right and forbid wrong"]},
-  {"id": "ls", "f": "lisan.html", "ar": "آفات اللسان", "en": "Faults of the tongue", "ax": "character", "p": "akhlaq", "k": "آفات اللسان اللسان الألسنة الغيبة ولا يغتب بعضكم بعضا النميمة هماز مشاء بنميم همزة لمزة الهمز اللمز السخرية لا يسخر قوم من قوم التنابز بالألقاب التجسس سوء الظن الإفك البهتان القذف قول الزور شهادة الزور اللغو الخوض لهو الحديث الجهر بالسوء النجوى ما يلفظ من قول رقيب عتيد قولا سديدا التي هي أحسن الكلمة الطيبة tongue backbiting gossip slander mockery lying idle talk speech", "d": ["ما يلفظ من قول إلا لديه رقيب عتيد", "He utters no word without a watcher ready beside him"]},
-  {"id": "ns", "f": "nafs.html", "ar": "النفس", "en": "The self", "ax": "character", "p": "akhlaq", "k": "النفس الأنفس نفسه أنفسكم النفس الأمارة بالسوء النفس اللوامة النفس المطمئنة ونفس وما سواها فألهمها فجورها وتقواها قد أفلح من زكاها وقد خاب من دساها التزكية تزكية النفس ونهى النفس عن الهوى الهوى شح النفس ومن يوق شح نفسه سولت لكم أنفسكم ظلموا أنفسهم كانوا أنفسهم يظلمون لا يكلف الله نفسا إلا وسعها كل نفس بما كسبت رهينة من نفس واحدة كل نفس ذائقة الموت الروح soul self nafs ego purification desire", "d": ["قد أفلح من زكاها وقد خاب من دساها", "Successful is he who purifies it, and failed is he who buries it"]},
-  {"id": "dk", "f": "dhikr.html", "ar": "الذكر والحمد والتسبيح", "en": "Remembrance and glorification", "ax": "formula", "p": "aqida", "k": "ذكر الذكر اذكروا الله ذكرا كثيرا فاذكروني أذكركم الحمد لله الحمد لله رب العالمين حميد سبحان الله سبحانك سبحانه يسبح سبح التسبيح المسبحين التكبير وكبره تكبيرا ولتكبروا الله فكبر الله أكبر تبارك التنزيه تعالى عما يشركون عما يصفون الباقيات الصالحات لا إله إلا الله فهل من مدكر remembrance dhikr praise hamd glorification tasbih takbir tabarak transcendence", "d": ["اذكروا الله ذكرا كثيرا وسبحوه بكرة وأصيلا", "Remember God much and glorify Him"]},
-  {"id": "il", "f": "ilm.html", "ar": "العلم والعقل والتفكر", "en": "Knowledge, reason and reflection", "ax": "formula", "p": "aqida", "k": "العلم العقل التفكر يعقلون تعقلون أفلا تعقلون لعلكم تعقلون لقوم يعقلون يتفكرون لقوم يتفكرون أولو الألباب يا أولي الألباب الفقه يفقهون لا يفقهون التدبر أفلا يتدبرون القرآن العلماء إنما يخشى الله من عباده العلماء هل يستوي الذين يعلمون الراسخون في العلم رب زدني علما اقرأ علم بالقلم الظن ولا تقف ما ليس لك به علم knowledge reason intellect reflection understanding scholars", "d": ["قل هل يستوي الذين يعلمون والذين لا يعلمون إنما يتذكر أولو الألباب", "Say: are those who know equal to those who do not know? Only people of understanding take heed"]},
-  {"id": "dn", "f": "dunya.html", "ar": "الدنيا والآخرة والدرجات", "en": "This world, the Hereafter and degrees", "ax": "last", "p": "aqida", "k": "الدنيا الحياة الدنيا الآخرة الدار الآخرة العاجلة الأولى متاع الغرور لعب ولهو لهو ولعب خير وأبقى نصيبك من الدنيا عرض الدنيا حرث الآخرة يؤمنون بالآخرة يوقنون درجة درجات الدرجات العلى رفيع الدرجات نرفع درجات من نشاء ولكل درجات مما عملوا وللرجال عليهن درجة الدرك سنستدرجهم this world hereafter dunya akhira degree degrees rank", "d": ["وللآخرة أكبر درجات وأكبر تفضيلا", "The Hereafter is greater in degrees"]},
-  {"id": "qd", "f": "qadar.html", "ar": "القضاء والقدر والمشيئة", "en": "Decree, measure and will", "ax": "creed", "p": "aqida", "k": "القضاء القدر قدر قضى المشيئة شاء إن شاء الله إلا أن يشاء الله ما شاء الله لو شاء الله وما تشاءون إلا أن يشاء الله كل شيء خلقناه بقدر قدرا مقدورا أمرا مقضيا كن فيكون ليلة القدر يبسط الرزق ويقدر على كل شيء قدير مقتدر في كتاب من قبل أن نبرأها ما كتب الله لنا يمحو الله ما يشاء ويثبت أم الكتاب فألهمها فجورها وتقواها والله خلقكم وما تعملون decree destiny predestination will qadar qada الإرادة الكونية الإرادة الشرعية يريد الله يفعل ما يريد فعال لما يريد يريد الله بكم اليسر المحبة والرضا will volition iradah", "d": ["إنا كل شيء خلقناه بقدر", "We created everything in measure"]},
-  {"id": "ft", "f": "fitna.html", "ar": "الابتلاء والفتنة", "en": "Trial and testing", "ax": "creed", "p": "aqida", "k": "الابتلاء البلاء ابتلى ولنبلونكم ليبلوكم أيكم أحسن عملا الفتنة فتنة يفتنون فتناك فتونا أحسب الناس أن يتركوا والفتنة أشد من القتل حتى لا تكون فتنة إنما أموالكم وأولادكم فتنة بالشر والخير فتنة التمحيص وليمحص الله الذين آمنوا البلاء المبين بلاء حسنا المحنة والمنحة trial test testing affliction temptation fitnah tribulation", "d": ["أحسب الناس أن يتركوا أن يقولوا آمنا وهم لا يفتنون", "Do people think they will be left to say 'we believe' and not be tested?"]},
-  {"id": "ji", "f": "jinn.html", "ar": "الجن والشياطين", "en": "Jinn and devils", "ax": "pillars", "p": "aqida", "k": "الجن الجان الجنة الشيطان الشياطين إبليس العفريت المارد القرين الوسواس الخناس وسوس نزغ همزات الشياطين خطوات الشيطان عدو مبين مارج من نار نار السموم استرق السمع شهاب رصدا نفر من الجن قرآنا عجبا معشر الجن والإنس يتخبطه الشيطان من المس مجنون رءوس الشياطين استعاذة أعوذ jinn devils satan iblis shaytan whisper", "d": ["وما خلقت الجن والإنس إلا ليعبدون", "I did not create jinn and humans except to worship Me"]},
-  {"id": "lt", "f": "latayif.html", "ar": "اللطائف العددية", "en": "Numerical observations", "ax": "story", "p": "manhaj", "k": "لطائف عددية إعجاز عددي عد الآي آدم عيسى نوح 71 إبراهيم 69 الكهف 309 منتصف المصحف وليتلطف numerical miracle numbers", "d": ["عرض وتحقق بمنهج معلن", "Presented and checked"]},
-  {"id": "am", "f": "amthal.html", "ar": "الأمثال", "en": "Parables", "ax": "story", "p": "qasas", "k": "مثل أمثال", "d": ["24 مثلاً", "Parables"]}
+  {
+    "id": "an",
+    "f": "anam.html",
+    "ar": "سورة الأنعام: مركز الإحالات",
+    "en": "Al-An'am: Referential Hub",
+    "ax": "cov",
+    "p": "manhaj",
+    "hub": true,
+    "k": "سورة الأنعام مركز الإحالات الصريحة 35% ما قصصنا عليك من قبل وقد نزل عليكم في الكتاب ملة إبراهيم المحرمات الفهرس الرئيسي",
+    "d": [
+      "مركز الشبكة الإحالية: تستقبل 8 من 23 إحالة صريحة (35%، p < 10⁻⁷) وحجمها 3.9% من كلمات المصحف",
+      "Referential Hub: receives 8 of 23 explicit links (35%, p < 10⁻⁷) vs 3.9% of Mushaf words"
+    ]
+  },
+  {
+    "id": "tw",
+    "f": "tawhid.html",
+    "ar": "التوحيد",
+    "en": "Tawhid",
+    "ax": "creed",
+    "p": "aqida",
+    "k": "لا إله إلا الله شرك عقيدة",
+    "d": [
+      "مركز الشبكة",
+      "The hub"
+    ]
+  },
+  {
+    "id": "hd",
+    "f": "huda.html",
+    "ar": "الهدى",
+    "en": "Guidance",
+    "ax": "creed",
+    "p": "aqida",
+    "k": "هدى هداية اهتدى يهدي المهتدين الصراط المستقيم اهدنا",
+    "d": [
+      "307 ألفاظ في 261 آية",
+      "307 occurrences in 261 verses"
+    ]
+  },
+  {
+    "id": "dl",
+    "f": "dalal.html",
+    "ar": "الضلال",
+    "en": "Misguidance",
+    "ax": "creed",
+    "p": "aqida",
+    "k": "ضلال ضل الضالين يضل ضلالة أضل غي",
+    "d": [
+      "191 لفظاً في 170 آية",
+      "191 occurrences in 170 verses"
+    ]
+  },
+  {
+    "id": "im",
+    "f": "iman.html",
+    "ar": "الإيمان",
+    "en": "Faith",
+    "ax": "creed",
+    "p": "aqida",
+    "k": "إيمان آمنوا مؤمن مؤمنون يؤمنون أركان الإيمان iman belief believers",
+    "d": [
+      "811 لفظاً في 667 آية",
+      "811 occurrences in 667 verses"
+    ]
+  },
+  {
+    "id": "kf",
+    "f": "kufr.html",
+    "ar": "الكفر",
+    "en": "Disbelief",
+    "ax": "creed",
+    "p": "aqida",
+    "k": "كفر كافر كافرون الذين كفروا كفور كفران جحود kufr kafir ingratitude",
+    "d": [
+      "506 ألفاظ في 448 آية",
+      "506 occurrences in 448 verses"
+    ]
+  },
+  {
+    "id": "nf",
+    "f": "nifaq.html",
+    "ar": "النفاق والمنافقون",
+    "en": "Hypocrisy",
+    "ax": "creed",
+    "p": "aqida",
+    "k": "نفاق منافق المنافقون المنافقين المنافقات نافقوا في قلوبهم مرض إنفاق hypocrisy hypocrites munafiq nifaq",
+    "d": [
+      "37 كلمة في 29 آية، كلها مدنية إلا واحدة",
+      "37 words in 29 verses, all Medinan but one"
+    ]
+  },
+  {
+    "id": "ik",
+    "f": "ikhlas.html",
+    "ar": "الإخلاص",
+    "en": "Sincerity",
+    "ax": "creed",
+    "p": "aqida",
+    "k": "إخلاص مخلصين له الدين المخلصين خالص رياء حنيف ikhlas sincerity",
+    "d": [
+      "31 لفظاً في 30 آية، 25 منها مكية",
+      "31 in 30 verses, 25 Meccan"
+    ]
+  },
+  {
+    "id": "as",
+    "f": "asma.html",
+    "ar": "الأسماء الحسنى",
+    "en": "Divine Names",
+    "ax": "asma",
+    "p": "aqida",
+    "k": "أسماء الله الحسنى الرحمن الرحيم الغفور العزيز الحكيم العليم السميع البصير التواب الحي القيوم الأحد الصمد غفور رحيم divine names asma husna",
+    "d": [
+      "نحو 80 اسماً و350 زوجاً",
+      "About 80 names, 350 pairs"
+    ]
+  },
+  {
+    "id": "rh",
+    "f": "rahman.html",
+    "ar": "الرحمن الرحيم",
+    "en": "Ar-Rahman ar-Rahim",
+    "ax": "asma",
+    "p": "aqida",
+    "k": "الرحمن الرحيم رحمة البسملة رحيم الأرحام أرحم الراحمين عباد الرحمن rahman rahim mercy basmala",
+    "d": [
+      "الرحمن 57 (53 مكية)، والرحيم 114",
+      "Rahman 57 (53 Meccan); Rahim 114"
+    ]
+  },
+  {
+    "id": "gf",
+    "f": "ghafur.html",
+    "ar": "الغفور، التواب، العفو",
+    "en": "The Forgiving, the Relenting, the Pardoning",
+    "ax": "asma",
+    "p": "aqida",
+    "k": "الغفور غفور رحيم الغفار غفارا غافر الذنب خير الغافرين واسع المغفرة أهل المغفرة ذو مغفرة الغفور الودود العزيز الغفار التواب التواب الرحيم قابل التوب يقبل التوبة توابا العفو عفوا غفورا عفوا قديرا عفو غفور عفا الله عنك خذ العفو واعف عنا واغفر لنا وارحمنا شديد العقاب وليعفوا وليصفحوا الأسماء الحسنى forgiving forgiver relenting pardoning pardon divine names ghafur tawwab afuww",
+    "d": [
+      "غافر الذنب وقابل التوب شديد العقاب",
+      "Forgiver of sin and Accepter of repentance, severe in punishment"
+    ]
+  },
+  {
+    "id": "al",
+    "f": "alim.html",
+    "ar": "العليم الخبير",
+    "en": "The All-Knowing, the All-Aware",
+    "ax": "asma",
+    "p": "aqida",
+    "k": "العليم عليم بكل شيء عليم عليم بذات الصدور الخبير خبير بما تعملون علام الغيوب عالم الغيب والشهادة مفاتح الغيب علم الساعة لا يعزب عنه مثقال ذرة اللطيف لطيف خبير اللطيف الخبير لا تدركه الأبصار تقدير العزيز العليم سميع عليم عليم حكيم واسع عليم والله يعلم وأنتم لا تعلمون إلا من ارتضى من رسول وهو معكم أين ما كنتم الأسماء الحسنى knowing knower omniscient aware subtle unseen divine names alim khabir latif",
+    "d": [
+      "وعنده مفاتح الغيب لا يعلمها إلا هو",
+      "With Him are the keys of the unseen; none knows them but He"
+    ]
+  },
+  {
+    "id": "sa",
+    "f": "sami.html",
+    "ar": "السميع البصير",
+    "en": "The All-Hearing, the All-Seeing",
+    "ax": "asma",
+    "p": "aqida",
+    "k": "السميع البصير سميع بصير سميع عليم سميع الدعاء سميع قريب بما تعملون بصير بصير بالعباد ليس كمثله شيء قد سمع الله أسمع وأرى بأعيننا على عيني يرى السمع والأبصار والأفئدة السمع والبصر والفؤاد ختم على سمعهم غشاوة صم بكم عمي لا يسمع ولا يبصر الأسماء الحسنى hearing seeing all-hearing all-seeing sight eyes divine names sami basir",
+    "d": [
+      "ليس كمثله شيء وهو السميع البصير",
+      "Nothing is like Him, and He is the All-Hearing, the All-Seeing"
+    ]
+  },
+  {
+    "id": "az",
+    "f": "aziz.html",
+    "ar": "العزيز الحكيم",
+    "en": "The Almighty, the Wise",
+    "ax": "asma",
+    "p": "aqida",
+    "k": "العزيز الحكيم عزيز حكيم العزيز الرحيم قوي عزيز العزيز الحميد عزيز ذو انتقام العزة لله جميعا ولله العزة ولرسوله وللمؤمنين رب العزة أخذته العزة بالإثم الحكمة الكتاب والحكمة يؤتي الحكمة من يشاء آتينا لقمان الحكمة الكتاب الحكيم القرآن الحكيم أحكمت آياته أحكم الحاكمين خير الحاكمين إن الحكم إلا لله سبح لله تنزيل الكتاب من الله العزيز الحكيم الأسماء الحسنى almighty mighty wise wisdom judgment divine names aziz hakim",
+    "d": [
+      "سبح لله ما في السماوات والأرض وهو العزيز الحكيم",
+      "Whatever is in the heavens and earth glorifies God; He is the Almighty, the Wise"
+    ]
+  },
+  {
+    "id": "hy",
+    "f": "hayy.html",
+    "ar": "الحي القيوم، الواحد الأحد",
+    "en": "The Ever-Living, the Sustainer, the One",
+    "ax": "asma",
+    "p": "aqida",
+    "k": "الحي القيوم الحي الذي لا يموت لا تأخذه سنة ولا نوم آية الكرسي الواحد القهار إله واحد إلهكم إله واحد لا تتخذوا إلهين اثنين الأحد الصمد قل هو الله أحد لا إله إلا هو لو كان فيهما آلهة إلا الله لفسدتا ثالث ثلاثة يحيي ويميت كل شيء هالك إلا وجهه يمسك السماوات والأرض أن تزولا وعنت الوجوه للحي القيوم الوحدانية الأسماء الحسنى ever-living living sustainer self-subsisting one oneness unique eternal refuge divine names hayy qayyum wahid ahad samad",
+    "d": [
+      "الله لا إله إلا هو الحي القيوم",
+      "God: there is no god but He, the Ever-Living, the Sustainer"
+    ]
+  },
+  {
+    "id": "ml",
+    "f": "malaika.html",
+    "ar": "الملائكة",
+    "en": "The Angels",
+    "ax": "pillars",
+    "p": "aqida",
+    "k": "ملائكة ملك جبريل ميكال الروح الأمين أركان الإيمان angels malaika",
+    "d": [
+      "88 لفظاً في 86 آية",
+      "88 occurrences in 86 verses"
+    ]
+  },
+  {
+    "id": "kt",
+    "f": "kutub.html",
+    "ar": "الكتب",
+    "en": "The Books",
+    "ax": "pillars",
+    "p": "aqida",
+    "k": "كتب الكتاب التوراة الإنجيل الزبور الصحف القرآن الفرقان أهل الكتاب كتب عليكم books scriptures",
+    "d": [
+      "كتب 319 لفظاً، والقرآن 70، والتوراة 18",
+      "k-t-b 319; Qur'an 70; Torah 18"
+    ]
+  },
+  {
+    "id": "rs",
+    "f": "rusul.html",
+    "ar": "الرسل",
+    "en": "Messengers",
+    "ax": "pillars",
+    "p": "aqida",
+    "k": "رسل رسول الرسل الأنبياء نبي النبيين أسماء الأنبياء مرسلين messengers prophets",
+    "d": [
+      "رسل 513 لفظاً، و25 نبياً مسمّى",
+      "r-s-l 513; 25 named prophets"
+    ]
+  },
+  {
+    "id": "ak",
+    "f": "akhira.html",
+    "ar": "اليوم الآخر",
+    "en": "The Last Day",
+    "ax": "last",
+    "p": "aqida",
+    "k": "اليوم الآخر يوم القيامة الآخرة الساعة البعث الميزان الصور القارعة الحاقة يوم الدين last day resurrection",
+    "d": [
+      "اليوم الآخر 26 آية (25 مدنية)، ويوم القيامة 70",
+      "Last Day 26 (25 Medinan); Resurrection 70"
+    ]
+  },
+  {
+    "id": "jn",
+    "f": "jannah.html",
+    "ar": "الجنة",
+    "en": "Paradise",
+    "ax": "last",
+    "p": "aqida",
+    "k": "جنة جنات الفردوس نعيم رضوان اليوم الآخر الآخرة",
+    "d": [
+      "نحو 143 آية: غاية الطريق",
+      "About 143 verses: the end of the path"
+    ]
+  },
+  {
+    "id": "nr",
+    "f": "nar.html",
+    "ar": "النار",
+    "en": "The Fire",
+    "ax": "last",
+    "p": "aqida",
+    "k": "نار جهنم جحيم سعير سقر لظى الحطمة الهاوية عذاب اليوم الآخر الآخرة",
+    "d": [
+      "«النار» و«جهنم» وستة أسماء",
+      "The Fire, Jahannam and six names"
+    ]
+  },
+  {
+    "id": "tq",
+    "f": "taqwa.html",
+    "ar": "بناء التقوى",
+    "en": "Building Taqwa",
+    "ax": "formula",
+    "p": "akhlaq",
+    "k": "لعلكم تتقون لعلهم يتقون التقوى taqwa",
+    "d": [
+      "12 آية: 6 «لعلكم تتقون» و6 «لعلهم يتقون»",
+      "12 verses: 6 \"that you may\" and 6 \"that they may\""
+    ]
+  },
+  {
+    "id": "yh",
+    "f": "yuhibb.html",
+    "ar": "ما يحبه الله",
+    "en": "God loves",
+    "ax": "formula",
+    "p": "akhlaq",
+    "k": "يحب محبة",
+    "d": [
+      "16 آية",
+      "16 verses"
+    ]
+  },
+  {
+    "id": "ly",
+    "f": "layuhibb.html",
+    "ar": "ما لا يحبه الله",
+    "en": "Does not love",
+    "ax": "formula",
+    "p": "akhlaq",
+    "k": "لا يحب",
+    "d": [
+      "23 آية",
+      "23 verses"
+    ]
+  },
+  {
+    "id": "tv",
+    "f": "wiqaya.html",
+    "ar": "التقوى",
+    "en": "Taqwa",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "تقوى التقوى اتقوا اتقى المتقين المتقون وقى وقاية تقي تقاة أتقاكم taqwa piety god-conscious mindful",
+    "d": [
+      "وقي: 258 كلمة في 237 آية",
+      "w-q-y: 258 words in 237 verses"
+    ]
+  },
+  {
+    "id": "sr",
+    "f": "sabr.html",
+    "ar": "الصبر",
+    "en": "Patience",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "صابرين",
+    "d": [
+      "93 آية: التقوى + الصبر = الإحسان",
+      "93 verses"
+    ]
+  },
+  {
+    "id": "sh",
+    "f": "shukr.html",
+    "ar": "الشكر",
+    "en": "Gratitude",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "تشكرون شكور",
+    "d": [
+      "69 آية: صبار شكور",
+      "69 verses"
+    ]
+  },
+  {
+    "id": "ih",
+    "f": "ihsan.html",
+    "ar": "الإحسان",
+    "en": "Ihsan",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "محسنين",
+    "d": [
+      "غاية الطريق",
+      "The summit"
+    ]
+  },
+  {
+    "id": "tb",
+    "f": "tawba.html",
+    "ar": "التوبة",
+    "en": "Repentance",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "توبة تاب توبوا التواب التوابين يتوب tawba repentance",
+    "d": [
+      "87 لفظاً في 69 آية",
+      "87 occurrences in 69 verses"
+    ]
+  },
+  {
+    "id": "is",
+    "f": "istighfar.html",
+    "ar": "الاستغفار",
+    "en": "Forgiveness",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "استغفار استغفروا مغفرة غفور غفار يغفر istighfar forgiveness",
+    "d": [
+      "234 لفظاً في 202 آية، منها 42 استغفاراً",
+      "234 occurrences; 42 of istighfar"
+    ]
+  },
+  {
+    "id": "sl",
+    "f": "salat.html",
+    "ar": "الصلاة",
+    "en": "Prayer",
+    "ax": "worship",
+    "p": "tashri",
+    "k": "صلاة أقيموا",
+    "d": [
+      "أربع مراحل للبناء",
+      "Four stages"
+    ]
+  },
+  {
+    "id": "zk",
+    "f": "zakat.html",
+    "ar": "الزكاة",
+    "en": "Zakat",
+    "ax": "worship",
+    "p": "tashri",
+    "k": "صدقة إنفاق",
+    "d": [
+      "ثلاث مراحل",
+      "Three stages"
+    ]
+  },
+  {
+    "id": "sy",
+    "f": "siyam.html",
+    "ar": "الصيام",
+    "en": "Fasting",
+    "ax": "worship",
+    "p": "tashri",
+    "k": "صوم رمضان",
+    "d": [
+      "11 آية",
+      "11 verses"
+    ]
+  },
+  {
+    "id": "hj",
+    "f": "hajj.html",
+    "ar": "الحج",
+    "en": "Hajj",
+    "ax": "worship",
+    "p": "tashri",
+    "k": "حج الحج البيت الكعبة المسجد الحرام عمرة مناسك إبراهيم hajj pilgrimage",
+    "d": [
+      "12 لفظاً في 8 آيات، و20 للحجة",
+      "12 in 8 verses; 20 for proof"
+    ]
+  },
+  {
+    "id": "du",
+    "f": "dua.html",
+    "ar": "الدعاء",
+    "en": "Supplication",
+    "ax": "worship",
+    "p": "tashri",
+    "k": "الدعاء دعاء ادعوني أستجب لكم أجيب دعوة الداع فإني قريب يجيب المضطر ادعوا ربكم تضرعا وخفية خوفا وطمعا ربنا رب اللهم فاستجبنا له فاستجاب الوسيلة التوسل دعوة الحق تدعون من دون الله يدعون من دونه دعواهم سميع الدعاء رب اشرح لي صدري رب زدني علما ربنا آتنا في الدنيا حسنة supplication prayer invocation du'a call upon answer",
+    "d": [
+      "وإذا سألك عبادي عني فإني قريب أجيب دعوة الداع إذا دعان",
+      "When My servants ask you about Me, I am near; I answer the call of the caller when he calls Me"
+    ]
+  },
+  {
+    "id": "kh",
+    "f": "khamr.html",
+    "ar": "الخمر",
+    "en": "Wine",
+    "ax": "grad",
+    "p": "tashri",
+    "k": "تحريم الخمر ميسر تدرج",
+    "d": [
+      "ثلاث مراحل",
+      "Three stages"
+    ]
+  },
+  {
+    "id": "rb",
+    "f": "riba.html",
+    "ar": "الربا",
+    "en": "Riba",
+    "ax": "grad",
+    "p": "tashri",
+    "k": "تحريم الربا بيع",
+    "d": [
+      "ثلاث مراحل وفرع الروم",
+      "Three stages, Ar-Rum branch"
+    ]
+  },
+  {
+    "id": "jh",
+    "f": "jihad.html",
+    "ar": "القتال",
+    "en": "Fighting",
+    "ax": "grad",
+    "p": "tashri",
+    "k": "جهاد قتال تشريع القتال",
+    "d": [
+      "أربع مراحل",
+      "Four stages"
+    ]
+  },
+  {
+    "id": "mw",
+    "f": "mawarith.html",
+    "ar": "المواريث والدَّين",
+    "en": "Inheritance and debt",
+    "ax": "grad",
+    "p": "tashri",
+    "k": "ميراث مواريث ورث وصية دين تداين آية الدين الكلالة الفروض النصف الربع الثمن الثلث السدس اليتامى قرض inheritance debt bequest",
+    "d": [
+      "من بعد وصية يوصي بها أو دين: 4 مرات",
+      "After any bequest or debt: 4 times"
+    ]
+  },
+  {
+    "id": "zw",
+    "f": "zawaj.html",
+    "ar": "الزواج",
+    "en": "Marriage",
+    "ax": "grad",
+    "p": "tashri",
+    "k": "زواج نكاح زوج أزواج مهر صدقات ميثاق غليظ المحرمات تعدد الزوجات القوامة النشوز التحكيم marriage nikah dower",
+    "d": [
+      "زوج 76 (38 مكي و38 مدني)",
+      "zawj 76: 38 Meccan, 38 Medinan"
+    ]
+  },
+  {
+    "id": "tl",
+    "f": "talaq.html",
+    "ar": "الطلاق والعدة والرضاع",
+    "en": "Divorce and nursing",
+    "ax": "grad",
+    "p": "tashri",
+    "k": "طلاق عدة رضاع رضاعة إيلاء ظهار لعان خلع متعة قروء حولين كاملين divorce idda nursing",
+    "d": [
+      "كلها مدنية، والمعروف 12 مرة",
+      "All Medinan; ma'ruf 12 times"
+    ]
+  },
+  {
+    "id": "sb",
+    "f": "sabbath.html",
+    "ar": "السبت والعهد",
+    "en": "Sabbath",
+    "ax": "cov",
+    "p": "tashri",
+    "k": "سبت عهد بني إسرائيل",
+    "d": [
+      "الوصايا والوفاء بالعهد",
+      "Commandments and covenants"
+    ]
+  },
+  {
+    "id": "ta",
+    "f": "taam.html",
+    "ar": "الحلال والحرام في الطعام",
+    "en": "Lawful and unlawful food",
+    "ax": "grad",
+    "p": "tashri",
+    "k": "الحلال الحرام حلالا طيبا الطيبات الخبائث الطعام الميتة الدم لحم الخنزير ما أهل لغير الله به المنخنقة الموقوذة المتردية النطيحة ما أكل السبع ذكيتم التذكية الذبائح النصب الأزلام المضطر غير باغ ولا عاد مخمصة اسم الله عليه بهيمة الأنعام الصيد صيد البحر الجوارح طعام الذين أوتوا الكتاب هادوا حرمنا كل ذي ظفر بحيرة سائبة وصيلة حام لا تحرموا لم تحرم ولا تسرفوا halal haram food slaughter carrion swine pork hunting dietary",
+    "d": [
+      "كلوا مما في الأرض حلالا طيبا",
+      "Eat of what is on earth, lawful and good"
+    ]
+  },
+  {
+    "id": "qs",
+    "f": "qisas.html",
+    "ar": "القصاص والحدود والكفارات",
+    "en": "Retaliation, penalties and expiations",
+    "ax": "grad",
+    "p": "tashri",
+    "k": "القصاص الحدود الحد حدود الله العقوبات الكفارة الكفارات الدية الفدية القتل العمد الخطأ النفس بالنفس العين بالعين الجروح قصاص عفي له الولي سلطانا الحرابة يحاربون من خلاف ينفوا السرقة السارق والسارقة فاقطعوا أيديهما نكالا الزنا الزانية والزاني مائة جلدة القذف يرمون المحصنات ثمانين جلدة تحرير رقبة صيام شهرين متتابعين إطعام عشرة مساكين ستين مسكينا كفارة أيمانكم الظهار جزاء الصيد الردة retaliation qisas hudud penalties expiation kaffara blood money diya theft",
+    "d": [
+      "ولكم في القصاص حياة",
+      "In retaliation there is life for you"
+    ]
+  },
+  {
+    "id": "ym",
+    "f": "ayman.html",
+    "ar": "الأيمان والنذور",
+    "en": "Oaths and vows",
+    "ax": "cov",
+    "p": "tashri",
+    "k": "اليمين الأيمان الحلف يحلفون حلاف القسم أقسم لا أقسم أقسموا بالله جهد أيمانهم اللغو عقدتم الأيمان كفارة أيمانكم واحفظوا أيمانكم عرضة لأيمانكم تحلة أيمانكم اليمين الغموس الحنث تحنث ضغثا نكثوا أيمانهم دخلا بينكم أيمانهم جنة إي وربي بلى وربي تالله لعمرك النذر نذرت نذورهم يوفون بالنذر الإيلاء عقدت أيمانكم oath oaths vow vows swear perjury expiation",
+    "d": [
+      "واحفظوا أيمانكم",
+      "Keep your oaths"
+    ]
+  },
+  {
+    "id": "nz",
+    "f": "nuzul.html",
+    "ar": "أنزل ونزّل",
+    "en": "Revelation",
+    "ax": "cov",
+    "p": "manhaj",
+    "k": "نزول إنزال تنزيل نجوم",
+    "d": [
+      "كتاب جملة وكتاب نجوم",
+      "At once vs. in stages"
+    ]
+  },
+  {
+    "id": "mu",
+    "f": "musa.html",
+    "ar": "قصة موسى",
+    "en": "Moses",
+    "ax": "story",
+    "p": "qasas",
+    "k": "موسى فرعون",
+    "d": [
+      "34 سورة",
+      "34 surahs"
+    ]
+  },
+  {
+    "id": "ys",
+    "f": "yusuf.html",
+    "ar": "قصة يوسف",
+    "en": "Joseph",
+    "ax": "story",
+    "p": "qasas",
+    "k": "يوسف يعقوب أحسن القصص القميص السجن العزيز الرؤيا تأويل صبر جميل إخوة يوسف joseph yusuf jacob story",
+    "d": [
+      "111 آية متصلة، ويوسف 25 مرة من 27",
+      "111 continuous verses"
+    ]
+  },
+  {
+    "id": "nh",
+    "f": "nuh.html",
+    "ar": "قصة نوح",
+    "en": "Noah",
+    "ax": "story",
+    "p": "qasas",
+    "k": "نوح الطوفان الفلك السفينة الجودي التنور قوم نوح ألف سنة إلا خمسين noah flood ark",
+    "d": [
+      "43 مرة في 28 سورة",
+      "43 times in 28 surahs"
+    ]
+  },
+  {
+    "id": "ib",
+    "f": "ibrahim.html",
+    "ar": "قصة إبراهيم",
+    "en": "Abraham",
+    "ax": "story",
+    "p": "qasas",
+    "k": "إبراهيم الخليل ملة إبراهيم حنيفا آزر إسماعيل إسحاق البيت الذبيح abraham ibrahim",
+    "d": [
+      "69 مرة في 25 سورة",
+      "69 times in 25 surahs"
+    ]
+  },
+  {
+    "id": "ka",
+    "f": "kahf.html",
+    "ar": "قصص سورة الكهف",
+    "en": "The stories of Al-Kahf",
+    "ax": "story",
+    "p": "qasas",
+    "k": "الكهف أصحاب الكهف الرقيم الفتية صاحب الجنتين موسى الخضر العبد الصالح مجمع البحرين ذو القرنين يأجوج ومأجوج السد kahf cave khidr dhul-qarnayn",
+    "d": [
+      "أربع قصص في نحو 70 آية",
+      "Four stories in about 70 verses"
+    ]
+  },
+  {
+    "id": "ad",
+    "f": "adam.html",
+    "ar": "قصة آدم",
+    "en": "Adam",
+    "ax": "story",
+    "p": "qasas",
+    "k": "آدم خليفة الأسماء سجود الملائكة إبليس الجنة الشجرة الهبوط التوبة كلمات بني آدم ابنا آدم قابيل هابيل الغراب adam iblis",
+    "d": [
+      "25 مرة في 9 سور",
+      "25 times in 9 surahs"
+    ]
+  },
+  {
+    "id": "ia",
+    "f": "isa.html",
+    "ar": "عيسى ابن مريم",
+    "en": "Jesus son of Mary",
+    "ax": "story",
+    "p": "qasas",
+    "k": "عيسى المسيح ابن مريم مريم آل عمران زكريا يحيى الحواريون الإنجيل المائدة الرفع متوفيك شبه لهم أحمد jesus mary messiah",
+    "d": [
+      "عيسى 25، ومريم 34",
+      "Jesus 25, Mary 34"
+    ]
+  },
+  {
+    "id": "my",
+    "f": "maryam.html",
+    "ar": "قصة مريم",
+    "en": "Mary",
+    "ax": "story",
+    "p": "qasas",
+    "k": "مريم ابنة عمران امرأة عمران النذر زكريا المحراب الكفالة النخلة الصوم نساء القرآن امرأة فرعون أم موسى سورة مريم mary maryam women",
+    "d": [
+      "34 مرة، المرأة الوحيدة المسمّاة",
+      "34 times; the only woman named"
+    ]
+  },
+  {
+    "id": "aq",
+    "f": "aqwam.html",
+    "ar": "هود وصالح ولوط وشعيب",
+    "en": "Hud, Salih, Lot, Shu'ayb",
+    "ax": "story",
+    "p": "qasas",
+    "k": "هود عاد صالح ثمود الناقة لوط قوم لوط المؤتفكات شعيب مدين أصحاب الأيكة الأحقاف الحجر إرم الرجفة الصيحة الظلة الكيل والميزان hud salih lot shuayb ad thamud midian",
+    "d": [
+      "أربعة أقوام ودعوة واحدة",
+      "Four peoples, one call"
+    ]
+  },
+  {
+    "id": "ds",
+    "f": "dawud.html",
+    "ar": "داود وسليمان",
+    "en": "David and Solomon",
+    "ax": "story",
+    "p": "qasas",
+    "k": "داود داوود سليمان طالوت جالوت الزبور زبور الحرث الجبال الطير الحديد السابغات اللبوس القطر الريح الجن الشياطين النملة النمل الهدهد سبأ ملكة سبأ بلقيس العرش الصرح الصافنات الجسد الكرسي الخصم المحراب فصل الخطاب الخليفة أواب منطق الطير david solomon saul goliath psalms sheba hoopoe ant",
+    "d": [
+      "وكلاً آتينا حكماً وعلماً",
+      "To each We gave judgment and knowledge"
+    ]
+  },
+  {
+    "id": "zy",
+    "f": "zakariya.html",
+    "ar": "زكريا ويحيى",
+    "en": "Zechariah and John",
+    "ax": "story",
+    "p": "qasas",
+    "k": "زكريا يحيى امرأة زكريا عاقر المحراب نداء خفيا ذرية طيبة سميع الدعاء خير الوارثين يرثني الموالي حصورا سيدا مصدقا بكلمة حنانا زكاة تقيا برا بوالديه آية الصمت ثلاث ليال رمزا فاستجبنا له zechariah zachariah john yahya",
+    "d": [
+      "هنالك دعا زكريا ربه",
+      "There Zechariah called on his Lord"
+    ]
+  },
+  {
+    "id": "yn",
+    "f": "yunus.html",
+    "ar": "قصة يونس",
+    "en": "Jonah",
+    "ax": "story",
+    "p": "qasas",
+    "k": "يونس ذا النون ذو النون صاحب الحوت الحوت بطن الحوت الفلك المشحون فساهم المدحضين مليم مكظوم العراء اليقطين مغاضبا الظلمات لا إله إلا أنت سبحانك إني كنت من الظالمين قوم يونس مائة ألف jonah yunus dhul-nun whale fish nineveh",
+    "d": [
+      "لا إله إلا أنت سبحانك إني كنت من الظالمين",
+      "There is no god but You; glory be to You"
+    ]
+  },
+  {
+    "id": "ay",
+    "f": "ayyub.html",
+    "ar": "أيوب والقصص القصيرة",
+    "en": "Job and the short stories",
+    "ax": "story",
+    "p": "qasas",
+    "k": "أيوب إسماعيل هارون إلياس إل ياسين آل ياسين اليسع ذو الكفل ذا الكفل إدريس الذبيح ضغثا ولا تحنث اركض برجلك مغتسل بارد وشراب مسني الضر مسني الشيطان أرحم الراحمين ومثلهم معهم إنا وجدناه صابرا نعم العبد إنه أواب صادق الوعد وزيرا ابن أم بعلا أحسن الخالقين ورفعناه مكانا عليا صديقا نبيا الأخيار job ishmael aaron elias elijah elisha dhul-kifl idris enoch",
+    "d": [
+      "إنا وجدناه صابراً نعم العبد إنه أواب",
+      "We found him patient; an excellent servant"
+    ]
+  },
+  {
+    "id": "si",
+    "f": "sira.html",
+    "ar": "السيرة في القرآن الكريم",
+    "en": "The Prophet's life in the Qur'an",
+    "ax": "story",
+    "p": "qasas",
+    "k": "السيرة النبوية محمد أحمد زيد أبو لهب بدر أحد الأحزاب الخندق حنين تبوك الحديبية خيبر فتح مكة بنو النضير بنو قريظة الهجرة الغار ثاني اثنين المهاجرين والأنصار يثرب المدينة مكة بكة الإسراء انشقاق القمر غلبت الروم تحويل القبلة الإفك المباهلة بيعة الرضوان تحت الشجرة السكينة جنودا لم تروها يوم الفرقان الأسرى المخلفون الثلاثة الذين خلفوا مسجد الضرار حجة الوداع sira prophet muhammad badr uhud trench hijra hudaybiyah",
+    "d": [
+      "إلا تنصروه فقد نصره الله",
+      "If you do not help him, God has helped him"
+    ]
+  },
+  {
+    "id": "gn",
+    "f": "ibar.html",
+    "ar": "قصص غير الأنبياء",
+    "en": "Stories of non-prophets",
+    "ax": "story",
+    "p": "qasas",
+    "k": "لقمان يا بني لا تشرك ولا تصعر خدك واقصد في مشيك أصحاب القرية رجل يسعى أقصى المدينة يا ليت قومي يعلمون فعززنا بثالث مؤمن آل فرعون يكتم إيمانه أتقتلون رجلا أن يقول ربي الله قارون على علم عندي فخسفنا به وبداره الأرض ويكأن أصحاب الأخدود النار ذات الوقود وما نقموا أصحاب الفيل طيرا أبابيل حجارة من سجيل لإيلاف قريش عبرة luqman qarun korah elephant trench ukhdud believer pharaoh",
+    "d": [
+      "وجاء من أقصى المدينة رجل يسعى",
+      "A man came running from the farthest part of the city"
+    ]
+  },
+  {
+    "id": "sq",
+    "f": "sidq.html",
+    "ar": "الصدق والكذب",
+    "en": "Truthfulness and lying",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "صدق صادق الصادقين صدقهم الصدق صديق الصديقين صديقة مصدقا تصديق صدقة الصدقات كذب الكذب كاذب الكاذبين كذاب تكذيب كذبت المكذبين تكذبان افترى على الله كذبا كونوا مع الصادقين مقعد صدق قدم صدق لسان صدق بدم كذب المباهلة اللعان truth truthful sidq siddiq lie liar lying denial deny charity",
+    "d": [
+      "هذا يوم ينفع الصادقين صدقهم",
+      "The day the truthful benefit from their truth"
+    ]
+  },
+  {
+    "id": "sm",
+    "f": "sama.html",
+    "ar": "السماء والأرض",
+    "en": "Heaven and earth",
+    "ax": "formula",
+    "p": "aqida",
+    "k": "السماء السماوات سماوات الأرض أرض السماوات والأرض سبع سماوات السماوات السبع طباقا ستة أيام استوى إلى السماء رتقا ففتقناهما دحاها طحاها سطحت فراشا مهادا مهدا قرارا ذلولا بساطا رواسي بغير عمد سقفا محفوظا السماء الدنيا البروج ابلعي أقلعي الأمانة بكت عليهم السماء يتفطرن انفطرت انشقت تبدل الأرض ملكوت فاطر بديع heaven heavens sky earth seven heavens six days creation",
+    "d": [
+      "إن في خلق السماوات والأرض... لآيات",
+      "In the creation of the heavens and the earth are signs"
+    ]
+  },
+  {
+    "id": "hs",
+    "f": "hasana.html",
+    "ar": "الحسنات والسيئات",
+    "en": "Good and bad deeds",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "حسنة الحسنة حسنات الحسنات سيئة السيئة سيئات السيئات الحسنى السوأى السيئ عشر أمثالها إلا مثلها يذهبن السيئات يبدل الله سيئاتهم حسنات نكفر عنكم سيئاتكم تكفير ادفع بالتي هي أحسن يدرءون بالحسنة السيئة أسوة حسنة قرضا حسنا الموعظة الحسنة آتنا في الدنيا حسنة good deed bad deed evil hasana sayyia expiation",
+    "d": [
+      "إن الحسنات يذهبن السيئات",
+      "Good deeds remove bad deeds"
+    ]
+  },
+  {
+    "id": "ud",
+    "f": "adl.html",
+    "ar": "العدل والظلم",
+    "en": "Justice and injustice",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "العدل القسط المقسطين القاسطون الظلم الظالمين الظالمون ظلموا أنفسهم ظلام للعبيد ومن أظلم الشرك لظلم عظيم قوامين بالقسط شهداء لله اعدلوا هو أقرب للتقوى بالعدل والإحسان الميزان القسطاس المطففين لا ينال عهدي الظالمين ولا تركنوا ظلوم جهول المظلوم ينتصرون justice injustice fairness oppression wrongdoing equity",
+    "d": [
+      "إن الله يأمر بالعدل والإحسان",
+      "God commands justice and excellence"
+    ]
+  },
+  {
+    "id": "mn",
+    "f": "amana.html",
+    "ar": "الأمانة والوفاء بالعهد",
+    "en": "Trust and keeping covenants",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "الأمانة الأمانات أمين رسول أمين الروح الأمين القوي الأمين الخيانة الخائنين خوان تخونوا العهد عهد الله أوفوا بالعهد أوفوا بالعقود الميثاق ميثاقا غليظا ينقضون نكث الموثق لأماناتهم وعهدهم راعون ألست بربكم وإبراهيم الذي وفى صادق الوعد فانبذ إليهم على سواء trust trustworthiness betrayal covenant treaty promise fidelity",
+    "d": [
+      "والذين هم لأماناتهم وعهدهم راعون",
+      "Those who are faithful to their trusts and covenants"
+    ]
+  },
+  {
+    "id": "wd",
+    "f": "walidayn.html",
+    "ar": "الوالدان وذوو القربى",
+    "en": "Parents and relatives",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "الوالدين الوالدان بر الوالدين وبالوالدين إحسانا ووصينا الإنسان بوالديه أف ولا تنهرهما جناح الذل رب ارحمهما كما ربياني صغيرا حملته أمه وهنا على وهن كرها وإن جاهداك وصاحبهما في الدنيا معروفا يا أبت يا أبانا ولوالدي ذوي القربى ذا القربى حقه الأرحام صلة الرحم تقطعوا أرحامكم أولو الأرحام يفر المرء من أخيه المودة في القربى parents mother father kinship relatives filial piety",
+    "d": [
+      "وبالوالدين إحسانا",
+      "And excellence to parents"
+    ]
+  },
+  {
+    "id": "kb",
+    "f": "kibr.html",
+    "ar": "الكبر والتواضع",
+    "en": "Arrogance and humility",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "الكبر التكبر الاستكبار استكبر مستكبرون المتكبرين مثوى المتكبرين الكبرياء المتكبر مختال فخور مرحا ولا تصعر خدك علوا في الأرض بغير الحق أبى واستكبر أنا خير منه التواضع هونا اخفض جناحك أذلة على المؤمنين المخبتين الخاشعين لا يستكبرون البطر تزكية النفس arrogance pride humility conceit modesty",
+    "d": [
+      "تلك الدار الآخرة نجعلها للذين لا يريدون علوا في الأرض",
+      "That home of the Hereafter We give to those who want no exaltation in the land"
+    ]
+  },
+  {
+    "id": "mf",
+    "f": "maruf.html",
+    "ar": "الأمر بالمعروف والنهي عن المنكر",
+    "en": "Enjoining good and forbidding wrong",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "الأمر بالمعروف النهي عن المنكر المعروف المنكر يأمرون بالمعروف وينهون عن المنكر كنتم خير أمة ولتكن منكم أمة لا يتناهون عن منكر فعلوه معذرة إلى ربكم أولو بقية عليكم أنفسكم أتأمرون الناس بالبر لم تقولون ما لا تفعلون قولا لينا بمصيطر وعاشروهن بالمعروف فإمساك بمعروف الحسبة الإنكار enjoin good forbid wrong ma'ruf munkar hisba commanding right",
+    "d": [
+      "كنتم خير أمة أخرجت للناس تأمرون بالمعروف وتنهون عن المنكر",
+      "You are the best community brought forth for people: you enjoin right and forbid wrong"
+    ]
+  },
+  {
+    "id": "ls",
+    "f": "lisan.html",
+    "ar": "آفات اللسان",
+    "en": "Faults of the tongue",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "آفات اللسان اللسان الألسنة الغيبة ولا يغتب بعضكم بعضا النميمة هماز مشاء بنميم همزة لمزة الهمز اللمز السخرية لا يسخر قوم من قوم التنابز بالألقاب التجسس سوء الظن الإفك البهتان القذف قول الزور شهادة الزور اللغو الخوض لهو الحديث الجهر بالسوء النجوى ما يلفظ من قول رقيب عتيد قولا سديدا التي هي أحسن الكلمة الطيبة tongue backbiting gossip slander mockery lying idle talk speech",
+    "d": [
+      "ما يلفظ من قول إلا لديه رقيب عتيد",
+      "He utters no word without a watcher ready beside him"
+    ]
+  },
+  {
+    "id": "ns",
+    "f": "nafs.html",
+    "ar": "النفس",
+    "en": "The self",
+    "ax": "character",
+    "p": "akhlaq",
+    "k": "النفس الأنفس نفسه أنفسكم النفس الأمارة بالسوء النفس اللوامة النفس المطمئنة ونفس وما سواها فألهمها فجورها وتقواها قد أفلح من زكاها وقد خاب من دساها التزكية تزكية النفس ونهى النفس عن الهوى الهوى شح النفس ومن يوق شح نفسه سولت لكم أنفسكم ظلموا أنفسهم كانوا أنفسهم يظلمون لا يكلف الله نفسا إلا وسعها كل نفس بما كسبت رهينة من نفس واحدة كل نفس ذائقة الموت الروح soul self nafs ego purification desire",
+    "d": [
+      "قد أفلح من زكاها وقد خاب من دساها",
+      "Successful is he who purifies it, and failed is he who buries it"
+    ]
+  },
+  {
+    "id": "dk",
+    "f": "dhikr.html",
+    "ar": "الذكر والحمد والتسبيح",
+    "en": "Remembrance and glorification",
+    "ax": "formula",
+    "p": "aqida",
+    "k": "ذكر الذكر اذكروا الله ذكرا كثيرا فاذكروني أذكركم الحمد لله الحمد لله رب العالمين حميد سبحان الله سبحانك سبحانه يسبح سبح التسبيح المسبحين التكبير وكبره تكبيرا ولتكبروا الله فكبر الله أكبر تبارك التنزيه تعالى عما يشركون عما يصفون الباقيات الصالحات لا إله إلا الله فهل من مدكر remembrance dhikr praise hamd glorification tasbih takbir tabarak transcendence",
+    "d": [
+      "اذكروا الله ذكرا كثيرا وسبحوه بكرة وأصيلا",
+      "Remember God much and glorify Him"
+    ]
+  },
+  {
+    "id": "il",
+    "f": "ilm.html",
+    "ar": "العلم والعقل والتفكر",
+    "en": "Knowledge, reason and reflection",
+    "ax": "formula",
+    "p": "aqida",
+    "k": "العلم العقل التفكر يعقلون تعقلون أفلا تعقلون لعلكم تعقلون لقوم يعقلون يتفكرون لقوم يتفكرون أولو الألباب يا أولي الألباب الفقه يفقهون لا يفقهون التدبر أفلا يتدبرون القرآن العلماء إنما يخشى الله من عباده العلماء هل يستوي الذين يعلمون الراسخون في العلم رب زدني علما اقرأ علم بالقلم الظن ولا تقف ما ليس لك به علم knowledge reason intellect reflection understanding scholars",
+    "d": [
+      "قل هل يستوي الذين يعلمون والذين لا يعلمون إنما يتذكر أولو الألباب",
+      "Say: are those who know equal to those who do not know? Only people of understanding take heed"
+    ]
+  },
+  {
+    "id": "dn",
+    "f": "dunya.html",
+    "ar": "الدنيا والآخرة والدرجات",
+    "en": "This world, the Hereafter and degrees",
+    "ax": "last",
+    "p": "aqida",
+    "k": "الدنيا الحياة الدنيا الآخرة الدار الآخرة العاجلة الأولى متاع الغرور لعب ولهو لهو ولعب خير وأبقى نصيبك من الدنيا عرض الدنيا حرث الآخرة يؤمنون بالآخرة يوقنون درجة درجات الدرجات العلى رفيع الدرجات نرفع درجات من نشاء ولكل درجات مما عملوا وللرجال عليهن درجة الدرك سنستدرجهم this world hereafter dunya akhira degree degrees rank",
+    "d": [
+      "وللآخرة أكبر درجات وأكبر تفضيلا",
+      "The Hereafter is greater in degrees"
+    ]
+  },
+  {
+    "id": "qd",
+    "f": "qadar.html",
+    "ar": "القضاء والقدر والمشيئة",
+    "en": "Decree, measure and will",
+    "ax": "creed",
+    "p": "aqida",
+    "k": "القضاء القدر قدر قضى المشيئة شاء إن شاء الله إلا أن يشاء الله ما شاء الله لو شاء الله وما تشاءون إلا أن يشاء الله كل شيء خلقناه بقدر قدرا مقدورا أمرا مقضيا كن فيكون ليلة القدر يبسط الرزق ويقدر على كل شيء قدير مقتدر في كتاب من قبل أن نبرأها ما كتب الله لنا يمحو الله ما يشاء ويثبت أم الكتاب فألهمها فجورها وتقواها والله خلقكم وما تعملون decree destiny predestination will qadar qada الإرادة الكونية الإرادة الشرعية يريد الله يفعل ما يريد فعال لما يريد يريد الله بكم اليسر المحبة والرضا will volition iradah",
+    "d": [
+      "إنا كل شيء خلقناه بقدر",
+      "We created everything in measure"
+    ]
+  },
+  {
+    "id": "ft",
+    "f": "fitna.html",
+    "ar": "الابتلاء والفتنة",
+    "en": "Trial and testing",
+    "ax": "creed",
+    "p": "aqida",
+    "k": "الابتلاء البلاء ابتلى ولنبلونكم ليبلوكم أيكم أحسن عملا الفتنة فتنة يفتنون فتناك فتونا أحسب الناس أن يتركوا والفتنة أشد من القتل حتى لا تكون فتنة إنما أموالكم وأولادكم فتنة بالشر والخير فتنة التمحيص وليمحص الله الذين آمنوا البلاء المبين بلاء حسنا المحنة والمنحة trial test testing affliction temptation fitnah tribulation",
+    "d": [
+      "أحسب الناس أن يتركوا أن يقولوا آمنا وهم لا يفتنون",
+      "Do people think they will be left to say 'we believe' and not be tested?"
+    ]
+  },
+  {
+    "id": "ji",
+    "f": "jinn.html",
+    "ar": "الجن والشياطين",
+    "en": "Jinn and devils",
+    "ax": "pillars",
+    "p": "aqida",
+    "k": "الجن الجان الجنة الشيطان الشياطين إبليس العفريت المارد القرين الوسواس الخناس وسوس نزغ همزات الشياطين خطوات الشيطان عدو مبين مارج من نار نار السموم استرق السمع شهاب رصدا نفر من الجن قرآنا عجبا معشر الجن والإنس يتخبطه الشيطان من المس مجنون رءوس الشياطين استعاذة أعوذ jinn devils satan iblis shaytan whisper",
+    "d": [
+      "وما خلقت الجن والإنس إلا ليعبدون",
+      "I did not create jinn and humans except to worship Me"
+    ]
+  },
+  {
+    "id": "lt",
+    "f": "latayif.html",
+    "ar": "اللطائف العددية",
+    "en": "Numerical observations",
+    "ax": "story",
+    "p": "manhaj",
+    "k": "لطائف عددية إعجاز عددي عد الآي آدم عيسى نوح 71 إبراهيم 69 الكهف 309 منتصف المصحف وليتلطف numerical miracle numbers",
+    "d": [
+      "عرض وتحقق بمنهج معلن",
+      "Presented and checked"
+    ]
+  },
+  {
+    "id": "am",
+    "f": "amthal.html",
+    "ar": "الأمثال",
+    "en": "Parables",
+    "ax": "story",
+    "p": "qasas",
+    "k": "مثل أمثال",
+    "d": [
+      "24 مثلاً",
+      "Parables"
+    ]
+  }
 ];
 window.TLINKS=[
-  ["kh", "rb", "التدرج في التحريم", "gradual prohibition"],
-  ["rb", "jh", "التدرج", "gradualism"],
-  ["sb", "tq", "الأنعام 153: ذلكم وصاكم به لعلكم تتقون", "Al-An'am 153"],
-  ["sb", "jh", "الوفاء بالعهد (التوبة 4)", "treaties (At-Tawbah 4)"],
-  ["sb", "yh", "إن الله يحب المتقين (الوافين)", "God loves the faithful"],
-  ["rb", "tq", "اتقوا الله وذروا ما بقي من الربا", "fear God, leave riba"],
-  ["kh", "tq", "المائدة 93: ثم اتقوا وأحسنوا", "Al-Ma'idah 93"],
-  ["jh", "ly", "إن الله لا يحب المعتدين", "God does not love aggressors"],
-  ["rb", "ly", "لا يحب كل كفار أثيم (البقرة 276)", "sinful ingrate (2:276)"],
-  ["yh", "ly", "أزواج متقابلة", "opposite pairs"],
-  ["tq", "yh", "ثمرة التقوى", "fruit of taqwa"],
-  ["kh", "yh", "المحسنين", "doers of good"],
-  ["tq", "sr", "يوسف 90: من يتق ويصبر", "Yusuf 90"],
-  ["sr", "yh", "يحب الصابرين، أجر المحسنين", "loves the patient"],
-  ["sr", "jh", "الأنفال 46: إن الله مع الصابرين", "Al-Anfal 46"],
-  ["nz", "sb", "المائدة 48: مصدقاً ومهيمناً", "Al-Ma'idah 48"],
-  ["sr", "sh", "صبّار شكور (4 مواضع)", "patient and grateful"],
-  ["tq", "sh", "آل عمران 123: فاتقوا الله لعلكم تشكرون", "3:123"],
-  ["sh", "jh", "بدر: لعلكم تشكرون", "Badr"],
-  ["sr", "ih", "يوسف 90: أجر المحسنين", "Yusuf 90"],
-  ["sh", "ih", "الشكر من الإحسان", "gratitude"],
-  ["tq", "ih", "النحل 128", "16:128"],
-  ["kh", "ih", "المائدة 93: ثم اتقوا وأحسنوا", "5:93"],
-  ["ih", "yh", "إن الله يحب المحسنين", "loves the good-doers"],
-  ["kh", "sl", "النساء 43: لا تقربوا الصلاة وأنتم سكارى", "4:43"],
-  ["sr", "sl", "استعينوا بالصبر والصلاة", "2:45"],
-  ["jh", "sl", "صلاة الخوف", "4:102"],
-  ["ih", "sl", "أن تعبد الله كأنك تراه", "ihsan in worship"],
-  ["sl", "zk", "أقيموا الصلاة وآتوا الزكاة", "prayer and zakat"],
-  ["rb", "zk", "البقرة 276: يمحق الله الربا ويربي الصدقات", "2:276"],
-  ["zk", "ih", "الإنفاق فوق الحق المفروض", "beyond the due"],
-  ["sy", "tq", "البقرة 183: لعلكم تتقون", "2:183"],
-  ["sy", "sh", "البقرة 185: ولعلكم تشكرون", "2:185"],
-  ["sy", "nz", "البقرة 185: أنزل فيه القرآن", "2:185"],
-  ["sl", "sy", "العبادات", "worship"],
-  ["mu", "sb", "ميثاق بني إسرائيل", "covenant"],
-  ["mu", "nz", "الأعراف 145: الألواح", "tablets"],
-  ["mu", "sr", "الأعراف 137: بما صبروا", "7:137"],
-  ["mu", "ih", "القصص 14: نجزي المحسنين", "28:14"],
-  ["mu", "sh", "البقرة 52: لعلكم تشكرون", "2:52"],
-  ["am", "zk", "البقرة 261: حبة أنبتت سبع سنابل", "2:261"],
-  ["am", "sh", "النحل 112: فكفرت بأنعم الله", "16:112"],
-  ["am", "mu", "التحريم 11: امرأة فرعون", "66:11"],
-  ["am", "sb", "الجمعة 5: حُمّلوا التوراة", "62:5"],
-  ["am", "nz", "الحشر 21: لو أنزلنا هذا القرآن على جبل", "59:21"],
-  ["tw", "tq", "البقرة 21", "2:21"],
-  ["tw", "ih", "الإسراء 23", "17:23"],
-  ["tw", "sh", "البقرة 172", "2:172"],
-  ["tw", "sl", "طه 14", "20:14"],
-  ["tw", "am", "الحج 73", "22:73"],
-  ["tw", "sb", "الأنعام 151", "6:151"],
-  ["tw", "mu", "دعوة الأنبياء", "prophets' call"],
-  ["jn", "tv", "آل عمران 133: أعدت للمتقين", "3:133"],
-  ["jn", "sr", "الإنسان 12: وجزاهم بما صبروا", "76:12"],
-  ["jn", "ih", "يونس 26: للذين أحسنوا الحسنى", "10:26"],
-  ["jn", "nr", "الأعراف 44 و50: نداء الفريقين", "7:44, 7:50"],
-  ["nr", "tw", "المائدة 72: من يشرك... ومأواه النار", "5:72"],
-  ["nr", "sl", "المدثر 43: لم نك من المصلين", "74:43"],
-  ["nr", "zk", "المدثر 44: ولم نك نطعم المسكين", "74:44"],
-  ["nr", "rb", "البقرة 275: فأولئك أصحاب النار", "2:275"],
-  ["hd", "tv", "البقرة 2: هدى للمتقين", "2:2"],
-  ["hd", "jh", "العنكبوت 69: لنهدينهم سبلنا", "29:69"],
-  ["hd", "jn", "الأعراف 43: الحمد لله الذي هدانا لهذا", "7:43"],
-  ["hd", "dl", "الفاتحة 6-7: اهدنا... ولا الضالين", "1:6-7"],
-  ["dl", "tw", "النساء 116: ومن يشرك بالله فقد ضل", "4:116"],
-  ["dl", "mu", "طه 79: وأضل فرعون قومه وما هدى", "20:79"],
-  ["dl", "am", "البقرة 26: يضل به كثيراً ويهدي به كثيراً", "2:26"],
-  ["dl", "ly", "لا يهدي / لا يحب", "does not guide / love"],
-  ["im", "tw", "البقرة 285: كل آمن بالله وملائكته وكتبه ورسله", "2:285"],
-  ["im", "nz", "البقرة 4: يؤمنون بما أنزل إليك", "2:4"],
-  ["im", "sl", "الأنفال 2-3: إنما المؤمنون... يقيمون الصلاة", "8:2-3"],
-  ["im", "kf", "114 آية تجمع المادتين", "114 verses share both roots"],
-  ["kf", "sh", "إبراهيم 7: لئن شكرتم... ولئن كفرتم", "14:7"],
-  ["kf", "nr", "البقرة 24: أعدت للكافرين", "2:24"],
-  ["kf", "ly", "آل عمران 32: لا يحب الكافرين", "3:32"],
-  ["kf", "dl", "البقرة 108: ومن يتبدل الكفر بالإيمان فقد ضل", "2:108"],
-  ["tb", "is", "هود 3 و52 و61 و90: استغفروا ربكم ثم توبوا إليه", "11:3, 52, 61, 90"],
-  ["tb", "jn", "البقرة 37: فتاب عليه (آدم)", "2:37"],
-  ["tb", "rb", "البقرة 279: وإن تبتم فلكم رؤوس أموالكم", "2:279"],
-  ["tb", "yh", "البقرة 222: إن الله يحب التوابين", "2:222"],
-  ["is", "tw", "محمد 19: فاعلم أنه لا إله إلا الله واستغفر لذنبك", "47:19"],
-  ["is", "jn", "آل عمران 133: وسارعوا إلى مغفرة من ربكم وجنة", "3:133"],
-  ["is", "nr", "الأنفال 33: وما كان الله معذبهم وهم يستغفرون", "8:33"],
-  ["is", "kf", "الغفر والكفر: كلاهما ستر", "both mean covering"],
-  ["hj", "tw", "الحج 26: أن لا تشرك بي شيئاً وطهر بيتي", "22:26"],
-  ["hj", "tv", "الحج 37: ولكن يناله التقوى منكم", "22:37"],
-  ["hj", "sy", "البقرة 189: مواقيت للناس والحج", "2:189"],
-  ["hj", "is", "البقرة 199: ثم أفيضوا... واستغفروا الله", "2:199"],
-  ["hj", "tb", "البقرة 128: وأرنا مناسكنا وتب علينا", "2:128"],
-  ["ik", "tw", "الزمر 3: ألا لله الدين الخالص", "39:3"],
-  ["ik", "sl", "البينة 5: مخلصين له الدين... ويقيموا الصلاة", "98:5"],
-  ["ik", "kf", "لقمان 32: دعوا الله مخلصين... كل ختار كفور", "31:32"],
-  ["ik", "tb", "النساء 146: تابوا... وأخلصوا دينهم لله", "4:146"],
-  ["ik", "hj", "البقرة 139، الحج 31: حنفاء لله", "2:139, 22:31"],
-  ["ml", "im", "البقرة 285: كل آمن بالله وملائكته", "2:285"],
-  ["ml", "nz", "الشعراء 193: نزل به الروح الأمين", "26:193"],
-  ["ml", "jh", "الأنفال 9: ممدكم بألف من الملائكة", "8:9"],
-  ["ml", "is", "غافر 7: ويستغفرون للذين آمنوا", "40:7"],
-  ["kt", "nz", "آل عمران 3-4: نزّل عليك الكتاب... وأنزل التوراة والإنجيل", "3:3-4"],
-  ["kt", "sb", "المائدة 48: مصدقاً لما بين يديه ومهيمناً عليه", "5:48"],
-  ["kt", "sy", "البقرة 183: كتب عليكم الصيام", "2:183"],
-  ["kt", "ml", "الانفطار 11: كراماً كاتبين", "82:11"],
-  ["rs", "tw", "الأنبياء 25: إلا نوحي إليه أنه لا إله إلا أنا", "21:25"],
-  ["rs", "im", "البقرة 285: لا نفرق بين أحد من رسله", "2:285"],
-  ["rs", "tv", "الشعراء: إني لكم رسول أمين فاتقوا الله وأطيعون", "26:107-179"],
-  ["rs", "mu", "موسى أكثر الأنبياء ذكراً (136)", "136 mentions"],
-  ["rs", "ml", "الحج 75: يصطفي من الملائكة رسلاً ومن الناس", "22:75"],
-  ["ak", "jn", "النازعات 41: فإن الجنة هي المأوى", "79:41"],
-  ["ak", "nr", "القارعة 9: فأمه هاوية", "101:9"],
-  ["ak", "im", "19 آية: يؤمن بالله واليوم الآخر", "19 verses"],
-  ["ak", "rb", "البقرة 281: واتقوا يوماً ترجعون فيه إلى الله", "2:281"],
-  ["ak", "kt", "الإسراء 14: اقرأ كتابك", "17:14"],
-  ["tv", "tq", "الصيغة: لعلكم تتقون", "the formula"],
-  ["tv", "nr", "البقرة 24: فاتقوا النار", "2:24"],
-  ["tv", "ak", "واتقوا يوماً: 3 آيات", "3 verses"],
-  ["tv", "im", "آمنوا واتقوا: 10 آيات", "10 verses"],
-  ["tv", "is", "الذاريات 18: وبالأسحار هم يستغفرون", "51:18"],
-  ["tv", "ik", "المائدة 27: إنما يتقبل الله من المتقين", "5:27"],
-  ["tv", "sr", "تصبروا وتتقوا: 5 آيات", "5 verses"],
-  ["tv", "ih", "اتقوا وأحسنوا: 4 آيات", "4 verses"],
-  ["tv", "yh", "إن الله يحب المتقين", "3:76; 9:4, 7"],
-  ["tv", "rb", "البقرة 278: اتقوا الله وذروا ما بقي من الربا", "2:278"],
-  ["tv", "jh", "إن الله مع المتقين", "2:194; 9:36, 123"],
-  ["tv", "zk", "الليل 17-18: الأتقى الذي يؤتي ماله", "92:17-18"],
-  ["tv", "ml", "غافر 7-9: وقهم السيئات", "40:7-9"],
-  ["as", "tw", "الواحد القهار، الحي القيوم", "the One, the Ever-Living"],
-  ["as", "ik", "الأحد الصمد", "112:1-2"],
-  ["as", "tb", "التواب الرحيم: 9 آيات مدنية", "9 Medinan verses"],
-  ["as", "is", "غفور رحيم: 71 مرة", "71 times"],
-  ["as", "sh", "الشكور، الشاكر", "35:30; 2:158"],
-  ["as", "yh", "الغفور الودود", "85:14"],
-  ["as", "hd", "وكفى بربك هادياً ونصيراً", "25:31"],
-  ["as", "dl", "فماذا بعد الحق إلا الضلال", "10:32"],
-  ["as", "kt", "المهيمن؛ من لدن حكيم خبير", "59:23; 11:1"],
-  ["as", "nz", "تنزيل من العزيز الحكيم", "39:1"],
-  ["as", "rs", "العزيز الرحيم: لازمة الشعراء", "26: refrain"],
-  ["as", "ak", "مالك يوم الدين، الخلاق العليم", "1:4; 36:81"],
-  ["as", "zk", "غني حميد، شكور حليم", "2:267; 64:17"],
-  ["as", "jh", "إن الله لقوي عزيز", "22:40"],
-  ["as", "am", "الله نور السماوات والأرض", "24:35"],
-  ["as", "tv", "أهل التقوى وأهل المغفرة", "74:56"],
-  ["nf", "im", "البقرة 8: وما هم بمؤمنين", "2:8"],
-  ["nf", "kf", "المنافقين والكافرين: 6 آيات", "6 verses"],
-  ["nf", "dl", "البقرة 16: اشتروا الضلالة بالهدى", "2:16"],
-  ["nf", "ik", "يراءون الناس؛ وأخلصوا دينهم لله", "4:142, 146"],
-  ["nf", "rs", "المنافقون 1: نشهد إنك لرسول الله", "63:1"],
-  ["nf", "ak", "الحديد 13: انظرونا نقتبس من نوركم", "57:13"],
-  ["nf", "nr", "النساء 145: الدرك الأسفل من النار", "4:145"],
-  ["nf", "tb", "النساء 146: إلا الذين تابوا", "4:146"],
-  ["nf", "is", "التوبة 80: استغفر لهم أو لا تستغفر لهم", "9:80"],
-  ["nf", "tv", "مسجد ضرار ومسجد التقوى", "9:107-108"],
-  ["nf", "sl", "قاموا كسالى", "4:142"],
-  ["nf", "zk", "المنافقون 7: لا تنفقوا", "63:7"],
-  ["nf", "jh", "أحد والأحزاب وتبوك", "3:167; 33:12; 9:81"],
-  ["nf", "am", "مثل الذي استوقد ناراً", "2:17"],
-  ["ys", "mu", "غافر 34: ولقد جاءكم يوسف من قبل", "40:34"],
-  ["ys", "rs", "يوسف 108: قل هذه سبيلي", "12:108"],
-  ["ys", "kt", "يوسف 111: تصديق الذي بين يديه", "12:111"],
-  ["ys", "tw", "يوسف 39: الله الواحد القهار", "12:39"],
-  ["ys", "ik", "يوسف 24: من عبادنا المخلَصين", "12:24"],
-  ["ys", "dl", "يوسف 8: إن أبانا لفي ضلال مبين", "12:8"],
-  ["ys", "kf", "يوسف 87: لا ييأس من روح الله إلا القوم الكافرون", "12:87"],
-  ["ys", "as", "عليم حكيم: 3 مرات", "12:6, 83, 100"],
-  ["ys", "sr", "فصبر جميل: مرتان", "12:18, 83"],
-  ["ys", "tv", "يوسف 90: إنه من يتق ويصبر", "12:90"],
-  ["ys", "ih", "المحسنين: 5 مرات", "5 times"],
-  ["ys", "is", "يوسف 97: استغفر لنا ذنوبنا", "12:97"],
-  ["ys", "tb", "إنا كنا خاطئين", "12:91, 97"],
-  ["ys", "am", "لقد كان في قصصهم عبرة", "12:111"],
-  ["nh", "rs", "الشعراء 105: كذبت قوم نوح المرسلين", "26:105"],
-  ["nh", "kt", "الحديد 26: النبوة والكتاب", "57:26"],
-  ["nh", "tw", "الأعراف 59: اعبدوا الله ما لكم من إله غيره", "7:59"],
-  ["nh", "dl", "نوح 24: ولا تزد الظالمين إلا ضلالاً", "71:24"],
-  ["nh", "kf", "القمر 14: جزاء لمن كان كفر", "54:14"],
-  ["nh", "as", "هود 41: إن ربي لغفور رحيم", "11:41"],
-  ["nh", "ak", "نوح 18: ثم يعيدكم فيها", "71:18"],
-  ["nh", "is", "نوح 10: استغفروا ربكم إنه كان غفاراً", "71:10"],
-  ["nh", "tv", "هود 49: إن العاقبة للمتقين", "11:49"],
-  ["nh", "sh", "الإسراء 3: إنه كان عبداً شكوراً", "17:3"],
-  ["nh", "ih", "الصافات 80: كذلك نجزي المحسنين", "37:80"],
-  ["nh", "am", "التحريم 10: امرأة نوح", "66:10"],
-  ["nh", "ib", "الصافات 83: وإن من شيعته لإبراهيم", "37:83"],
-  ["nh", "lt", "71 و28 و43", "71, 28, 43"],
-  ["ib", "hj", "البقرة 127: وإذ يرفع إبراهيم القواعد", "2:127"],
-  ["ib", "tw", "الأنعام 79: وجهت وجهي", "6:79"],
-  ["ib", "ik", "ملة إبراهيم حنيفاً", "2:135"],
-  ["ib", "hd", "الشعراء 78: فهو يهدين", "26:78"],
-  ["ib", "im", "البقرة 260: ليطمئن قلبي", "2:260"],
-  ["ib", "ml", "الضيف المكرمون", "11:69; 51:24"],
-  ["ib", "kt", "صحف إبراهيم وموسى", "87:19"],
-  ["ib", "rs", "البقرة 129: وابعث فيهم رسولاً", "2:129"],
-  ["ib", "nr", "الأنبياء 69: برداً وسلاماً", "21:69"],
-  ["ib", "ak", "البقرة 260: كيف تحيي الموتى", "2:260"],
-  ["ib", "is", "التوبة 114: إلا عن موعدة", "9:114"],
-  ["ib", "sr", "الصافات 102: من الصابرين", "37:102"],
-  ["ib", "ys", "يوسف 38: ملة آبائي إبراهيم", "12:38"],
-  ["ib", "lt", "الشعراء 69 = 69 مرة", "26:69"],
-  ["lt", "mu", "القصص 3: نتلو عليك من نبإ موسى", "28:3"],
-  ["lt", "ys", "لطائف نصية وعددية", "patterns"],
-  ["lt", "rs", "أعداد ذكر الأنبياء", "name counts"],
-  ["mw", "tv", "النساء 1: اتقوا الله الذي تساءلون به والأرحام", "4:1"],
-  ["mw", "ih", "الأنعام 152: إلا بالتي هي أحسن", "6:152"],
-  ["mw", "kt", "كُتب عليكم الوصية؛ فاكتبوه", "2:180; 2:282"],
-  ["mw", "rs", "النمل 16: وورث سليمان داوود", "27:16"],
-  ["mw", "as", "عليم حكيم؛ عليم حليم؛ الحسيب", "4:11, 12; 4:6"],
-  ["mw", "dl", "النساء 176: يبين الله لكم أن تضلوا", "4:176"],
-  ["mw", "jn", "المؤمنون 11: الذين يرثون الفردوس", "23:11"],
-  ["mw", "nr", "النساء 10: يأكلون في بطونهم ناراً", "4:10"],
-  ["mw", "zk", "فريضة من الله؛ والغارمين", "4:11; 9:60"],
-  ["mw", "sy", "تلك حدود الله", "2:187; 4:13"],
-  ["mw", "rb", "البقرة 280: فنظرة إلى ميسرة", "2:280"],
-  ["mw", "kh", "التدرج في التشريع", "gradual legislation"],
-  ["mw", "mu", "الأعراف 137: وأورثنا القوم الذين كانوا يستضعفون", "7:137"],
-  ["rh", "as", "الإسراء 110: قل ادعوا الله أو ادعوا الرحمن", "17:110"],
-  ["rh", "tw", "مريم 92: وما ينبغي للرحمن أن يتخذ ولداً", "19:92"],
-  ["rh", "kf", "الرعد 30: وهم يكفرون بالرحمن", "13:30"],
-  ["rh", "dl", "الحجر 56: ومن يقنط من رحمة ربه إلا الضالون", "15:56"],
-  ["rh", "ml", "الزخرف 19: عباد الرحمن إناثاً", "43:19"],
-  ["rh", "rs", "الأنبياء 107: رحمة للعالمين", "21:107"],
-  ["rh", "nz", "الرحمن 1-2: الرحمن علم القرآن", "55:1-2"],
-  ["rh", "ak", "طه 108: وخشعت الأصوات للرحمن", "20:108"],
-  ["rh", "tb", "التواب الرحيم: 9 آيات مدنية", "9 Medinan"],
-  ["rh", "is", "غفور رحيم: 71 مرة", "71 times"],
-  ["rh", "ih", "الأعراف 56: إن رحمت الله قريب من المحسنين", "7:56"],
-  ["rh", "tv", "الأعراف 156: فسأكتبها للذين يتقون", "7:156"],
-  ["rh", "sy", "مريم 26: إني نذرت للرحمن صوماً", "19:26"],
-  ["rh", "ib", "مريم 44: إن الشيطان كان للرحمن عصياً", "19:44"],
-  ["rh", "mw", "الأنفال 75: وأولو الأرحام", "8:75"],
-  ["rh", "lt", "114: البسملة والرحمة والرحيم", "114 three times"],
-  ["zw", "tl", "النساء 21: وأخذن منكم ميثاقاً غليظاً", "4:21"],
-  ["zw", "mw", "النساء 12: ولكم نصف ما ترك أزواجكم", "4:12"],
-  ["zw", "rh", "الروم 21: مودة ورحمة", "30:21"],
-  ["zw", "as", "النساء 35: عليماً خبيراً", "4:35"],
-  ["zw", "im", "البقرة 221: ولأمة مؤمنة خير من مشركة", "2:221"],
-  ["zw", "kt", "المائدة 5: والمحصنات من الذين أوتوا الكتاب", "5:5"],
-  ["zw", "rs", "الرعد 38: وجعلنا لهم أزواجاً وذرية", "13:38"],
-  ["zw", "ml", "مثنى وثلاث ورباع", "4:3; 35:1"],
-  ["zw", "jn", "يس 56: هم وأزواجهم في ظلال", "36:56"],
-  ["zw", "ih", "النساء 128: وإن تحسنوا وتتقوا", "4:128"],
-  ["zw", "sr", "النساء 19: فإن كرهتموهن فعسى", "4:19"],
-  ["zw", "sy", "البقرة 187: هن لباس لكم", "2:187"],
-  ["zw", "zk", "النساء 4: وآتوا النساء صدقاتهن", "4:4"],
-  ["zw", "sb", "ميثاقاً غليظاً", "4:21; 4:154"],
-  ["zw", "mu", "القصص 27: إني أريد أن أنكحك", "28:27"],
-  ["zw", "am", "التحريم 10-11", "66:10-11"],
-  ["tl", "mw", "البقرة 233: وعلى الوارث مثل ذلك", "2:233"],
-  ["tl", "as", "البقرة 226-227: غفور رحيم، سميع عليم", "2:226-227"],
-  ["tl", "ak", "الحج 2: تذهل كل مرضعة", "22:2"],
-  ["tl", "ih", "البقرة 229: أو تسريح بإحسان", "2:229"],
-  ["tl", "tv", "الطلاق 2: ومن يتق الله يجعل له مخرجاً", "65:2"],
-  ["tl", "sl", "البقرة 238: حافظوا على الصلوات", "2:238"],
-  ["tl", "sy", "المجادلة 4: فصيام شهرين متتابعين", "58:4"],
-  ["tl", "zk", "الطلاق 7: لينفق ذو سعة من سعته", "65:7"],
-  ["tl", "mu", "القصص 7: أن أرضعيه", "28:7"],
-  ["tl", "lt", "30 − 24 = 6", "46:15"],
-  ["ka", "mu", "الكهف 60-82: موسى والعبد الصالح", "18:60-82"],
-  ["ka", "nh", "سآوي إلى جبل؛ أصحاب السفينة", "11:43; 29:15"],
-  ["ka", "ib", "ستجدني إن شاء الله؛ وأعتزلكم", "18:69; 37:102; 19:48"],
-  ["ka", "ys", "التأويل", "18:78, 82"],
-  ["ka", "lt", "309 ومنتصف المصحف", "18:25; 18:19"],
-  ["ka", "am", "واضرب لهم مثلاً رجلين", "18:32, 45"],
-  ["ka", "jn", "جنتان في الدنيا وجنات الفردوس", "18:32; 18:107"],
-  ["ka", "ak", "ليعلموا أن وعد الله حق", "18:21"],
-  ["ka", "tw", "ولا أشرك بربي أحداً", "18:38"],
-  ["ka", "ik", "ولا يشرك بعبادة ربه أحداً", "18:110"],
-  ["ka", "hd", "وزدناهم هدى", "18:13"],
-  ["ka", "dl", "من يهد الله فهو المهتد", "18:17"],
-  ["ka", "kf", "أكفرت بالذي خلقك من تراب", "18:37"],
-  ["ka", "rh", "الرحمة في ثلاث قصص", "18:10, 65, 98"],
-  ["ka", "sr", "إنك لن تستطيع معي صبراً", "18:67"],
-  ["ka", "mw", "وكان تحته كنز لهما", "18:82"],
-  ["ka", "ml", "إلا إبليس كان من الجن", "18:50"],
-  ["ka", "rs", "قل إنما أنا بشر مثلكم", "18:110"],
-  ["ka", "im", "فتية آمنوا بربهم", "18:13"],
-  ["ka", "nz", "أنزل على عبده الكتاب", "18:1"],
-  ["ka", "kt", "ووضع الكتاب", "18:49"],
-  ["ka", "is", "ويستغفروا ربهم", "18:55"],
-  ["ka", "ih", "إنا لا نضيع أجر من أحسن عملاً", "18:30"],
-  ["ka", "nr", "أحاط بهم سرادقها", "18:29"],
-  ["ad", "ia", "آل عمران 59: كمثل آدم", "3:59"],
-  ["ad", "lt", "آدم 25 وعيسى 25", "25 and 25"],
-  ["ad", "ml", "اسجدوا لآدم", "2:34"],
-  ["ad", "tb", "فتلقى آدم من ربه كلمات فتاب عليه", "2:37"],
-  ["ad", "is", "ربنا ظلمنا أنفسنا", "7:23"],
-  ["ad", "tv", "ولباس التقوى ذلك خير", "7:26"],
-  ["ad", "jn", "اسكن أنت وزوجك الجنة", "2:35"],
-  ["ad", "nr", "خلقتني من نار", "7:12"],
-  ["ad", "hd", "فمن تبع هداي", "2:38"],
-  ["ad", "dl", "فلا يضل ولا يشقى؛ فبما أغويتني", "20:123; 7:16"],
-  ["ad", "tw", "ألست بربكم قالوا بلى", "7:172"],
-  ["ad", "sb", "ألم أعهد إليكم يا بني آدم", "36:60"],
-  ["ad", "nh", "اصطفى آدم ونوحاً؛ اهبط بسلام", "3:33; 11:48"],
-  ["ad", "ka", "كان من الجن؛ بغير نفس", "18:50; 18:74"],
-  ["ad", "zw", "اسكن أنت وزوجك", "2:35"],
-  ["ad", "rs", "خليفة: آدم وداود", "2:30; 38:26"],
-  ["ad", "ib", "اجتباه ربه", "16:121; 20:122"],
-  ["ad", "kt", "كتبنا على بني إسرائيل", "5:32"],
-  ["ad", "ly", "إنه لا يحب المسرفين", "7:31"],
-  ["ad", "sh", "ولا تجد أكثرهم شاكرين", "7:17"],
-  ["ia", "lt", "عيسى 25 وآدم 25", "25 and 25"],
-  ["ia", "ka", "لقد جئت شيئاً؛ آويناهما", "19:27; 23:50"],
-  ["ia", "am", "ومريم ابنت عمران", "66:12"],
-  ["ia", "rh", "إني أعوذ بالرحمن منك", "19:18"],
-  ["ia", "as", "فإنك أنت العزيز الحكيم", "5:118"],
-  ["ia", "kt", "وآتيناه الإنجيل", "5:46"],
-  ["ia", "rs", "ما المسيح ابن مريم إلا رسول", "5:75"],
-  ["ia", "ml", "وأيدناه بروح القدس", "2:87"],
-  ["ia", "tw", "إن الله ربي وربكم فاعبدوه", "3:51"],
-  ["ia", "kf", "لقد كفر الذين قالوا", "5:17, 72-73"],
-  ["ia", "ak", "وإنه لعلم للساعة", "43:61"],
-  ["ia", "tv", "فاتقوا الله وأطيعون", "3:50"],
-  ["ia", "sy", "إني نذرت للرحمن صوماً", "19:26"],
-  ["ia", "sl", "اقنتي لربك واسجدي واركعي", "3:43"],
-  ["ia", "hd", "فيه هدى ونور", "5:46"],
-  ["ia", "jn", "هذا يوم ينفع الصادقين صدقهم", "5:119"],
-  ["ia", "ik", "لم يلد ولم يولد؛ ما كان لله أن يتخذ من ولد", "112:3; 19:35"],
-  ["ia", "sb", "ولأحل لكم بعض الذي حرم عليكم", "3:50"],
-  ["ia", "mu", "مصدقاً لما بين يدي من التوراة", "3:50; 61:6"],
-  ["my", "ia", "ابن مريم", "son of Mary"],
-  ["my", "lt", "مريم 34؛ ابن مريم 23", "34; 23"],
-  ["my", "am", "ومريم ابنت عمران", "66:12"],
-  ["my", "mu", "لا تحزني؛ يكفله؛ قرة العين", "28:7, 12, 13"],
-  ["my", "ad", "اصطفى آدم... وآل عمران", "3:33"],
-  ["my", "ys", "امرأة العزيز", "12:51"],
-  ["my", "ib", "امرأته قائمة فضحكت", "11:71"],
-  ["my", "rh", "إني أعوذ بالرحمن منك", "19:18"],
-  ["my", "sl", "اقنتي لربك واسجدي واركعي", "3:43"],
-  ["my", "sy", "إني نذرت للرحمن صوماً", "19:26"],
-  ["my", "tl", "المجادلة؛ أن أرضعيه", "58:1; 28:7"],
-  ["my", "zw", "ابنتا صاحب مدين", "28:23-27"],
-  ["my", "kt", "وصدقت بكلمات ربها وكتبه", "66:12"],
-  ["my", "ml", "إذ قالت الملائكة يا مريم", "3:42"],
-  ["my", "nh", "امرأة نوح", "66:10"],
-  ["my", "jn", "رب ابن لي عندك بيتاً في الجنة", "66:11"],
-  ["my", "sr", "ألا تحزني", "19:24"],
-  ["my", "as", "إنك أنت السميع العليم", "3:35"],
-  ["aq", "nh", "قوم نوح أو قوم هود أو قوم صالح", "11:89"],
-  ["aq", "ib", "فآمن له لوط؛ ضيف إبراهيم", "29:26; 11:69-76"],
-  ["aq", "mu", "ولما توجه تلقاء مدين", "28:22"],
-  ["aq", "my", "امرأت نوح وامرأت لوط", "66:10"],
-  ["aq", "ka", "أو آوي إلى ركن شديد", "11:80"],
-  ["aq", "rs", "إني لكم رسول أمين", "26:125"],
-  ["aq", "tv", "ألا تتقون", "26:124"],
-  ["aq", "is", "استغفروا ربكم ثم توبوا إليه", "11:52, 61, 90"],
-  ["aq", "tb", "ثم توبوا إليه", "11:52, 61, 90"],
-  ["aq", "sh", "فاذكروا آلاء الله", "7:69, 74"],
-  ["aq", "as", "قريب مجيب؛ رحيم ودود؛ العزيز الرحيم", "11:61, 90; 26:140"],
-  ["aq", "ly", "ولا تعثوا في الأرض مفسدين", "26:183"],
-  ["aq", "jn", "في جنات وعيون", "26:134, 147"],
-  ["aq", "kf", "ألا إن عاداً كفروا ربهم", "11:60"],
-  ["aq", "rb", "ولا تبخسوا الناس أشياءهم", "7:85"],
-  ["aq", "hd", "فهديناهم فاستحبوا العمى على الهدى", "41:17"],
-  ["aq", "tw", "اعبدوا الله ما لكم من إله غيره", "7:65"],
-  ["aq", "ad", "إني لكما لمن الناصحين", "7:21"],
-  ["aq", "ia", "ربي وربكم", "11:56"],
-  ["aq", "zw", "إني أريد أن أنكحك", "28:27"],
-  ["aq", "sl", "أصلاتك تأمرك", "11:87"],
-  ["aq", "rh", "برحمة منا", "11:58, 66, 94"],
-  ["aq", "mw", "وأوفوا الكيل والميزان", "6:152; 7:85"],
-  ["aq", "ak", "وإنكم لتمرون عليهم مصبحين", "37:137"],
-  ["ds", "ad", "إنا جعلناك خليفة في الأرض", "2:30; 38:26"],
-  ["ds", "mu", "التابوت؛ الصرح؛ أفرغ علينا صبراً", "2:248; 28:38; 7:126"],
-  ["ds", "ka", "زبر الحديد والقطر؛ ما مكني فيه ربي خير", "18:95-96; 34:10-12"],
-  ["ds", "my", "المحراب؛ ملكة سبأ", "38:21; 27:44"],
-  ["ds", "ys", "آتيناه حكماً وعلماً", "12:22; 21:79"],
-  ["ds", "aq", "بسطة؛ ولوطاً آتيناه حكماً وعلماً", "2:247; 7:69; 21:74"],
-  ["ds", "ib", "ما هذه التماثيل؛ ومن ذريته داوود وسليمان", "21:52; 34:13; 6:84"],
-  ["ds", "kt", "وآتينا داوود زبوراً", "4:163; 17:55; 21:105"],
-  ["ds", "rs", "ولقد فضلنا بعض النبيين على بعض", "17:55; 27:15"],
-  ["ds", "sh", "اعملوا آل داوود شكراً", "34:13; 27:19, 40"],
-  ["ds", "sr", "اصبر على ما يقولون واذكر عبدنا داوود", "38:17; 2:249-250"],
-  ["ds", "is", "فاستغفر ربه وخر راكعاً وأناب", "38:24, 35"],
-  ["ds", "tb", "إنه أواب؛ ثم أناب", "38:17, 30, 34"],
-  ["ds", "mw", "وورث سليمان داوود", "27:16"],
-  ["ds", "jh", "ولولا دفع الله الناس بعضهم ببعض", "2:246-251"],
-  ["ds", "as", "إنك أنت الوهاب", "38:35"],
-  ["ds", "rh", "إنه من سليمان وإنه بسم الله الرحمن الرحيم", "27:30"],
-  ["ds", "ml", "هاروت وماروت؛ تحمله الملائكة", "2:102, 248"],
-  ["ds", "kf", "ليبلوني أأشكر أم أكفر؛ وما كفر سليمان", "27:40; 2:102"],
-  ["ds", "dl", "ولا تتبع الهوى فيضلك عن سبيل الله", "38:26"],
-  ["ds", "tw", "رب العرش العظيم", "27:24-26"],
-  ["ds", "jn", "جنتان عن يمين وشمال؛ قوارير", "34:15; 76:15-16"],
-  ["ds", "ia", "على لسان داوود وعيسى ابن مريم", "5:78"],
-  ["ds", "sb", "لعن الذين كفروا من بني إسرائيل", "5:78"],
-  ["zy", "my", "كفلها زكريا؛ أنى لك هذا", "3:37"],
-  ["zy", "ia", "مصدقاً بكلمة من الله؛ وسلام عليه", "3:39; 19:15, 33"],
-  ["zy", "ib", "وهب لي على الكبر؛ سميع الدعاء؛ رحمت الله وبركاته", "14:39; 3:38; 11:73"],
-  ["zy", "nh", "إذ نادى من قبل فاستجبنا له", "21:76"],
-  ["zy", "ds", "رب هب لي؛ المحراب", "38:35; 38:21"],
-  ["zy", "mu", "فخذها بقوة؛ جباراً", "7:145; 28:19"],
-  ["zy", "aq", "ثلاثة أيام", "11:65"],
-  ["zy", "rs", "كل من الصالحين", "6:85"],
-  ["zy", "ml", "فنادته الملائكة", "3:39"],
-  ["zy", "mw", "يرثني ويرث من آل يعقوب؛ خير الوارثين", "19:6; 21:89"],
-  ["zy", "rh", "ذكر رحمت ربك عبده زكريا", "19:2"],
-  ["zy", "as", "سميع الدعاء؛ خير الوارثين", "3:38; 21:89"],
-  ["zy", "sl", "وهو قائم يصلي في المحراب", "3:39"],
-  ["zy", "tv", "وكان تقياً", "19:13"],
-  ["zy", "jn", "بكرة وعشياً؛ من كان تقياً", "19:62-63"],
-  ["zy", "is", "إني كنت من الظالمين", "21:87"],
-  ["zy", "im", "يسارعون في الخيرات", "21:90; 23:61"],
-  ["zy", "sb", "خذوا ما آتيناكم بقوة", "2:63"],
-  ["zy", "zk", "وحناناً من لدنا وزكاة", "19:13"],
-  ["zy", "ak", "ويوم يبعث حياً", "19:15"],
-  ["zy", "kt", "يا يحيى خذ الكتاب بقوة", "19:12"],
-  ["yn", "zy", "فاستجبنا له: سلسلة الأنبياء", "21:76-90"],
-  ["yn", "nh", "الفلك المشحون", "26:119; 37:140"],
-  ["yn", "mu", "وهو مليم؛ من الغم؛ إيمان فرعون", "51:40; 20:40; 10:90"],
-  ["yn", "ad", "اجتباه ربه", "20:122; 68:50"],
-  ["yn", "ib", "إني سقيم", "37:89"],
-  ["yn", "ys", "فهو كظيم", "12:84"],
-  ["yn", "ka", "نسيا حوتهما", "18:61"],
-  ["yn", "aq", "فلم يك ينفعهم إيمانهم", "40:85"],
-  ["yn", "rs", "وإن يونس لمن المرسلين", "37:139"],
-  ["yn", "tw", "لا إله إلا أنت", "21:87"],
-  ["yn", "is", "إني كنت من الظالمين", "21:87"],
-  ["yn", "tb", "إلا قوم يونس لما آمنوا", "10:98"],
-  ["yn", "sr", "فاصبر لحكم ربك ولا تكن كصاحب الحوت", "68:48"],
-  ["yn", "sb", "حيتانهم يوم سبتهم", "7:163"],
-  ["yn", "ak", "إلى يوم يبعثون", "37:144"],
-  ["yn", "im", "فلولا كانت قرية آمنت فنفعها إيمانها", "10:98"],
-  ["ay", "ib", "الذبيح؛ وهب لي على الكبر إسماعيل وإسحاق", "37:102; 14:39"],
-  ["ay", "mu", "هارون أخي؛ يا ابن أم", "20:30; 20:94"],
-  ["ay", "ys", "أرحم الراحمين", "12:64, 92"],
-  ["ay", "ds", "نعم العبد إنه أواب", "38:30, 44"],
-  ["ay", "zy", "فاستجبنا له: الأنبياء 83-90", "21:83-90"],
-  ["ay", "yn", "وتركنا عليه في الآخرين", "37:129"],
-  ["ay", "ia", "ورفعناه مكاناً علياً؛ بل رفعه الله إليه", "19:57; 4:158"],
-  ["ay", "my", "واذكر في الكتاب؛ يا أخت هارون", "19:54-56; 19:28"],
-  ["ay", "ka", "ستجدني إن شاء الله صابراً", "18:69"],
-  ["ay", "rs", "قوائم الأنبياء", "6:83-90"],
-  ["ay", "hj", "وإذ يرفع إبراهيم القواعد من البيت وإسماعيل", "2:127"],
-  ["ay", "sl", "وكان يأمر أهله بالصلاة", "19:55"],
-  ["ay", "zk", "وكان يأمر أهله بالصلاة والزكاة", "19:55"],
-  ["ay", "sr", "إنا وجدناه صابراً؛ كل من الصابرين", "38:44; 21:85"],
-  ["ay", "tw", "أتدعون بعلاً وتذرون أحسن الخالقين", "37:125"],
-  ["ay", "as", "وأنت أرحم الراحمين", "21:83"],
-  ["sq", "nf", "والله يشهد إن المنافقين لكاذبون", "63:1"],
-  ["sq", "im", "أولئك هم الصادقون", "49:15"],
-  ["sq", "tb", "وعلى الثلاثة الذين خلفوا؛ وكونوا مع الصادقين", "9:118-119"],
-  ["sq", "sr", "الصابرين والصادقين", "3:17; 33:35"],
-  ["sq", "tq", "أولئك الذين صدقوا وأولئك هم المتقون", "2:177; 39:33"],
-  ["sq", "kt", "مصدقا لما بين يديه", "3:3"],
-  ["sq", "rs", "إن كنت من الصادقين؛ كذبت قوم نوح المرسلين", "7:70; 26:105"],
-  ["sq", "ak", "هذا يوم ينفع الصادقين صدقهم", "5:119"],
-  ["sq", "zk", "إنما الصدقات للفقراء", "9:60"],
-  ["sq", "zw", "وآتوا النساء صدقاتهن نحلة", "4:4"],
-  ["sq", "tl", "اللعان: إنه لمن الصادقين", "24:6-9"],
-  ["sq", "ys", "بدم كذب؛ أيها الصديق", "12:18; 12:46"],
-  ["sq", "ib", "صديقا نبيا؛ قد صدقت الرؤيا", "19:41; 37:105"],
-  ["sq", "my", "وأمه صديقة؛ وصدقت بكلمات ربها", "5:75; 66:12"],
-  ["sq", "ia", "فنجعل لعنت الله على الكاذبين", "3:61"],
-  ["sq", "aq", "كذاب أشر؛ وعد غير مكذوب", "54:25; 11:65"],
-  ["sq", "ay", "صادق الوعد؛ صديقا نبيا", "19:54; 19:56"],
-  ["sq", "sl", "فلا صدق ولا صلى", "75:31"],
-  ["sq", "ds", "سننظر أصدقت أم كنت من الكاذبين", "27:27"],
-  ["sm", "tw", "جعل لكم الأرض فراشا... فلا تجعلوا لله أندادا", "2:22"],
-  ["sm", "as", "فاطر السماوات؛ الاسم من السمو", "6:14; 2:31"],
-  ["sm", "ml", "يتفطرن من فوقهن والملائكة يسبحون", "42:5"],
-  ["sm", "ak", "يحيي الأرض بعد موتها وكذلك تخرجون", "30:19"],
-  ["sm", "jn", "عرضها السماوات والأرض", "3:133"],
-  ["sm", "hd", "الله نور السماوات والأرض", "24:35"],
-  ["sm", "im", "لآيات لأولي الألباب", "3:190"],
-  ["sm", "is", "يرسل السماء عليكم مدرارا", "71:11"],
-  ["sm", "ad", "إني جاعل في الأرض خليفة", "2:30"],
-  ["sm", "nh", "يا أرض ابلعي ماءك ويا سماء أقلعي", "11:44"],
-  ["sm", "ib", "ملكوت السماوات والأرض", "6:75"],
-  ["sm", "mu", "فما بكت عليهم السماء والأرض؛ الأرض المقدسة", "44:29; 5:21"],
-  ["sm", "my", "تكاد السماوات يتفطرن منه", "19:90"],
-  ["sm", "aq", "أنشأكم من الأرض واستعمركم فيها", "11:61"],
-  ["sm", "lt", "سبع سماوات", "67:3"],
-  ["hs", "ih", "للذين أحسنوا الحسنى وزيادة", "10:26"],
-  ["hs", "tb", "يبدل الله سيئاتهم حسنات", "25:70"],
-  ["hs", "is", "ويعفو عن السيئات؛ لولا تستغفرون الله", "42:25; 27:46"],
-  ["hs", "sr", "ويدرءون بالحسنة السيئة... بما صبروا", "13:22; 28:54; 41:35"],
-  ["hs", "tv", "ومن يتق الله يكفر عنه سيئاته", "65:5; 8:29"],
-  ["hs", "sl", "وأقم الصلاة... إن الحسنات يذهبن السيئات", "11:114"],
-  ["hs", "zk", "ويكفر عنكم من سيئاتكم؛ قرضا حسنا", "2:271; 2:245"],
-  ["hs", "as", "ولله الأسماء الحسنى", "7:180"],
-  ["hs", "kf", "التكفير: الستر", "4:31"],
-  ["hs", "nf", "إن تمسسكم حسنة تسؤهم", "3:120; 9:50"],
-  ["hs", "ak", "من جاء بالحسنة فله عشر أمثالها", "6:160"],
-  ["hs", "ml", "وقهم السيئات", "40:9"],
-  ["hs", "mu", "وإن تصبهم سيئة يطيروا بموسى", "7:131"],
-  ["hs", "ib", "أسوة حسنة في إبراهيم", "60:4"],
-  ["hs", "aq", "لم تستعجلون بالسيئة قبل الحسنة", "27:46"],
-  ["hs", "sq", "إن تبدوا الصدقات... ويكفر عنكم", "2:271"],
-  ["hs", "sb", "وبلوناهم بالحسنات والسيئات", "7:168"],
-  ["dk", "tw", "لا إله إلا الله؛ سبحانه وتعالى عما يشركون", "47:19; 16:1"],
-  ["dk", "as", "الحميد؛ المتكبر؛ سبح اسم ربك", "14:8; 59:23; 87:1"],
-  ["dk", "sh", "فاذكروني أذكركم واشكروا لي", "2:152"],
-  ["dk", "is", "فسبح بحمد ربك واستغفره", "110:3"],
-  ["dk", "sl", "ولذكر الله أكبر؛ وأقم الصلاة لذكري", "29:45; 20:14"],
-  ["dk", "hj", "فاذكروا الله عند المشعر الحرام؛ لتكبروا الله", "2:198; 22:37"],
-  ["dk", "sy", "ولتكبروا الله على ما هداكم", "2:185"],
-  ["dk", "ml", "يسبحون الليل والنهار لا يفترون", "21:20"],
-  ["dk", "kt", "إنا نحن نزلنا الذكر", "15:9"],
-  ["dk", "jn", "دعواهم فيها سبحانك اللهم... الحمد لله", "10:10"],
-  ["dk", "sm", "تسبح له السماوات السبع", "17:44"],
-  ["dk", "yn", "فلولا أنه كان من المسبحين", "37:143"],
-  ["dk", "ds", "الجبال يسبحن والطير", "21:79"],
-  ["dk", "mu", "كي نسبحك كثيرا ونذكرك كثيرا", "20:33-34"],
-  ["dk", "ka", "واذكر ربك إذا نسيت؛ الباقيات الصالحات", "18:24; 18:46"],
-  ["dk", "ia", "سبحانك ما يكون لي؛ اسمه أحمد", "5:116; 61:6"],
-  ["dn", "ak", "وإن الدار الآخرة لهي الحيوان", "29:64"],
-  ["dn", "jn", "فأولئك لهم الدرجات العلى", "20:75"],
-  ["dn", "nr", "وآثر الحياة الدنيا فإن الجحيم هي المأوى", "79:38-39"],
-  ["dn", "nf", "في الدرك الأسفل من النار", "4:145"],
-  ["dn", "im", "لهم درجات عند ربهم؛ وبالآخرة هم يوقنون", "8:4; 2:4"],
-  ["dn", "rs", "ورفع بعضهم درجات", "2:253"],
-  ["dn", "tv", "وللدار الآخرة خير للذين يتقون", "6:32"],
-  ["dn", "hs", "آتنا في الدنيا حسنة وفي الآخرة حسنة", "2:201"],
-  ["dn", "jh", "فضل الله المجاهدين على القاعدين درجة", "4:95"],
-  ["dn", "tl", "وللرجال عليهن درجة", "2:228"],
-  ["dn", "sb", "يأخذون عرض هذا الأدنى", "7:169"],
-  ["dn", "am", "إنما مثل الحياة الدنيا كماء", "10:24; 18:45"],
-  ["dn", "mu", "ولا تنس نصيبك من الدنيا؛ والله خير وأبقى", "28:77; 20:73"],
-  ["dn", "ib", "نرفع درجات من نشاء", "6:83"],
-  ["dn", "ys", "نرفع درجات من نشاء وفوق كل ذي علم عليم", "12:76"],
-  ["dn", "lt", "الدنيا 115 والآخرة 115", "—"],
-  ["dn", "ka", "مثل الحياة الدنيا؛ زينة الحياة الدنيا", "18:45-46"],
-  ["qd", "tw", "وخلق كل شيء فقدره تقديرا", "25:2"],
-  ["qd", "hd", "والذي قدر فهدى؛ يهدي من يشاء", "87:3; 28:56"],
-  ["qd", "dl", "يضل من يشاء ويهدي من يشاء", "16:93"],
-  ["qd", "kf", "فمن شاء فليؤمن ومن شاء فليكفر", "18:29"],
-  ["qd", "as", "على كل شيء قدير؛ مليك مقتدر", "2:20; 54:55"],
-  ["qd", "ak", "وقضي بينهم بالحق", "39:69"],
-  ["qd", "sm", "فقضاهن سبع سماوات... ذلك تقدير العزيز العليم", "41:12"],
-  ["qd", "nz", "إنا أنزلناه في ليلة القدر", "97:1"],
-  ["qd", "sr", "لكيلا تأسوا على ما فاتكم", "57:23"],
-  ["qd", "hs", "قل كل من عند الله", "4:78"],
-  ["qd", "jh", "لبرز الذين كتب عليهم القتل إلى مضاجعهم", "3:154"],
-  ["qd", "ka", "إلا أن يشاء الله؛ ما شاء الله لا قوة إلا بالله", "18:24; 18:39"],
-  ["qd", "mu", "ثم جئت على قدر يا موسى", "20:40"],
-  ["qd", "yn", "فظن أن لن نقدر عليه", "21:87"],
-  ["qd", "my", "وكان أمرا مقضيا", "19:21"],
-  ["qd", "ib", "والله خلقكم وما تعملون", "37:96"],
-  ["ji", "ml", "بل كانوا يعبدون الجن", "34:41"],
-  ["ji", "rs", "شياطين الإنس والجن؛ مجنون", "6:112; 68:2"],
-  ["ji", "kt", "إنا سمعنا كتابا أنزل من بعد موسى", "46:30"],
-  ["ji", "tw", "وما خلقت الجن والإنس إلا ليعبدون", "51:56"],
-  ["ji", "dl", "ولأضلنهم ولأمنينهم", "4:119"],
-  ["ji", "nf", "كمثل الشيطان إذ قال للإنسان اكفر", "59:16"],
-  ["ji", "ik", "إلا عبادك منهم المخلصين", "15:40"],
-  ["ji", "rh", "يا معشر الجن والإنس؛ ربكما تكذبان", "55:33"],
-  ["ji", "nr", "لأملأن جهنم من الجنة والناس أجمعين", "11:119"],
-  ["ji", "ak", "وقال الشيطان لما قضي الأمر", "14:22"],
-  ["ji", "sm", "وحفظا من كل شيطان مارد", "37:7"],
-  ["ji", "dk", "ومن يعش عن ذكر الرحمن نقيض له شيطانا", "43:36"],
-  ["ji", "hs", "وإما ينزغنك من الشيطان نزغ", "41:36"],
-  ["ji", "ad", "إلا إبليس أبى واستكبر", "2:34"],
-  ["ji", "ds", "تبينت الجن أن لو كانوا يعلمون الغيب", "34:14"],
-  ["ji", "ys", "إن الشيطان للإنسان عدو مبين", "12:5"],
-  ["ji", "qd", "فبما أغويتني", "7:16"],
-  ["ta", "kh", "إنما الخمر والميسر والأنصاب والأزلام رجس", "5:90"],
-  ["ta", "rb", "وأحل الله البيع وحرم الربا", "2:275"],
-  ["ta", "zw", "وطعام الذين أوتوا الكتاب... والمحصنات", "5:5"],
-  ["ta", "hj", "ليذكروا اسم الله على ما رزقهم من بهيمة الأنعام", "22:34"],
-  ["ta", "sy", "وكلوا واشربوا حتى يتبين لكم", "2:187"],
-  ["ta", "zk", "وآتوا حقه يوم حصاده ولا تسرفوا", "6:141"],
-  ["ta", "sb", "وعلى الذين هادوا حرمنا", "6:146"],
-  ["ta", "tw", "وما أهل لغير الله به", "6:145"],
-  ["ta", "sh", "كلوا من طيبات ما رزقناكم واشكروا لله", "2:172"],
-  ["ta", "sq", "هذا حلال وهذا حرام لتفتروا على الله الكذب", "16:116"],
-  ["ta", "ly", "ولا تسرفوا إنه لا يحب المسرفين", "7:31"],
-  ["ta", "dk", "فكلوا مما ذكر اسم الله عليه", "6:118"],
-  ["ta", "kt", "من قبل أن تنزل التوراة", "3:93"],
-  ["ta", "rs", "يا أيها الرسل كلوا من الطيبات", "23:51"],
-  ["ta", "ia", "ولأحل لكم بعض الذي حرم عليكم", "3:50"],
-  ["ta", "mu", "وأنزلنا عليكم المن والسلوى", "2:57"],
-  ["qs", "tl", "ذلك لتؤمنوا بالله ورسوله وتلك حدود الله", "58:4"],
-  ["qs", "mw", "تلك حدود الله ومن يطع الله ورسوله", "4:13"],
-  ["qs", "zw", "فعليهن نصف ما على المحصنات من العذاب", "4:25"],
-  ["qs", "ta", "أو كفارة طعام مساكين أو عدل ذلك صياما", "5:95"],
-  ["qs", "sy", "كتب عليكم الصيام؛ فدية طعام مسكين", "2:183-184"],
-  ["qs", "hj", "ففدية من صيام أو صدقة أو نسك", "2:196"],
-  ["qs", "tb", "إلا الذين تابوا من قبل أن تقدروا عليهم", "5:34"],
-  ["qs", "hs", "وجزاء سيئة سيئة مثلها فمن عفا وأصلح", "42:40"],
-  ["qs", "sr", "ولئن صبرتم لهو خير للصابرين", "16:126"],
-  ["qs", "tq", "ولكم في القصاص حياة يا أولي الألباب لعلكم تتقون", "2:179"],
-  ["qs", "as", "نكالا من الله والله عزيز حكيم", "5:38"],
-  ["qs", "dn", "ذلك لهم خزي في الدنيا ولهم في الآخرة عذاب عظيم", "5:33"],
-  ["qs", "kt", "وكتبنا عليهم فيها أن النفس بالنفس", "5:45"],
-  ["qs", "ad", "من قتل نفسا بغير نفس أو فساد في الأرض", "5:32"],
-  ["qs", "mu", "لأقطعن أيديكم وأرجلكم من خلاف", "7:124"],
-  ["qs", "my", "سبحانك هذا بهتان عظيم", "24:16"],
-  ["ym", "qs", "فكفارته إطعام عشرة مساكين", "5:89"],
-  ["ym", "tl", "للذين يؤلون من نسائهم تربص أربعة أشهر", "2:226"],
-  ["ym", "mw", "والذين عقدت أيمانكم فآتوهم نصيبهم", "4:33"],
-  ["ym", "ta", "لم تحرم ما أحل الله لك؛ تحلة أيمانكم", "66:1-2"],
-  ["ym", "jh", "وإن نكثوا أيمانهم من بعد عهدهم", "9:12"],
-  ["ym", "sb", "وأوفوا بالعهد إن العهد كان مسئولا", "17:34"],
-  ["ym", "hj", "وليوفوا نذورهم", "22:29"],
-  ["ym", "nf", "اتخذوا أيمانهم جنة", "58:16; 63:2"],
-  ["ym", "sq", "ويحلفون على الكذب وهم يعلمون", "58:14"],
-  ["ym", "jn", "يوفون بالنذر ويخافون يوما", "76:7"],
-  ["ym", "ay", "وخذ بيدك ضغثا فاضرب به ولا تحنث", "38:44"],
-  ["ym", "my", "إني نذرت للرحمن صوما", "19:26"],
-  ["ym", "ka", "إلا أن يشاء الله", "18:24"],
-  ["ym", "ys", "تالله لقد آثرك الله علينا", "12:91"],
-  ["ym", "ib", "وتالله لأكيدن أصنامكم", "21:57"],
-  ["ym", "ad", "وقاسمهما إني لكما لمن الناصحين", "7:21"],
-  ["si", "jh", "ولا تنازعوا فتفشلوا وتذهب ريحكم", "8:46"],
-  ["si", "zw", "فلما قضى زيد منها وطرا زوجناكها", "33:37"],
-  ["si", "sl", "فول وجهك شطر المسجد الحرام", "2:144"],
-  ["si", "hj", "لتدخلن المسجد الحرام إن شاء الله آمنين", "48:27"],
-  ["si", "nz", "اقرأ باسم ربك الذي خلق", "96:1"],
-  ["si", "nf", "لئن رجعنا إلى المدينة ليخرجن الأعز منها الأذل", "63:8"],
-  ["si", "qd", "قل إن الأمر كله لله", "3:154"],
-  ["si", "tb", "وعلى الثلاثة الذين خلفوا", "9:118"],
-  ["si", "sr", "بلى إن تصبروا وتتقوا", "3:125"],
-  ["si", "sq", "من المؤمنين رجال صدقوا ما عاهدوا الله عليه", "33:23"],
-  ["si", "sh", "ولقد نصركم الله ببدر وأنتم أذلة... لعلكم تشكرون", "3:123"],
-  ["si", "dn", "منكم من يريد الدنيا ومنكم من يريد الآخرة", "3:152"],
-  ["si", "ml", "أني ممدكم بألف من الملائكة مردفين", "8:9"],
-  ["si", "rs", "وما محمد إلا رسول قد خلت من قبله الرسل", "3:144"],
-  ["si", "ji", "وإذ صرفنا إليك نفرا من الجن", "46:29"],
-  ["si", "my", "سبحانك هذا بهتان عظيم", "24:16"],
-  ["gn", "mu", "وجاء رجل من أقصى المدينة يسعى", "28:20"],
-  ["gn", "aq", "وقارون وفرعون وهامان", "29:39"],
-  ["gn", "ys", "ولقد جاءكم يوسف من قبل بالبينات", "40:34"],
-  ["gn", "am", "واضرب لهم مثلا أصحاب القرية", "36:13"],
-  ["gn", "si", "لإيلاف قريش", "106:1"],
-  ["gn", "sh", "ولقد آتينا لقمان الحكمة أن اشكر لله", "31:12"],
-  ["gn", "ih", "ووصينا الإنسان بوالديه", "31:14"],
-  ["gn", "sr", "واصبر على ما أصابك إن ذلك من عزم الأمور", "31:17"],
-  ["gn", "tb", "إن الذين فتنوا المؤمنين والمؤمنات ثم لم يتوبوا", "85:10"],
-  ["gn", "sq", "وإن يك كاذبا فعليه كذبه وإن يك صادقا", "40:28"],
-  ["gn", "ly", "إن الله لا يحب الفرحين", "28:76"],
-  ["gn", "tw", "يا بني لا تشرك بالله إن الشرك لظلم عظيم", "31:13"],
-  ["gn", "dn", "وابتغ فيما آتاك الله الدار الآخرة ولا تنس نصيبك من الدنيا", "28:77"],
-  ["gn", "nr", "النار ذات الوقود", "85:5"],
-  ["gn", "jn", "قيل ادخل الجنة قال يا ليت قومي يعلمون", "36:26"],
-  ["gn", "rs", "إذ أرسلنا إليهم اثنين فكذبوهما فعززنا بثالث", "36:14"],
-  ["ud", "ih", "إن الله يأمر بالعدل والإحسان", "16:90"],
-  ["ud", "sq", "كونوا قوامين بالقسط شهداء لله", "4:135"],
-  ["ud", "hs", "إن الله لا يظلم مثقال ذرة وإن تك حسنة يضاعفها", "4:40"],
-  ["ud", "is", "رب إني ظلمت نفسي فاغفر لي", "28:16"],
-  ["ud", "yh", "إن الله يحب المقسطين", "49:9"],
-  ["ud", "ly", "والله لا يحب الظالمين", "3:57"],
-  ["ud", "tw", "إن الشرك لظلم عظيم", "31:13"],
-  ["ud", "hd", "والله لا يهدي القوم الظالمين", "2:258"],
-  ["ud", "zw", "فإن خفتم ألا تعدلوا فواحدة", "4:3"],
-  ["ud", "rb", "لا تظلمون ولا تظلمون", "2:279"],
-  ["ud", "qs", "ومن قتل مظلوما فقد جعلنا لوليه سلطانا", "17:33"],
-  ["ud", "aq", "وأوفوا الكيل والميزان بالقسط", "11:85"],
-  ["ud", "ib", "لا ينال عهدي الظالمين", "2:124"],
-  ["ud", "yn", "سبحانك إني كنت من الظالمين", "21:87"],
-  ["ud", "rs", "وأنزلنا معهم الكتاب والميزان ليقوم الناس بالقسط", "57:25"],
-  ["ud", "ak", "ونضع الموازين القسط ليوم القيامة", "21:47"],
-  ["mn", "ym", "وأوفوا بعهد الله إذا عاهدتم ولا تنقضوا الأيمان", "16:91"],
-  ["mn", "sb", "وأوفوا بعهدي أوف بعهدكم", "2:40"],
-  ["mn", "zw", "وأخذن منكم ميثاقا غليظا", "4:21"],
-  ["mn", "jh", "فأتموا إليهم عهدهم إلى مدتهم", "9:4"],
-  ["mn", "sq", "رجال صدقوا ما عاهدوا الله عليه", "33:23"],
-  ["mn", "ud", "أن تؤدوا الأمانات إلى أهلها", "4:58"],
-  ["mn", "ly", "إن الله لا يحب الخائنين", "8:58"],
-  ["mn", "nf", "وكان عهد الله مسئولا", "33:15"],
-  ["mn", "sm", "إنا عرضنا الأمانة على السماوات والأرض والجبال", "33:72"],
-  ["mn", "rs", "وإذ أخذ الله ميثاق النبيين", "3:81"],
-  ["mn", "si", "فمن نكث فإنما ينكث على نفسه", "48:10"],
-  ["mn", "ad", "ألست بربكم قالوا بلى شهدنا", "7:172"],
-  ["mn", "ys", "ذلك ليعلم أني لم أخنه بالغيب", "12:52"],
-  ["mn", "ib", "وإبراهيم الذي وفى", "53:37"],
-  ["mn", "my", "إنه كان صادق الوعد", "19:54"],
-  ["mn", "aq", "إني لكم رسول أمين", "26:107"],
-  ["wd", "ih", "وبالوالدين إحسانا", "17:23"],
-  ["wd", "sh", "أن اشكر لي ولوالديك", "31:14"],
-  ["wd", "is", "رب اغفر لي ولوالدي", "71:28"],
-  ["wd", "ud", "إن الله يأمر بالعدل والإحسان وإيتاء ذي القربى", "16:90"],
-  ["wd", "tw", "ألا تشركوا به شيئا وبالوالدين إحسانا", "6:151"],
-  ["wd", "mw", "وأولو الأرحام بعضهم أولى ببعض", "8:75"],
-  ["wd", "tl", "وحمله وفصاله ثلاثون شهرا", "46:15"],
-  ["wd", "zk", "وآت ذا القربى حقه والمسكين وابن السبيل", "17:26"],
-  ["wd", "ib", "يا أبت لم تعبد ما لا يسمع ولا يبصر", "19:42"],
-  ["wd", "nh", "إنه ليس من أهلك إنه عمل غير صالح", "11:46"],
-  ["wd", "ys", "ورفع أبويه على العرش", "12:100"],
-  ["wd", "zy", "وبرا بوالديه ولم يكن جبارا عصيا", "19:14"],
-  ["wd", "mu", "فرددناه إلى أمه كي تقر عينها", "28:13"],
-  ["wd", "gn", "ووصينا الإنسان بوالديه حملته أمه وهنا على وهن", "31:14"],
-  ["wd", "ds", "رب أوزعني أن أشكر نعمتك التي أنعمت علي وعلى والدي", "27:19"],
-  ["wd", "ak", "يوم يفر المرء من أخيه وأمه وأبيه", "80:34-35"],
-  ["kb", "ji", "أبى واستكبر وكان من الكافرين", "2:34"],
-  ["kb", "ml", "إن الذين عند ربك لا يستكبرون عن عبادته", "7:206"],
-  ["kb", "ad", "أنا خير منه خلقتني من نار", "7:12"],
-  ["kb", "mu", "واستكبر هو وجنوده في الأرض بغير الحق", "28:39"],
-  ["kb", "nh", "وأصروا واستكبروا استكبارا", "71:7"],
-  ["kb", "aq", "فأما عاد فاستكبروا في الأرض بغير الحق", "41:15"],
-  ["kb", "gn", "ولا تصعر خدك للناس ولا تمش في الأرض مرحا", "31:18"],
-  ["kb", "ka", "واصبر نفسك مع الذين يدعون ربهم", "18:28"],
-  ["kb", "ly", "إنه لا يحب المستكبرين", "16:23"],
-  ["kb", "dk", "وكبره تكبيرا", "17:111"],
-  ["kb", "as", "العزيز الجبار المتكبر", "59:23"],
-  ["kb", "nf", "ورأيتهم يصدون وهم مستكبرون", "63:5"],
-  ["kb", "nr", "فبئس مثوى المتكبرين", "39:72"],
-  ["kb", "dn", "للذين لا يريدون علوا في الأرض ولا فسادا", "28:83"],
-  ["kb", "wd", "واخفض لهما جناح الذل من الرحمة", "17:24"],
-  ["kb", "sl", "الذين هم في صلاتهم خاشعون", "23:2"],
-  ["du", "tw", "أمن يجيب المضطر إذا دعاه أإله مع الله", "27:62"],
-  ["du", "dl", "ومن أضل ممن يدعو من دون الله", "46:5"],
-  ["du", "ik", "دعوا الله مخلصين له الدين", "29:65"],
-  ["du", "as", "ولله الأسماء الحسنى فادعوه بها", "7:180"],
-  ["du", "dk", "دعواهم فيها سبحانك اللهم", "10:10"],
-  ["du", "is", "ربنا ظلمنا أنفسنا وإن لم تغفر لنا", "7:23"],
-  ["du", "kb", "إن الذين يستكبرون عن عبادتي", "40:60"],
-  ["du", "sy", "فإني قريب في آيات الصيام", "2:186"],
-  ["du", "hj", "ربنا آتنا في الدنيا حسنة", "2:201"],
-  ["du", "zy", "رب لا تذرني فردا وأنت خير الوارثين", "21:89"],
-  ["du", "yn", "لا إله إلا أنت سبحانك إني كنت من الظالمين", "21:87"],
-  ["du", "nh", "أني مغلوب فانتصر", "54:10"],
-  ["du", "mu", "رب اشرح لي صدري", "20:25"],
-  ["du", "ib", "ربنا وتقبل دعاء", "14:40"],
-  ["du", "wd", "رب اغفر لي ولوالدي", "71:28"],
-  ["du", "qd", "فيكشف ما تدعون إليه إن شاء", "6:41"],
-  ["il", "nz", "اقرأ... علم بالقلم", "96:1-5"],
-  ["il", "kt", "أفلا يتدبرون القرآن", "4:82"],
-  ["il", "ad", "وعلم آدم الأسماء كلها", "2:31"],
-  ["il", "ml", "لا علم لنا إلا ما علمتنا", "2:32"],
-  ["il", "ka", "وعلمناه من لدنا علما", "18:65"],
-  ["il", "sm", "ويتفكرون في خلق السماوات والأرض", "3:191"],
-  ["il", "am", "وما يعقلها إلا العالمون", "29:43"],
-  ["il", "dl", "لهم قلوب لا يفقهون بها", "7:179"],
-  ["il", "qs", "ولكم في القصاص حياة يا أولي الألباب", "2:179"],
-  ["il", "hj", "واتقون يا أولي الألباب", "2:197"],
-  ["il", "tl", "لعلكم تعقلون", "2:242"],
-  ["il", "nr", "لو كنا نسمع أو نعقل", "67:10"],
-  ["il", "tw", "شهد الله... وأولو العلم", "3:18"],
-  ["il", "du", "وقل رب زدني علما", "20:114"],
-  ["il", "dn", "والذين أوتوا العلم درجات", "58:11"],
-  ["il", "kb", "إنما أوتيته على علم عندي", "28:78"],
-  ["ft", "sr", "ولنبلونكم... وبشر الصابرين", "2:155"],
-  ["ft", "sh", "ليبلوني أأشكر أم أكفر", "27:40"],
-  ["ft", "qd", "حتى نعلم المجاهدين منكم", "47:31"],
-  ["ft", "im", "أن يقولوا آمنا وهم لا يفتنون", "29:2"],
-  ["ft", "ib", "وإذ ابتلى إبراهيم ربه بكلمات", "2:124"],
-  ["ft", "mu", "وفتناك فتونا", "20:40"],
-  ["ft", "ds", "وظن داوود أنما فتناه", "38:24"],
-  ["ft", "ay", "إنا وجدناه صابرا", "38:44"],
-  ["ft", "jh", "والفتنة أشد من القتل", "2:191"],
-  ["ft", "dn", "زهرة الحياة الدنيا لنفتنهم فيه", "20:131"],
-  ["ft", "zw", "إنما أموالكم وأولادكم فتنة", "64:15"],
-  ["ft", "sb", "كذلك نبلوهم بما كانوا يفسقون", "7:163"],
-  ["ft", "si", "وليمحص الله الذين آمنوا", "3:141"],
-  ["ft", "gn", "إن الذين فتنوا المؤمنين والمؤمنات", "85:10"],
-  ["ft", "nr", "إنا جعلناها فتنة للظالمين", "37:63"],
-  ["ft", "du", "ربنا لا تجعلنا فتنة", "10:85"],
-  ["mf", "nf", "يأمرون بالمنكر وينهون عن المعروف", "9:67"],
-  ["mf", "im", "تأمرون بالمعروف... وتؤمنون بالله", "3:110"],
-  ["mf", "sl", "إن الصلاة تنهى عن الفحشاء والمنكر", "29:45"],
-  ["mf", "zk", "ويقيمون الصلاة ويؤتون الزكاة", "9:71"],
-  ["mf", "sr", "واصبر على ما أصابك", "31:17"],
-  ["mf", "gn", "يا بني أقم الصلاة وأمر بالمعروف", "31:17"],
-  ["mf", "sb", "أنجينا الذين ينهون عن السوء", "7:165"],
-  ["mf", "ds", "لعن... على لسان داوود وعيسى", "5:78"],
-  ["mf", "aq", "وما أريد أن أخالفكم إلى ما أنهاكم عنه", "11:88"],
-  ["mf", "mu", "فقولا له قولا لينا", "20:44"],
-  ["mf", "zw", "وعاشروهن بالمعروف", "4:19"],
-  ["mf", "tl", "فإمساك بمعروف أو تسريح بإحسان", "2:229"],
-  ["mf", "rs", "يأمرهم بالمعروف وينهاهم عن المنكر", "7:157"],
-  ["mf", "il", "لولا ينهاهم الربانيون والأحبار", "5:63"],
-  ["mf", "ud", "إن الله يأمر بالعدل والإحسان", "16:90"],
-  ["mf", "hd", "لا إكراه في الدين", "2:256"],
-  ["ls", "sq", "لما تصف ألسنتكم الكذب", "16:116"],
-  ["ls", "kb", "لا يسخر قوم من قوم", "49:11"],
-  ["ls", "nf", "يقولون بألسنتهم ما ليس في قلوبهم", "48:11"],
-  ["ls", "mf", "إلا من أمر بصدقة أو معروف", "4:114"],
-  ["ls", "qs", "والذين يرمون المحصنات", "24:4"],
-  ["ls", "ym", "باللغو في أيمانكم", "2:225"],
-  ["ls", "si", "إن الذين جاءوا بالإفك", "24:11"],
-  ["ls", "wd", "فلا تقل لهما أف", "17:23"],
-  ["ls", "tb", "ومن لم يتب فأولئك هم الظالمون", "49:11"],
-  ["ls", "il", "ولا تقف ما ليس لك به علم", "17:36"],
-  ["ls", "ak", "يوم تشهد عليهم ألسنتهم", "24:24"],
-  ["ls", "ml", "إلا لديه رقيب عتيد", "50:18"],
-  ["ls", "am", "مثلا كلمة طيبة", "14:24"],
-  ["ls", "hs", "ادفع بالتي هي أحسن", "41:34"],
-  ["ls", "gn", "واغضض من صوتك", "31:19"],
-  ["ls", "tq", "اتقوا الله وقولوا قولا سديدا", "33:70"],
-  ["ns", "tb", "إنكم ظلمتم أنفسكم... فتوبوا", "2:54"],
-  ["ns", "qd", "فألهمها فجورها وتقواها", "91:8"],
-  ["ns", "tv", "ومن يوق شح نفسه", "59:9"],
-  ["ns", "ys", "إن النفس لأمارة بالسوء", "12:53"],
-  ["ns", "ad", "خلقكم من نفس واحدة", "4:1"],
-  ["ns", "mu", "وكذلك سولت لي نفسي", "20:96"],
-  ["ns", "ml", "أخرجوا أنفسكم", "6:93"],
-  ["ns", "zk", "قد أفلح من تزكى", "87:14"],
-  ["ns", "ak", "كل نفس بما كسبت رهينة", "74:38"],
-  ["ns", "jn", "ارجعي إلى ربك... وادخلي جنتي", "89:28"],
-  ["ns", "kb", "فلا تزكوا أنفسكم", "53:32"],
-  ["ns", "nf", "نسوا الله فأنساهم أنفسهم", "59:19"],
-  ["ns", "dk", "النفس المطمئنة", "89:27"],
-  ["ns", "ym", "ولا أقسم بالنفس اللوامة", "75:2"],
-  ["ns", "ls", "ولا تلمزوا أنفسكم", "49:11"],
-  ["ns", "is", "ربنا ظلمنا أنفسنا", "7:23"],
-  ["gf", "is", "استغفروا ربكم إنه كان غفارا", "71:10"],
-  ["gf", "tb", "ثم تاب عليهم ليتوبوا", "9:118"],
-  ["gf", "as", "غفور رحيم: 71", "71 pairs"],
-  ["gf", "rh", "التواب الرحيم، الغفور الرحيم", "2:37; 39:53"],
-  ["gf", "nh", "إنه كان غفارا", "71:10"],
-  ["gf", "mu", "وأنت خير الغافرين", "7:155"],
-  ["gf", "ad", "فتاب عليه إنه هو التواب الرحيم", "2:37"],
-  ["gf", "du", "واعف عنا واغفر لنا وارحمنا", "2:286"],
-  ["gf", "ta", "فمن اضطر... إن الله غفور رحيم", "2:173"],
-  ["gf", "qs", "إلا الذين تابوا", "5:34"],
-  ["gf", "si", "ولقد عفا الله عنهم", "3:155"],
-  ["gf", "ls", "ألا تحبون أن يغفر الله لكم", "24:22"],
-  ["gf", "ih", "والعافين عن الناس", "3:134"],
-  ["gf", "yh", "يحب التوابين، الغفور الودود", "2:222; 85:14"],
-  ["gf", "zw", "وإن تعفوا وتصفحوا وتغفروا", "64:14"],
-  ["gf", "nf", "عفا الله عنك لم أذنت لهم", "9:43"],
-  ["al", "as", "عليم: 152، خبير: 44", "152 / 44"],
-  ["al", "gf", "غفور حليم، عليم حليم", "2:235"],
-  ["al", "il", "وفوق كل ذي علم عليم", "12:76"],
-  ["al", "ak", "إن الله عنده علم الساعة", "31:34"],
-  ["al", "sm", "ذلك تقدير العزيز العليم", "36:38"],
-  ["al", "qd", "وكل شيء عنده بمقدار", "13:8"],
-  ["al", "rs", "إلا من ارتضى من رسول", "72:27"],
-  ["al", "ia", "إنك أنت علام الغيوب", "5:116"],
-  ["al", "ys", "إن ربي لطيف لما يشاء", "12:100"],
-  ["al", "gn", "مثقال حبة من خردل", "31:16"],
-  ["al", "ns", "يعلم ما في أنفسكم فاحذروه", "2:235"],
-  ["al", "nf", "يثنون صدورهم ليستخفوا منه", "11:5"],
-  ["al", "ud", "اعدلوا... إن الله خبير بما تعملون", "5:8"],
-  ["al", "ml", "لا علم لنا إلا ما علمتنا", "2:32"],
-  ["al", "jn", "لا تدركه الأبصار / إلى ربها ناظرة", "6:103; 75:23"],
-  ["al", "ls", "إلا هو رابعهم", "58:7"],
-  ["sa", "as", "سميع: 46، بصير: 43", "46 / 43"],
-  ["sa", "al", "سميع عليم: 32، خبير بصير: 5", "32 / 5"],
-  ["sa", "tw", "ليس كمثله شيء", "42:11"],
-  ["sa", "du", "إنك سميع الدعاء", "3:38"],
-  ["sa", "tl", "قد سمع الله قول التي تجادلك", "58:1"],
-  ["sa", "nh", "واصنع الفلك بأعيننا", "11:37"],
-  ["sa", "mu", "إنني معكما أسمع وأرى", "20:46"],
-  ["sa", "ib", "لم تعبد ما لا يسمع ولا يبصر", "19:42"],
-  ["sa", "si", "سبحان الذي أسرى بعبده", "17:1"],
-  ["sa", "il", "إن السمع والبصر والفؤاد", "17:36"],
-  ["sa", "sh", "السمع والأبصار والأفئدة لعلكم تشكرون", "16:78"],
-  ["sa", "kf", "ختم الله على قلوبهم وعلى سمعهم", "2:7"],
-  ["sa", "mn", "إن الله كان سميعا بصيرا", "4:58"],
-  ["sa", "sr", "واصبر لحكم ربك فإنك بأعيننا", "52:48"],
-  ["sa", "sl", "ألم يعلم بأن الله يرى", "96:14"],
-  ["sa", "ak", "فبصرك اليوم حديد", "50:22"],
-  ["az", "as", "عزيز حكيم: 46", "46 pairs"],
-  ["az", "al", "عليم حكيم، العزيز العليم", "4:11; 36:38"],
-  ["az", "gf", "العزيز الغفار", "38:66"],
-  ["az", "aq", "وإن ربك لهو العزيز الرحيم", "26:9"],
-  ["az", "nf", "ولله العزة ولرسوله وللمؤمنين", "63:8"],
-  ["az", "kb", "أخذته العزة بالإثم", "2:206"],
-  ["az", "dk", "سبح لله... وهو العزيز الحكيم", "57:1"],
-  ["az", "nz", "تنزيل الكتاب من الله العزيز الحكيم", "39:1"],
-  ["az", "kt", "تلك آيات الكتاب الحكيم", "10:1"],
-  ["az", "ib", "ويعلمهم الكتاب والحكمة ويزكيهم", "2:129"],
-  ["az", "ia", "فإنك أنت العزيز الحكيم", "5:118"],
-  ["az", "gn", "ولقد آتينا لقمان الحكمة", "31:12"],
-  ["az", "ds", "وآتيناه الحكمة وفصل الخطاب", "38:20"],
-  ["az", "jh", "ولينصرن الله من ينصره إن الله لقوي عزيز", "22:40"],
-  ["az", "ys", "إن الحكم إلا لله", "12:40"],
-  ["az", "il", "ومن يؤت الحكمة فقد أوتي خيرا كثيرا", "2:269"],
-  ["hy", "as", "الحي القيوم، الأحد الصمد", "2:255; 112:1-2"],
-  ["hy", "tw", "لو كان فيهما آلهة إلا الله لفسدتا", "21:22"],
-  ["hy", "ik", "قل هو الله أحد", "112:1"],
-  ["hy", "az", "القهار، العزيز", "38:65-66"],
-  ["hy", "al", "ولا يحيطون بشيء من علمه", "2:255"],
-  ["hy", "rh", "وإلهكم إله واحد... الرحمن الرحيم", "2:163"],
-  ["hy", "ys", "أأرباب متفرقون خير أم الله الواحد القهار", "12:39"],
-  ["hy", "ib", "ربي الذي يحيي ويميت", "2:258"],
-  ["hy", "ia", "إن الله ثالث ثلاثة", "5:73"],
-  ["hy", "ak", "لمن الملك اليوم لله الواحد القهار", "40:16"],
-  ["hy", "sm", "يمسك السماوات والأرض أن تزولا", "35:41"],
-  ["hy", "kt", "الحي القيوم نزل عليك الكتاب", "3:2-3"],
-  ["hy", "dn", "كل من عليها فان", "55:26"],
-  ["hy", "kf", "أجعل الآلهة إلها واحدا", "38:5"],
-  ["hy", "du", "هو الحي... فادعوه مخلصين", "40:65"],
-  ["hy", "rs", "يوحى إلي أنما إلهكم إله واحد", "18:110"]
+  [
+    "ta",
+    "an",
+    "الإحالة الصريحة (النحل 118 ← الأنعام 146؛ الحج 30 والمائدة 3 ↔ الأنعام 145، 119): أصل المحرمات",
+    "Explicit Pointers (16:118 -> 6:146; 22:30 & 5:3 <-> 6:145, 119): Core dietary law",
+    "EXPLICIT_REF",
+    "6:119, 145, 146"
+  ],
+  [
+    "ib",
+    "an",
+    "الإحالة الصريحة (النحل 123 ← الأنعام 79، 161): تأصيل الحنيفية وملة إبراهيم",
+    "Explicit Pointer (16:123 -> 6:79, 161): Prototype of Millat Ibrahim",
+    "EXPLICIT_REF",
+    "6:79, 161"
+  ],
+  [
+    "rs",
+    "an",
+    "الإحالة الصريحة (النساء 164 وغافر 78 ← الأنعام 83-90): الفهرس الجامع لـ 18 نبياً",
+    "Explicit Pointer (4:164 & 40:78 -> 6:83-90): Master index of 18 prophets",
+    "EXPLICIT_REF",
+    "6:83-90"
+  ],
+  [
+    "ls",
+    "an",
+    "الإحالة الصريحة (النساء 140 ← الأنعام 68): النهي عن القعود مع الخائضين في الآيات",
+    "Explicit Pointer (4:140 -> 6:68): Boycotting ridicule of verses",
+    "EXPLICIT_REF",
+    "6:68"
+  ],
+  [
+    "nf",
+    "an",
+    "تدرج الخطاب من الإعراض المكي (الأنعام 68) إلى حكم المنافقين المدني (النساء 140)",
+    "Progression from Meccan turn-away (6:68) to Medinan ruling (4:140)",
+    "LEGISLATIVE_STAGE",
+    "4:140 -> 6:68"
+  ],
+  [
+    "sb",
+    "an",
+    "وصايا سورة الأنعام العشر المحكمات (الأنعام 151-153)",
+    "The Ten Commandments of Surah Al-An'am (6:151-153)",
+    "LEGISLATIVE_STAGE",
+    "6:151-153"
+  ],
+  [
+    "tw",
+    "an",
+    "المركز العقدي النووي لتقرير التوحيد وإبطال الشرك (تستقبل 35% من الإحالات الصريحة)",
+    "Core Doctrinal Hub of Monotheism (receives 35% of explicit links)",
+    "DOCTRINAL_ROOT",
+    "6:1-165"
+  ],
+  [
+    "hd",
+    "an",
+    "﴿أُولَٰئِكَ الَّذِينَ هَدَى اللَّهُ فَبِهُدَاهُمُ اقْتَدِهْ﴾ (الأنعام 90)",
+    "Those are the ones whom Allah has guided, so follow their guidance (6:90)",
+    "DOCTRINAL_ROOT",
+    "6:84-90"
+  ],
+  [
+    "kt",
+    "an",
+    "﴿وَهَٰذَا كِتَابٌ أَنزَلْنَاهُ مُبَارَكٌ مُّصَدِّقُ الَّذِي بَيْنَ يَدَيْهِ﴾ (الأنعام 92)",
+    "A blessed Book confirming what came before it (6:92)",
+    "EXPLICIT_REF",
+    "6:92"
+  ],
+  [
+    "nz",
+    "an",
+    "إحكام الشبكة الإحالية حول سورة الأنعام (8 من 23 رابطاً، p = 8.2×10⁻⁸)",
+    "Statistical hub of explicit network (8 of 23 links, p = 8.2×10⁻⁸)",
+    "EXPLICIT_REF",
+    "6:68,79,84,145,146,161"
+  ],
+  [
+    "kh",
+    "rb",
+    "التدرج في التحريم",
+    "gradual prohibition",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "rb",
+    "jh",
+    "التدرج",
+    "gradualism",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "sb",
+    "tq",
+    "الأنعام 153: ذلكم وصاكم به لعلكم تتقون",
+    "Al-An'am 153",
+    "LEGISLATIVE_STAGE",
+    "الأنعام 153"
+  ],
+  [
+    "sb",
+    "jh",
+    "الوفاء بالعهد (التوبة 4)",
+    "treaties (At-Tawbah 4)",
+    "LEGISLATIVE_STAGE",
+    "التوبة 4"
+  ],
+  [
+    "sb",
+    "yh",
+    "إن الله يحب المتقين (الوافين)",
+    "God loves the faithful",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "rb",
+    "tq",
+    "اتقوا الله وذروا ما بقي من الربا",
+    "fear God, leave riba",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "kh",
+    "tq",
+    "المائدة 93: ثم اتقوا وأحسنوا",
+    "Al-Ma'idah 93",
+    "LEGISLATIVE_STAGE",
+    "المائدة 93"
+  ],
+  [
+    "jh",
+    "ly",
+    "إن الله لا يحب المعتدين",
+    "God does not love aggressors",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "rb",
+    "ly",
+    "لا يحب كل كفار أثيم (البقرة 276)",
+    "sinful ingrate (2:276)",
+    "LEGISLATIVE_STAGE",
+    "البقرة 276"
+  ],
+  [
+    "yh",
+    "ly",
+    "أزواج متقابلة",
+    "opposite pairs",
+    "CONTRAST_PAIR",
+    ""
+  ],
+  [
+    "tq",
+    "yh",
+    "ثمرة التقوى",
+    "fruit of taqwa",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "kh",
+    "yh",
+    "المحسنين",
+    "doers of good",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "tq",
+    "sr",
+    "يوسف 90: من يتق ويصبر",
+    "Yusuf 90",
+    "LEXICAL_FORMULA",
+    "يوسف 90"
+  ],
+  [
+    "sr",
+    "yh",
+    "يحب الصابرين، أجر المحسنين",
+    "loves the patient",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "sr",
+    "jh",
+    "الأنفال 46: إن الله مع الصابرين",
+    "Al-Anfal 46",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "nz",
+    "sb",
+    "المائدة 48: مصدقاً ومهيمناً",
+    "Al-Ma'idah 48",
+    "EXPLICIT_REF",
+    "المائدة 48"
+  ],
+  [
+    "sr",
+    "sh",
+    "صبّار شكور (4 مواضع)",
+    "patient and grateful",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "tq",
+    "sh",
+    "آل عمران 123: فاتقوا الله لعلكم تشكرون",
+    "3:123",
+    "LEXICAL_FORMULA",
+    "آل عمران 123"
+  ],
+  [
+    "sh",
+    "jh",
+    "بدر: لعلكم تشكرون",
+    "Badr",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "sr",
+    "ih",
+    "يوسف 90: أجر المحسنين",
+    "Yusuf 90",
+    "DOCTRINAL_ROOT",
+    "يوسف 90"
+  ],
+  [
+    "sh",
+    "ih",
+    "الشكر من الإحسان",
+    "gratitude",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "tq",
+    "ih",
+    "النحل 128",
+    "16:128",
+    "LEXICAL_FORMULA",
+    "النحل 128"
+  ],
+  [
+    "kh",
+    "ih",
+    "المائدة 93: ثم اتقوا وأحسنوا",
+    "5:93",
+    "LEGISLATIVE_STAGE",
+    "المائدة 93"
+  ],
+  [
+    "ih",
+    "yh",
+    "إن الله يحب المحسنين",
+    "loves the good-doers",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "kh",
+    "sl",
+    "النساء 43: لا تقربوا الصلاة وأنتم سكارى",
+    "4:43",
+    "LEGISLATIVE_STAGE",
+    "النساء 43"
+  ],
+  [
+    "sr",
+    "sl",
+    "استعينوا بالصبر والصلاة",
+    "2:45",
+    "LEGISLATIVE_STAGE",
+    "2:45"
+  ],
+  [
+    "jh",
+    "sl",
+    "صلاة الخوف",
+    "4:102",
+    "LEGISLATIVE_STAGE",
+    "4:102"
+  ],
+  [
+    "ih",
+    "sl",
+    "أن تعبد الله كأنك تراه",
+    "ihsan in worship",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "sl",
+    "zk",
+    "أقيموا الصلاة وآتوا الزكاة",
+    "prayer and zakat",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "rb",
+    "zk",
+    "البقرة 276: يمحق الله الربا ويربي الصدقات",
+    "2:276",
+    "LEGISLATIVE_STAGE",
+    "البقرة 276"
+  ],
+  [
+    "zk",
+    "ih",
+    "الإنفاق فوق الحق المفروض",
+    "beyond the due",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "sy",
+    "tq",
+    "البقرة 183: لعلكم تتقون",
+    "2:183",
+    "LEGISLATIVE_STAGE",
+    "البقرة 183"
+  ],
+  [
+    "sy",
+    "sh",
+    "البقرة 185: ولعلكم تشكرون",
+    "2:185",
+    "LEGISLATIVE_STAGE",
+    "البقرة 185"
+  ],
+  [
+    "sy",
+    "nz",
+    "البقرة 185: أنزل فيه القرآن",
+    "2:185",
+    "LEGISLATIVE_STAGE",
+    "البقرة 185"
+  ],
+  [
+    "sl",
+    "sy",
+    "العبادات",
+    "worship",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "mu",
+    "sb",
+    "ميثاق بني إسرائيل",
+    "covenant",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "mu",
+    "nz",
+    "الأعراف 145: الألواح",
+    "tablets",
+    "NARRATIVE_PARALLEL",
+    "الأعراف 145"
+  ],
+  [
+    "mu",
+    "sr",
+    "الأعراف 137: بما صبروا",
+    "7:137",
+    "NARRATIVE_PARALLEL",
+    "الأعراف 137"
+  ],
+  [
+    "mu",
+    "ih",
+    "القصص 14: نجزي المحسنين",
+    "28:14",
+    "NARRATIVE_PARALLEL",
+    "القصص 14"
+  ],
+  [
+    "mu",
+    "sh",
+    "البقرة 52: لعلكم تشكرون",
+    "2:52",
+    "NARRATIVE_PARALLEL",
+    "البقرة 52"
+  ],
+  [
+    "am",
+    "zk",
+    "البقرة 261: حبة أنبتت سبع سنابل",
+    "2:261",
+    "LEGISLATIVE_STAGE",
+    "البقرة 261"
+  ],
+  [
+    "am",
+    "sh",
+    "النحل 112: فكفرت بأنعم الله",
+    "16:112",
+    "NARRATIVE_PARALLEL",
+    "النحل 112"
+  ],
+  [
+    "am",
+    "mu",
+    "التحريم 11: امرأة فرعون",
+    "66:11",
+    "NARRATIVE_PARALLEL",
+    "66:11"
+  ],
+  [
+    "am",
+    "sb",
+    "الجمعة 5: حُمّلوا التوراة",
+    "62:5",
+    "LEGISLATIVE_STAGE",
+    "62:5"
+  ],
+  [
+    "am",
+    "nz",
+    "الحشر 21: لو أنزلنا هذا القرآن على جبل",
+    "59:21",
+    "NARRATIVE_PARALLEL",
+    "59:21"
+  ],
+  [
+    "tw",
+    "tq",
+    "البقرة 21",
+    "2:21",
+    "LEXICAL_FORMULA",
+    "البقرة 21"
+  ],
+  [
+    "tw",
+    "ih",
+    "الإسراء 23",
+    "17:23",
+    "DOCTRINAL_ROOT",
+    "الإسراء 23"
+  ],
+  [
+    "tw",
+    "sh",
+    "البقرة 172",
+    "2:172",
+    "DOCTRINAL_ROOT",
+    "البقرة 172"
+  ],
+  [
+    "tw",
+    "sl",
+    "طه 14",
+    "20:14",
+    "LEGISLATIVE_STAGE",
+    "طه 14"
+  ],
+  [
+    "tw",
+    "am",
+    "الحج 73",
+    "22:73",
+    "NARRATIVE_PARALLEL",
+    "الحج 73"
+  ],
+  [
+    "tw",
+    "sb",
+    "الأنعام 151",
+    "6:151",
+    "LEGISLATIVE_STAGE",
+    "الأنعام 151"
+  ],
+  [
+    "tw",
+    "mu",
+    "دعوة الأنبياء",
+    "prophets' call",
+    "NARRATIVE_PARALLEL",
+    ""
+  ],
+  [
+    "jn",
+    "tv",
+    "آل عمران 133: أعدت للمتقين",
+    "3:133",
+    "DOCTRINAL_ROOT",
+    "آل عمران 133"
+  ],
+  [
+    "jn",
+    "sr",
+    "الإنسان 12: وجزاهم بما صبروا",
+    "76:12",
+    "DOCTRINAL_ROOT",
+    "76:12"
+  ],
+  [
+    "jn",
+    "ih",
+    "يونس 26: للذين أحسنوا الحسنى",
+    "10:26",
+    "DOCTRINAL_ROOT",
+    "يونس 26"
+  ],
+  [
+    "jn",
+    "nr",
+    "الأعراف 44 و50: نداء الفريقين",
+    "7:44, 7:50",
+    "DOCTRINAL_ROOT",
+    "الأعراف 44"
+  ],
+  [
+    "nr",
+    "tw",
+    "المائدة 72: من يشرك... ومأواه النار",
+    "5:72",
+    "DOCTRINAL_ROOT",
+    "المائدة 72"
+  ],
+  [
+    "nr",
+    "sl",
+    "المدثر 43: لم نك من المصلين",
+    "74:43",
+    "LEGISLATIVE_STAGE",
+    "74:43"
+  ],
+  [
+    "nr",
+    "zk",
+    "المدثر 44: ولم نك نطعم المسكين",
+    "74:44",
+    "LEGISLATIVE_STAGE",
+    "74:44"
+  ],
+  [
+    "nr",
+    "rb",
+    "البقرة 275: فأولئك أصحاب النار",
+    "2:275",
+    "LEGISLATIVE_STAGE",
+    "البقرة 275"
+  ],
+  [
+    "hd",
+    "tv",
+    "البقرة 2: هدى للمتقين",
+    "2:2",
+    "DOCTRINAL_ROOT",
+    "البقرة 2"
+  ],
+  [
+    "hd",
+    "jh",
+    "العنكبوت 69: لنهدينهم سبلنا",
+    "29:69",
+    "LEGISLATIVE_STAGE",
+    "العنكبوت 69"
+  ],
+  [
+    "hd",
+    "jn",
+    "الأعراف 43: الحمد لله الذي هدانا لهذا",
+    "7:43",
+    "DOCTRINAL_ROOT",
+    "الأعراف 43"
+  ],
+  [
+    "hd",
+    "dl",
+    "الفاتحة 6-7: اهدنا... ولا الضالين",
+    "1:6-7",
+    "DOCTRINAL_ROOT",
+    "1:6"
+  ],
+  [
+    "dl",
+    "tw",
+    "النساء 116: ومن يشرك بالله فقد ضل",
+    "4:116",
+    "DOCTRINAL_ROOT",
+    "النساء 116"
+  ],
+  [
+    "dl",
+    "mu",
+    "طه 79: وأضل فرعون قومه وما هدى",
+    "20:79",
+    "NARRATIVE_PARALLEL",
+    "طه 79"
+  ],
+  [
+    "dl",
+    "am",
+    "البقرة 26: يضل به كثيراً ويهدي به كثيراً",
+    "2:26",
+    "NARRATIVE_PARALLEL",
+    "البقرة 26"
+  ],
+  [
+    "dl",
+    "ly",
+    "لا يهدي / لا يحب",
+    "does not guide / love",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "im",
+    "tw",
+    "البقرة 285: كل آمن بالله وملائكته وكتبه ورسله",
+    "2:285",
+    "DOCTRINAL_ROOT",
+    "البقرة 285"
+  ],
+  [
+    "im",
+    "nz",
+    "البقرة 4: يؤمنون بما أنزل إليك",
+    "2:4",
+    "DOCTRINAL_ROOT",
+    "البقرة 4"
+  ],
+  [
+    "im",
+    "sl",
+    "الأنفال 2-3: إنما المؤمنون... يقيمون الصلاة",
+    "8:2-3",
+    "LEGISLATIVE_STAGE",
+    "8:2"
+  ],
+  [
+    "im",
+    "kf",
+    "114 آية تجمع المادتين",
+    "114 verses share both roots",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "kf",
+    "sh",
+    "إبراهيم 7: لئن شكرتم... ولئن كفرتم",
+    "14:7",
+    "DOCTRINAL_ROOT",
+    "14:7"
+  ],
+  [
+    "kf",
+    "nr",
+    "البقرة 24: أعدت للكافرين",
+    "2:24",
+    "DOCTRINAL_ROOT",
+    "البقرة 24"
+  ],
+  [
+    "kf",
+    "ly",
+    "آل عمران 32: لا يحب الكافرين",
+    "3:32",
+    "LEXICAL_FORMULA",
+    "آل عمران 32"
+  ],
+  [
+    "kf",
+    "dl",
+    "البقرة 108: ومن يتبدل الكفر بالإيمان فقد ضل",
+    "2:108",
+    "DOCTRINAL_ROOT",
+    "البقرة 108"
+  ],
+  [
+    "tb",
+    "is",
+    "هود 3 و52 و61 و90: استغفروا ربكم ثم توبوا إليه",
+    "11:3, 52, 61, 90",
+    "DOCTRINAL_ROOT",
+    "هود 3"
+  ],
+  [
+    "tb",
+    "jn",
+    "البقرة 37: فتاب عليه (آدم)",
+    "2:37",
+    "DOCTRINAL_ROOT",
+    "البقرة 37"
+  ],
+  [
+    "tb",
+    "rb",
+    "البقرة 279: وإن تبتم فلكم رؤوس أموالكم",
+    "2:279",
+    "LEGISLATIVE_STAGE",
+    "البقرة 279"
+  ],
+  [
+    "tb",
+    "yh",
+    "البقرة 222: إن الله يحب التوابين",
+    "2:222",
+    "LEXICAL_FORMULA",
+    "البقرة 222"
+  ],
+  [
+    "is",
+    "tw",
+    "محمد 19: فاعلم أنه لا إله إلا الله واستغفر لذنبك",
+    "47:19",
+    "DOCTRINAL_ROOT",
+    "47:19"
+  ],
+  [
+    "is",
+    "jn",
+    "آل عمران 133: وسارعوا إلى مغفرة من ربكم وجنة",
+    "3:133",
+    "DOCTRINAL_ROOT",
+    "آل عمران 133"
+  ],
+  [
+    "is",
+    "nr",
+    "الأنفال 33: وما كان الله معذبهم وهم يستغفرون",
+    "8:33",
+    "DOCTRINAL_ROOT",
+    "8:33"
+  ],
+  [
+    "is",
+    "kf",
+    "الغفر والكفر: كلاهما ستر",
+    "both mean covering",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "hj",
+    "tw",
+    "الحج 26: أن لا تشرك بي شيئاً وطهر بيتي",
+    "22:26",
+    "LEGISLATIVE_STAGE",
+    "الحج 26"
+  ],
+  [
+    "hj",
+    "tv",
+    "الحج 37: ولكن يناله التقوى منكم",
+    "22:37",
+    "LEGISLATIVE_STAGE",
+    "الحج 37"
+  ],
+  [
+    "hj",
+    "sy",
+    "البقرة 189: مواقيت للناس والحج",
+    "2:189",
+    "LEGISLATIVE_STAGE",
+    "البقرة 189"
+  ],
+  [
+    "hj",
+    "is",
+    "البقرة 199: ثم أفيضوا... واستغفروا الله",
+    "2:199",
+    "LEGISLATIVE_STAGE",
+    "البقرة 199"
+  ],
+  [
+    "hj",
+    "tb",
+    "البقرة 128: وأرنا مناسكنا وتب علينا",
+    "2:128",
+    "LEGISLATIVE_STAGE",
+    "البقرة 128"
+  ],
+  [
+    "ik",
+    "tw",
+    "الزمر 3: ألا لله الدين الخالص",
+    "39:3",
+    "DOCTRINAL_ROOT",
+    "الزمر 3"
+  ],
+  [
+    "ik",
+    "sl",
+    "البينة 5: مخلصين له الدين... ويقيموا الصلاة",
+    "98:5",
+    "LEGISLATIVE_STAGE",
+    "98:5"
+  ],
+  [
+    "ik",
+    "kf",
+    "لقمان 32: دعوا الله مخلصين... كل ختار كفور",
+    "31:32",
+    "DOCTRINAL_ROOT",
+    "لقمان 32"
+  ],
+  [
+    "ik",
+    "tb",
+    "النساء 146: تابوا... وأخلصوا دينهم لله",
+    "4:146",
+    "DOCTRINAL_ROOT",
+    "النساء 146"
+  ],
+  [
+    "ik",
+    "hj",
+    "البقرة 139، الحج 31: حنفاء لله",
+    "2:139, 22:31",
+    "LEGISLATIVE_STAGE",
+    "البقرة 139"
+  ],
+  [
+    "ml",
+    "im",
+    "البقرة 285: كل آمن بالله وملائكته",
+    "2:285",
+    "DOCTRINAL_ROOT",
+    "البقرة 285"
+  ],
+  [
+    "ml",
+    "nz",
+    "الشعراء 193: نزل به الروح الأمين",
+    "26:193",
+    "DOCTRINAL_ROOT",
+    "26:193"
+  ],
+  [
+    "ml",
+    "jh",
+    "الأنفال 9: ممدكم بألف من الملائكة",
+    "8:9",
+    "LEGISLATIVE_STAGE",
+    "8:9"
+  ],
+  [
+    "ml",
+    "is",
+    "غافر 7: ويستغفرون للذين آمنوا",
+    "40:7",
+    "DOCTRINAL_ROOT",
+    "غافر 7"
+  ],
+  [
+    "kt",
+    "nz",
+    "آل عمران 3-4: نزّل عليك الكتاب... وأنزل التوراة والإنجيل",
+    "3:3-4",
+    "DOCTRINAL_ROOT",
+    "آل عمران 3"
+  ],
+  [
+    "kt",
+    "sb",
+    "المائدة 48: مصدقاً لما بين يديه ومهيمناً عليه",
+    "5:48",
+    "LEGISLATIVE_STAGE",
+    "المائدة 48"
+  ],
+  [
+    "kt",
+    "sy",
+    "البقرة 183: كتب عليكم الصيام",
+    "2:183",
+    "LEGISLATIVE_STAGE",
+    "البقرة 183"
+  ],
+  [
+    "kt",
+    "ml",
+    "الانفطار 11: كراماً كاتبين",
+    "82:11",
+    "DOCTRINAL_ROOT",
+    "82:11"
+  ],
+  [
+    "rs",
+    "tw",
+    "الأنبياء 25: إلا نوحي إليه أنه لا إله إلا أنا",
+    "21:25",
+    "DOCTRINAL_ROOT",
+    "الأنبياء 25"
+  ],
+  [
+    "rs",
+    "im",
+    "البقرة 285: لا نفرق بين أحد من رسله",
+    "2:285",
+    "DOCTRINAL_ROOT",
+    "البقرة 285"
+  ],
+  [
+    "rs",
+    "tv",
+    "الشعراء: إني لكم رسول أمين فاتقوا الله وأطيعون",
+    "26:107-179",
+    "DOCTRINAL_ROOT",
+    "26:107"
+  ],
+  [
+    "rs",
+    "mu",
+    "موسى أكثر الأنبياء ذكراً (136)",
+    "136 mentions",
+    "NARRATIVE_PARALLEL",
+    ""
+  ],
+  [
+    "rs",
+    "ml",
+    "الحج 75: يصطفي من الملائكة رسلاً ومن الناس",
+    "22:75",
+    "DOCTRINAL_ROOT",
+    "الحج 75"
+  ],
+  [
+    "ak",
+    "jn",
+    "النازعات 41: فإن الجنة هي المأوى",
+    "79:41",
+    "DOCTRINAL_ROOT",
+    "79:41"
+  ],
+  [
+    "ak",
+    "nr",
+    "القارعة 9: فأمه هاوية",
+    "101:9",
+    "DOCTRINAL_ROOT",
+    "101:9"
+  ],
+  [
+    "ak",
+    "im",
+    "19 آية: يؤمن بالله واليوم الآخر",
+    "19 verses",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "ak",
+    "rb",
+    "البقرة 281: واتقوا يوماً ترجعون فيه إلى الله",
+    "2:281",
+    "LEGISLATIVE_STAGE",
+    "البقرة 281"
+  ],
+  [
+    "ak",
+    "kt",
+    "الإسراء 14: اقرأ كتابك",
+    "17:14",
+    "DOCTRINAL_ROOT",
+    "الإسراء 14"
+  ],
+  [
+    "tv",
+    "tq",
+    "الصيغة: لعلكم تتقون",
+    "the formula",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "tv",
+    "nr",
+    "البقرة 24: فاتقوا النار",
+    "2:24",
+    "DOCTRINAL_ROOT",
+    "البقرة 24"
+  ],
+  [
+    "tv",
+    "ak",
+    "واتقوا يوماً: 3 آيات",
+    "3 verses",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "tv",
+    "im",
+    "آمنوا واتقوا: 10 آيات",
+    "10 verses",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "tv",
+    "is",
+    "الذاريات 18: وبالأسحار هم يستغفرون",
+    "51:18",
+    "DOCTRINAL_ROOT",
+    "51:18"
+  ],
+  [
+    "tv",
+    "ik",
+    "المائدة 27: إنما يتقبل الله من المتقين",
+    "5:27",
+    "DOCTRINAL_ROOT",
+    "المائدة 27"
+  ],
+  [
+    "tv",
+    "sr",
+    "تصبروا وتتقوا: 5 آيات",
+    "5 verses",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "tv",
+    "ih",
+    "اتقوا وأحسنوا: 4 آيات",
+    "4 verses",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "tv",
+    "yh",
+    "إن الله يحب المتقين",
+    "3:76; 9:4, 7",
+    "LEXICAL_FORMULA",
+    "3:76"
+  ],
+  [
+    "tv",
+    "rb",
+    "البقرة 278: اتقوا الله وذروا ما بقي من الربا",
+    "2:278",
+    "LEGISLATIVE_STAGE",
+    "البقرة 278"
+  ],
+  [
+    "tv",
+    "jh",
+    "إن الله مع المتقين",
+    "2:194; 9:36, 123",
+    "LEGISLATIVE_STAGE",
+    "2:194"
+  ],
+  [
+    "tv",
+    "zk",
+    "الليل 17-18: الأتقى الذي يؤتي ماله",
+    "92:17-18",
+    "LEGISLATIVE_STAGE",
+    "92:17"
+  ],
+  [
+    "tv",
+    "ml",
+    "غافر 7-9: وقهم السيئات",
+    "40:7-9",
+    "DOCTRINAL_ROOT",
+    "غافر 7"
+  ],
+  [
+    "as",
+    "tw",
+    "الواحد القهار، الحي القيوم",
+    "the One, the Ever-Living",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "as",
+    "ik",
+    "الأحد الصمد",
+    "112:1-2",
+    "LEXICAL_FORMULA",
+    "112:1"
+  ],
+  [
+    "as",
+    "tb",
+    "التواب الرحيم: 9 آيات مدنية",
+    "9 Medinan verses",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "as",
+    "is",
+    "غفور رحيم: 71 مرة",
+    "71 times",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "as",
+    "sh",
+    "الشكور، الشاكر",
+    "35:30; 2:158",
+    "LEXICAL_FORMULA",
+    "35:30"
+  ],
+  [
+    "as",
+    "yh",
+    "الغفور الودود",
+    "85:14",
+    "LEXICAL_FORMULA",
+    "85:14"
+  ],
+  [
+    "as",
+    "hd",
+    "وكفى بربك هادياً ونصيراً",
+    "25:31",
+    "LEXICAL_FORMULA",
+    "25:31"
+  ],
+  [
+    "as",
+    "dl",
+    "فماذا بعد الحق إلا الضلال",
+    "10:32",
+    "LEXICAL_FORMULA",
+    "10:32"
+  ],
+  [
+    "as",
+    "kt",
+    "المهيمن؛ من لدن حكيم خبير",
+    "59:23; 11:1",
+    "LEXICAL_FORMULA",
+    "59:23"
+  ],
+  [
+    "as",
+    "nz",
+    "تنزيل من العزيز الحكيم",
+    "39:1",
+    "LEXICAL_FORMULA",
+    "39:1"
+  ],
+  [
+    "as",
+    "rs",
+    "العزيز الرحيم: لازمة الشعراء",
+    "26: refrain",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "as",
+    "ak",
+    "مالك يوم الدين، الخلاق العليم",
+    "1:4; 36:81",
+    "LEXICAL_FORMULA",
+    "1:4"
+  ],
+  [
+    "as",
+    "zk",
+    "غني حميد، شكور حليم",
+    "2:267; 64:17",
+    "LEGISLATIVE_STAGE",
+    "2:267"
+  ],
+  [
+    "as",
+    "jh",
+    "إن الله لقوي عزيز",
+    "22:40",
+    "LEGISLATIVE_STAGE",
+    "22:40"
+  ],
+  [
+    "as",
+    "am",
+    "الله نور السماوات والأرض",
+    "24:35",
+    "LEXICAL_FORMULA",
+    "24:35"
+  ],
+  [
+    "as",
+    "tv",
+    "أهل التقوى وأهل المغفرة",
+    "74:56",
+    "LEXICAL_FORMULA",
+    "74:56"
+  ],
+  [
+    "nf",
+    "im",
+    "البقرة 8: وما هم بمؤمنين",
+    "2:8",
+    "DOCTRINAL_ROOT",
+    "البقرة 8"
+  ],
+  [
+    "nf",
+    "kf",
+    "المنافقين والكافرين: 6 آيات",
+    "6 verses",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "nf",
+    "dl",
+    "البقرة 16: اشتروا الضلالة بالهدى",
+    "2:16",
+    "DOCTRINAL_ROOT",
+    "البقرة 16"
+  ],
+  [
+    "nf",
+    "ik",
+    "يراءون الناس؛ وأخلصوا دينهم لله",
+    "4:142, 146",
+    "DOCTRINAL_ROOT",
+    "4:142"
+  ],
+  [
+    "nf",
+    "rs",
+    "المنافقون 1: نشهد إنك لرسول الله",
+    "63:1",
+    "DOCTRINAL_ROOT",
+    "63:1"
+  ],
+  [
+    "nf",
+    "ak",
+    "الحديد 13: انظرونا نقتبس من نوركم",
+    "57:13",
+    "DOCTRINAL_ROOT",
+    "57:13"
+  ],
+  [
+    "nf",
+    "nr",
+    "النساء 145: الدرك الأسفل من النار",
+    "4:145",
+    "DOCTRINAL_ROOT",
+    "النساء 145"
+  ],
+  [
+    "nf",
+    "tb",
+    "النساء 146: إلا الذين تابوا",
+    "4:146",
+    "DOCTRINAL_ROOT",
+    "النساء 146"
+  ],
+  [
+    "nf",
+    "is",
+    "التوبة 80: استغفر لهم أو لا تستغفر لهم",
+    "9:80",
+    "DOCTRINAL_ROOT",
+    "التوبة 80"
+  ],
+  [
+    "nf",
+    "tv",
+    "مسجد ضرار ومسجد التقوى",
+    "9:107-108",
+    "DOCTRINAL_ROOT",
+    "9:107"
+  ],
+  [
+    "nf",
+    "sl",
+    "قاموا كسالى",
+    "4:142",
+    "LEGISLATIVE_STAGE",
+    "4:142"
+  ],
+  [
+    "nf",
+    "zk",
+    "المنافقون 7: لا تنفقوا",
+    "63:7",
+    "LEGISLATIVE_STAGE",
+    "63:7"
+  ],
+  [
+    "nf",
+    "jh",
+    "أحد والأحزاب وتبوك",
+    "3:167; 33:12; 9:81",
+    "LEGISLATIVE_STAGE",
+    "3:167"
+  ],
+  [
+    "nf",
+    "am",
+    "مثل الذي استوقد ناراً",
+    "2:17",
+    "NARRATIVE_PARALLEL",
+    "2:17"
+  ],
+  [
+    "ys",
+    "mu",
+    "غافر 34: ولقد جاءكم يوسف من قبل",
+    "40:34",
+    "NARRATIVE_PARALLEL",
+    "غافر 34"
+  ],
+  [
+    "ys",
+    "rs",
+    "يوسف 108: قل هذه سبيلي",
+    "12:108",
+    "NARRATIVE_PARALLEL",
+    "يوسف 108"
+  ],
+  [
+    "ys",
+    "kt",
+    "يوسف 111: تصديق الذي بين يديه",
+    "12:111",
+    "NARRATIVE_PARALLEL",
+    "يوسف 111"
+  ],
+  [
+    "ys",
+    "tw",
+    "يوسف 39: الله الواحد القهار",
+    "12:39",
+    "NARRATIVE_PARALLEL",
+    "يوسف 39"
+  ],
+  [
+    "ys",
+    "ik",
+    "يوسف 24: من عبادنا المخلَصين",
+    "12:24",
+    "NARRATIVE_PARALLEL",
+    "يوسف 24"
+  ],
+  [
+    "ys",
+    "dl",
+    "يوسف 8: إن أبانا لفي ضلال مبين",
+    "12:8",
+    "NARRATIVE_PARALLEL",
+    "يوسف 8"
+  ],
+  [
+    "ys",
+    "kf",
+    "يوسف 87: لا ييأس من روح الله إلا القوم الكافرون",
+    "12:87",
+    "NARRATIVE_PARALLEL",
+    "يوسف 87"
+  ],
+  [
+    "ys",
+    "as",
+    "عليم حكيم: 3 مرات",
+    "12:6, 83, 100",
+    "LEXICAL_FORMULA",
+    "12:6"
+  ],
+  [
+    "ys",
+    "sr",
+    "فصبر جميل: مرتان",
+    "12:18, 83",
+    "NARRATIVE_PARALLEL",
+    "12:18"
+  ],
+  [
+    "ys",
+    "tv",
+    "يوسف 90: إنه من يتق ويصبر",
+    "12:90",
+    "NARRATIVE_PARALLEL",
+    "يوسف 90"
+  ],
+  [
+    "ys",
+    "ih",
+    "المحسنين: 5 مرات",
+    "5 times",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "ys",
+    "is",
+    "يوسف 97: استغفر لنا ذنوبنا",
+    "12:97",
+    "NARRATIVE_PARALLEL",
+    "يوسف 97"
+  ],
+  [
+    "ys",
+    "tb",
+    "إنا كنا خاطئين",
+    "12:91, 97",
+    "NARRATIVE_PARALLEL",
+    "12:91"
+  ],
+  [
+    "ys",
+    "am",
+    "لقد كان في قصصهم عبرة",
+    "12:111",
+    "NARRATIVE_PARALLEL",
+    "12:111"
+  ],
+  [
+    "nh",
+    "rs",
+    "الشعراء 105: كذبت قوم نوح المرسلين",
+    "26:105",
+    "NARRATIVE_PARALLEL",
+    "26:105"
+  ],
+  [
+    "nh",
+    "kt",
+    "الحديد 26: النبوة والكتاب",
+    "57:26",
+    "NARRATIVE_PARALLEL",
+    "57:26"
+  ],
+  [
+    "nh",
+    "tw",
+    "الأعراف 59: اعبدوا الله ما لكم من إله غيره",
+    "7:59",
+    "NARRATIVE_PARALLEL",
+    "الأعراف 59"
+  ],
+  [
+    "nh",
+    "dl",
+    "نوح 24: ولا تزد الظالمين إلا ضلالاً",
+    "71:24",
+    "NARRATIVE_PARALLEL",
+    "71:24"
+  ],
+  [
+    "nh",
+    "kf",
+    "القمر 14: جزاء لمن كان كفر",
+    "54:14",
+    "NARRATIVE_PARALLEL",
+    "54:14"
+  ],
+  [
+    "nh",
+    "as",
+    "هود 41: إن ربي لغفور رحيم",
+    "11:41",
+    "LEXICAL_FORMULA",
+    "هود 41"
+  ],
+  [
+    "nh",
+    "ak",
+    "نوح 18: ثم يعيدكم فيها",
+    "71:18",
+    "NARRATIVE_PARALLEL",
+    "71:18"
+  ],
+  [
+    "nh",
+    "is",
+    "نوح 10: استغفروا ربكم إنه كان غفاراً",
+    "71:10",
+    "NARRATIVE_PARALLEL",
+    "71:10"
+  ],
+  [
+    "nh",
+    "tv",
+    "هود 49: إن العاقبة للمتقين",
+    "11:49",
+    "NARRATIVE_PARALLEL",
+    "هود 49"
+  ],
+  [
+    "nh",
+    "sh",
+    "الإسراء 3: إنه كان عبداً شكوراً",
+    "17:3",
+    "NARRATIVE_PARALLEL",
+    "الإسراء 3"
+  ],
+  [
+    "nh",
+    "ih",
+    "الصافات 80: كذلك نجزي المحسنين",
+    "37:80",
+    "NARRATIVE_PARALLEL",
+    "الصافات 80"
+  ],
+  [
+    "nh",
+    "am",
+    "التحريم 10: امرأة نوح",
+    "66:10",
+    "NARRATIVE_PARALLEL",
+    "66:10"
+  ],
+  [
+    "nh",
+    "ib",
+    "الصافات 83: وإن من شيعته لإبراهيم",
+    "37:83",
+    "NARRATIVE_PARALLEL",
+    "الصافات 83"
+  ],
+  [
+    "nh",
+    "lt",
+    "71 و28 و43",
+    "71, 28, 43",
+    "NARRATIVE_PARALLEL",
+    ""
+  ],
+  [
+    "ib",
+    "hj",
+    "البقرة 127: وإذ يرفع إبراهيم القواعد",
+    "2:127",
+    "LEGISLATIVE_STAGE",
+    "البقرة 127"
+  ],
+  [
+    "ib",
+    "tw",
+    "الأنعام 79: وجهت وجهي",
+    "6:79",
+    "NARRATIVE_PARALLEL",
+    "الأنعام 79"
+  ],
+  [
+    "ib",
+    "ik",
+    "ملة إبراهيم حنيفاً",
+    "2:135",
+    "EXPLICIT_REF",
+    "2:135"
+  ],
+  [
+    "ib",
+    "hd",
+    "الشعراء 78: فهو يهدين",
+    "26:78",
+    "NARRATIVE_PARALLEL",
+    "26:78"
+  ],
+  [
+    "ib",
+    "im",
+    "البقرة 260: ليطمئن قلبي",
+    "2:260",
+    "NARRATIVE_PARALLEL",
+    "البقرة 260"
+  ],
+  [
+    "ib",
+    "ml",
+    "الضيف المكرمون",
+    "11:69; 51:24",
+    "NARRATIVE_PARALLEL",
+    "11:69"
+  ],
+  [
+    "ib",
+    "kt",
+    "صحف إبراهيم وموسى",
+    "87:19",
+    "NARRATIVE_PARALLEL",
+    "87:19"
+  ],
+  [
+    "ib",
+    "rs",
+    "البقرة 129: وابعث فيهم رسولاً",
+    "2:129",
+    "NARRATIVE_PARALLEL",
+    "البقرة 129"
+  ],
+  [
+    "ib",
+    "nr",
+    "الأنبياء 69: برداً وسلاماً",
+    "21:69",
+    "NARRATIVE_PARALLEL",
+    "الأنبياء 69"
+  ],
+  [
+    "ib",
+    "ak",
+    "البقرة 260: كيف تحيي الموتى",
+    "2:260",
+    "NARRATIVE_PARALLEL",
+    "البقرة 260"
+  ],
+  [
+    "ib",
+    "is",
+    "التوبة 114: إلا عن موعدة",
+    "9:114",
+    "NARRATIVE_PARALLEL",
+    "التوبة 114"
+  ],
+  [
+    "ib",
+    "sr",
+    "الصافات 102: من الصابرين",
+    "37:102",
+    "NARRATIVE_PARALLEL",
+    "الصافات 102"
+  ],
+  [
+    "ib",
+    "ys",
+    "يوسف 38: ملة آبائي إبراهيم",
+    "12:38",
+    "NARRATIVE_PARALLEL",
+    "يوسف 38"
+  ],
+  [
+    "ib",
+    "lt",
+    "الشعراء 69 = 69 مرة",
+    "26:69",
+    "NARRATIVE_PARALLEL",
+    "26:69"
+  ],
+  [
+    "lt",
+    "mu",
+    "القصص 3: نتلو عليك من نبإ موسى",
+    "28:3",
+    "NARRATIVE_PARALLEL",
+    "القصص 3"
+  ],
+  [
+    "lt",
+    "ys",
+    "لطائف نصية وعددية",
+    "patterns",
+    "NARRATIVE_PARALLEL",
+    ""
+  ],
+  [
+    "lt",
+    "rs",
+    "أعداد ذكر الأنبياء",
+    "name counts",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "mw",
+    "tv",
+    "النساء 1: اتقوا الله الذي تساءلون به والأرحام",
+    "4:1",
+    "LEGISLATIVE_STAGE",
+    "النساء 1"
+  ],
+  [
+    "mw",
+    "ih",
+    "الأنعام 152: إلا بالتي هي أحسن",
+    "6:152",
+    "LEGISLATIVE_STAGE",
+    "الأنعام 152"
+  ],
+  [
+    "mw",
+    "kt",
+    "كُتب عليكم الوصية؛ فاكتبوه",
+    "2:180; 2:282",
+    "LEGISLATIVE_STAGE",
+    "2:180"
+  ],
+  [
+    "mw",
+    "rs",
+    "النمل 16: وورث سليمان داوود",
+    "27:16",
+    "LEGISLATIVE_STAGE",
+    "النمل 16"
+  ],
+  [
+    "mw",
+    "as",
+    "عليم حكيم؛ عليم حليم؛ الحسيب",
+    "4:11, 12; 4:6",
+    "LEGISLATIVE_STAGE",
+    "4:11"
+  ],
+  [
+    "mw",
+    "dl",
+    "النساء 176: يبين الله لكم أن تضلوا",
+    "4:176",
+    "LEGISLATIVE_STAGE",
+    "النساء 176"
+  ],
+  [
+    "mw",
+    "jn",
+    "المؤمنون 11: الذين يرثون الفردوس",
+    "23:11",
+    "LEGISLATIVE_STAGE",
+    "23:11"
+  ],
+  [
+    "mw",
+    "nr",
+    "النساء 10: يأكلون في بطونهم ناراً",
+    "4:10",
+    "LEGISLATIVE_STAGE",
+    "النساء 10"
+  ],
+  [
+    "mw",
+    "zk",
+    "فريضة من الله؛ والغارمين",
+    "4:11; 9:60",
+    "LEGISLATIVE_STAGE",
+    "4:11"
+  ],
+  [
+    "mw",
+    "sy",
+    "تلك حدود الله",
+    "2:187; 4:13",
+    "LEGISLATIVE_STAGE",
+    "2:187"
+  ],
+  [
+    "mw",
+    "rb",
+    "البقرة 280: فنظرة إلى ميسرة",
+    "2:280",
+    "LEGISLATIVE_STAGE",
+    "البقرة 280"
+  ],
+  [
+    "mw",
+    "kh",
+    "التدرج في التشريع",
+    "gradual legislation",
+    "LEGISLATIVE_STAGE",
+    ""
+  ],
+  [
+    "mw",
+    "mu",
+    "الأعراف 137: وأورثنا القوم الذين كانوا يستضعفون",
+    "7:137",
+    "LEGISLATIVE_STAGE",
+    "الأعراف 137"
+  ],
+  [
+    "rh",
+    "as",
+    "الإسراء 110: قل ادعوا الله أو ادعوا الرحمن",
+    "17:110",
+    "LEXICAL_FORMULA",
+    "الإسراء 110"
+  ],
+  [
+    "rh",
+    "tw",
+    "مريم 92: وما ينبغي للرحمن أن يتخذ ولداً",
+    "19:92",
+    "LEXICAL_FORMULA",
+    "مريم 92"
+  ],
+  [
+    "rh",
+    "kf",
+    "الرعد 30: وهم يكفرون بالرحمن",
+    "13:30",
+    "LEXICAL_FORMULA",
+    "13:30"
+  ],
+  [
+    "rh",
+    "dl",
+    "الحجر 56: ومن يقنط من رحمة ربه إلا الضالون",
+    "15:56",
+    "LEXICAL_FORMULA",
+    "الحجر 56"
+  ],
+  [
+    "rh",
+    "ml",
+    "الزخرف 19: عباد الرحمن إناثاً",
+    "43:19",
+    "LEXICAL_FORMULA",
+    "الزخرف 19"
+  ],
+  [
+    "rh",
+    "rs",
+    "الأنبياء 107: رحمة للعالمين",
+    "21:107",
+    "LEXICAL_FORMULA",
+    "الأنبياء 107"
+  ],
+  [
+    "rh",
+    "nz",
+    "الرحمن 1-2: الرحمن علم القرآن",
+    "55:1-2",
+    "LEXICAL_FORMULA",
+    "55:1"
+  ],
+  [
+    "rh",
+    "ak",
+    "طه 108: وخشعت الأصوات للرحمن",
+    "20:108",
+    "LEXICAL_FORMULA",
+    "طه 108"
+  ],
+  [
+    "rh",
+    "tb",
+    "التواب الرحيم: 9 آيات مدنية",
+    "9 Medinan",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "rh",
+    "is",
+    "غفور رحيم: 71 مرة",
+    "71 times",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "rh",
+    "ih",
+    "الأعراف 56: إن رحمت الله قريب من المحسنين",
+    "7:56",
+    "LEXICAL_FORMULA",
+    "الأعراف 56"
+  ],
+  [
+    "rh",
+    "tv",
+    "الأعراف 156: فسأكتبها للذين يتقون",
+    "7:156",
+    "LEXICAL_FORMULA",
+    "الأعراف 156"
+  ],
+  [
+    "rh",
+    "sy",
+    "مريم 26: إني نذرت للرحمن صوماً",
+    "19:26",
+    "LEGISLATIVE_STAGE",
+    "مريم 26"
+  ],
+  [
+    "rh",
+    "ib",
+    "مريم 44: إن الشيطان كان للرحمن عصياً",
+    "19:44",
+    "LEXICAL_FORMULA",
+    "مريم 44"
+  ],
+  [
+    "rh",
+    "mw",
+    "الأنفال 75: وأولو الأرحام",
+    "8:75",
+    "LEGISLATIVE_STAGE",
+    "8:75"
+  ],
+  [
+    "rh",
+    "lt",
+    "114: البسملة والرحمة والرحيم",
+    "114 three times",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "zw",
+    "tl",
+    "النساء 21: وأخذن منكم ميثاقاً غليظاً",
+    "4:21",
+    "LEGISLATIVE_STAGE",
+    "النساء 21"
+  ],
+  [
+    "zw",
+    "mw",
+    "النساء 12: ولكم نصف ما ترك أزواجكم",
+    "4:12",
+    "CONTRAST_PAIR",
+    "النساء 12"
+  ],
+  [
+    "zw",
+    "rh",
+    "الروم 21: مودة ورحمة",
+    "30:21",
+    "LEGISLATIVE_STAGE",
+    "الروم 21"
+  ],
+  [
+    "zw",
+    "as",
+    "النساء 35: عليماً خبيراً",
+    "4:35",
+    "LEGISLATIVE_STAGE",
+    "النساء 35"
+  ],
+  [
+    "zw",
+    "im",
+    "البقرة 221: ولأمة مؤمنة خير من مشركة",
+    "2:221",
+    "LEGISLATIVE_STAGE",
+    "البقرة 221"
+  ],
+  [
+    "zw",
+    "kt",
+    "المائدة 5: والمحصنات من الذين أوتوا الكتاب",
+    "5:5",
+    "LEGISLATIVE_STAGE",
+    "المائدة 5"
+  ],
+  [
+    "zw",
+    "rs",
+    "الرعد 38: وجعلنا لهم أزواجاً وذرية",
+    "13:38",
+    "CONTRAST_PAIR",
+    "13:38"
+  ],
+  [
+    "zw",
+    "ml",
+    "مثنى وثلاث ورباع",
+    "4:3; 35:1",
+    "LEGISLATIVE_STAGE",
+    "4:3"
+  ],
+  [
+    "zw",
+    "jn",
+    "يس 56: هم وأزواجهم في ظلال",
+    "36:56",
+    "CONTRAST_PAIR",
+    "36:56"
+  ],
+  [
+    "zw",
+    "ih",
+    "النساء 128: وإن تحسنوا وتتقوا",
+    "4:128",
+    "LEGISLATIVE_STAGE",
+    "النساء 128"
+  ],
+  [
+    "zw",
+    "sr",
+    "النساء 19: فإن كرهتموهن فعسى",
+    "4:19",
+    "LEGISLATIVE_STAGE",
+    "النساء 19"
+  ],
+  [
+    "zw",
+    "sy",
+    "البقرة 187: هن لباس لكم",
+    "2:187",
+    "LEGISLATIVE_STAGE",
+    "البقرة 187"
+  ],
+  [
+    "zw",
+    "zk",
+    "النساء 4: وآتوا النساء صدقاتهن",
+    "4:4",
+    "LEGISLATIVE_STAGE",
+    "النساء 4"
+  ],
+  [
+    "zw",
+    "sb",
+    "ميثاقاً غليظاً",
+    "4:21; 4:154",
+    "LEGISLATIVE_STAGE",
+    "4:21"
+  ],
+  [
+    "zw",
+    "mu",
+    "القصص 27: إني أريد أن أنكحك",
+    "28:27",
+    "LEGISLATIVE_STAGE",
+    "القصص 27"
+  ],
+  [
+    "zw",
+    "am",
+    "التحريم 10-11",
+    "66:10-11",
+    "LEGISLATIVE_STAGE",
+    "66:10"
+  ],
+  [
+    "tl",
+    "mw",
+    "البقرة 233: وعلى الوارث مثل ذلك",
+    "2:233",
+    "LEGISLATIVE_STAGE",
+    "البقرة 233"
+  ],
+  [
+    "tl",
+    "as",
+    "البقرة 226-227: غفور رحيم، سميع عليم",
+    "2:226-227",
+    "LEGISLATIVE_STAGE",
+    "البقرة 226"
+  ],
+  [
+    "tl",
+    "ak",
+    "الحج 2: تذهل كل مرضعة",
+    "22:2",
+    "LEGISLATIVE_STAGE",
+    "الحج 2"
+  ],
+  [
+    "tl",
+    "ih",
+    "البقرة 229: أو تسريح بإحسان",
+    "2:229",
+    "LEGISLATIVE_STAGE",
+    "البقرة 229"
+  ],
+  [
+    "tl",
+    "tv",
+    "الطلاق 2: ومن يتق الله يجعل له مخرجاً",
+    "65:2",
+    "LEGISLATIVE_STAGE",
+    "65:2"
+  ],
+  [
+    "tl",
+    "sl",
+    "البقرة 238: حافظوا على الصلوات",
+    "2:238",
+    "LEGISLATIVE_STAGE",
+    "البقرة 238"
+  ],
+  [
+    "tl",
+    "sy",
+    "المجادلة 4: فصيام شهرين متتابعين",
+    "58:4",
+    "LEGISLATIVE_STAGE",
+    "58:4"
+  ],
+  [
+    "tl",
+    "zk",
+    "الطلاق 7: لينفق ذو سعة من سعته",
+    "65:7",
+    "LEGISLATIVE_STAGE",
+    "65:7"
+  ],
+  [
+    "tl",
+    "mu",
+    "القصص 7: أن أرضعيه",
+    "28:7",
+    "LEGISLATIVE_STAGE",
+    "القصص 7"
+  ],
+  [
+    "tl",
+    "lt",
+    "30 − 24 = 6",
+    "46:15",
+    "LEGISLATIVE_STAGE",
+    "46:15"
+  ],
+  [
+    "ka",
+    "mu",
+    "الكهف 60-82: موسى والعبد الصالح",
+    "18:60-82",
+    "NARRATIVE_PARALLEL",
+    "الكهف 60"
+  ],
+  [
+    "ka",
+    "nh",
+    "سآوي إلى جبل؛ أصحاب السفينة",
+    "11:43; 29:15",
+    "NARRATIVE_PARALLEL",
+    "11:43"
+  ],
+  [
+    "ka",
+    "ib",
+    "ستجدني إن شاء الله؛ وأعتزلكم",
+    "18:69; 37:102; 19:48",
+    "NARRATIVE_PARALLEL",
+    "18:69"
+  ],
+  [
+    "ka",
+    "ys",
+    "التأويل",
+    "18:78, 82",
+    "NARRATIVE_PARALLEL",
+    "18:78"
+  ],
+  [
+    "ka",
+    "lt",
+    "309 ومنتصف المصحف",
+    "18:25; 18:19",
+    "NARRATIVE_PARALLEL",
+    "18:25"
+  ],
+  [
+    "ka",
+    "am",
+    "واضرب لهم مثلاً رجلين",
+    "18:32, 45",
+    "NARRATIVE_PARALLEL",
+    "18:32"
+  ],
+  [
+    "ka",
+    "jn",
+    "جنتان في الدنيا وجنات الفردوس",
+    "18:32; 18:107",
+    "NARRATIVE_PARALLEL",
+    "18:32"
+  ],
+  [
+    "ka",
+    "ak",
+    "ليعلموا أن وعد الله حق",
+    "18:21",
+    "NARRATIVE_PARALLEL",
+    "18:21"
+  ],
+  [
+    "ka",
+    "tw",
+    "ولا أشرك بربي أحداً",
+    "18:38",
+    "NARRATIVE_PARALLEL",
+    "18:38"
+  ],
+  [
+    "ka",
+    "ik",
+    "ولا يشرك بعبادة ربه أحداً",
+    "18:110",
+    "NARRATIVE_PARALLEL",
+    "18:110"
+  ],
+  [
+    "ka",
+    "hd",
+    "وزدناهم هدى",
+    "18:13",
+    "NARRATIVE_PARALLEL",
+    "18:13"
+  ],
+  [
+    "ka",
+    "dl",
+    "من يهد الله فهو المهتد",
+    "18:17",
+    "NARRATIVE_PARALLEL",
+    "18:17"
+  ],
+  [
+    "ka",
+    "kf",
+    "أكفرت بالذي خلقك من تراب",
+    "18:37",
+    "NARRATIVE_PARALLEL",
+    "18:37"
+  ],
+  [
+    "ka",
+    "rh",
+    "الرحمة في ثلاث قصص",
+    "18:10, 65, 98",
+    "LEXICAL_FORMULA",
+    "18:10"
+  ],
+  [
+    "ka",
+    "sr",
+    "إنك لن تستطيع معي صبراً",
+    "18:67",
+    "NARRATIVE_PARALLEL",
+    "18:67"
+  ],
+  [
+    "ka",
+    "mw",
+    "وكان تحته كنز لهما",
+    "18:82",
+    "LEGISLATIVE_STAGE",
+    "18:82"
+  ],
+  [
+    "ka",
+    "ml",
+    "إلا إبليس كان من الجن",
+    "18:50",
+    "NARRATIVE_PARALLEL",
+    "18:50"
+  ],
+  [
+    "ka",
+    "rs",
+    "قل إنما أنا بشر مثلكم",
+    "18:110",
+    "NARRATIVE_PARALLEL",
+    "18:110"
+  ],
+  [
+    "ka",
+    "im",
+    "فتية آمنوا بربهم",
+    "18:13",
+    "NARRATIVE_PARALLEL",
+    "18:13"
+  ],
+  [
+    "ka",
+    "nz",
+    "أنزل على عبده الكتاب",
+    "18:1",
+    "NARRATIVE_PARALLEL",
+    "18:1"
+  ],
+  [
+    "ka",
+    "kt",
+    "ووضع الكتاب",
+    "18:49",
+    "NARRATIVE_PARALLEL",
+    "18:49"
+  ],
+  [
+    "ka",
+    "is",
+    "ويستغفروا ربهم",
+    "18:55",
+    "NARRATIVE_PARALLEL",
+    "18:55"
+  ],
+  [
+    "ka",
+    "ih",
+    "إنا لا نضيع أجر من أحسن عملاً",
+    "18:30",
+    "NARRATIVE_PARALLEL",
+    "18:30"
+  ],
+  [
+    "ka",
+    "nr",
+    "أحاط بهم سرادقها",
+    "18:29",
+    "NARRATIVE_PARALLEL",
+    "18:29"
+  ],
+  [
+    "ad",
+    "ia",
+    "آل عمران 59: كمثل آدم",
+    "3:59",
+    "NARRATIVE_PARALLEL",
+    "آل عمران 59"
+  ],
+  [
+    "ad",
+    "lt",
+    "آدم 25 وعيسى 25",
+    "25 and 25",
+    "NARRATIVE_PARALLEL",
+    ""
+  ],
+  [
+    "ad",
+    "ml",
+    "اسجدوا لآدم",
+    "2:34",
+    "NARRATIVE_PARALLEL",
+    "2:34"
+  ],
+  [
+    "ad",
+    "tb",
+    "فتلقى آدم من ربه كلمات فتاب عليه",
+    "2:37",
+    "NARRATIVE_PARALLEL",
+    "2:37"
+  ],
+  [
+    "ad",
+    "is",
+    "ربنا ظلمنا أنفسنا",
+    "7:23",
+    "NARRATIVE_PARALLEL",
+    "7:23"
+  ],
+  [
+    "ad",
+    "tv",
+    "ولباس التقوى ذلك خير",
+    "7:26",
+    "NARRATIVE_PARALLEL",
+    "7:26"
+  ],
+  [
+    "ad",
+    "jn",
+    "اسكن أنت وزوجك الجنة",
+    "2:35",
+    "NARRATIVE_PARALLEL",
+    "2:35"
+  ],
+  [
+    "ad",
+    "nr",
+    "خلقتني من نار",
+    "7:12",
+    "NARRATIVE_PARALLEL",
+    "7:12"
+  ],
+  [
+    "ad",
+    "hd",
+    "فمن تبع هداي",
+    "2:38",
+    "NARRATIVE_PARALLEL",
+    "2:38"
+  ],
+  [
+    "ad",
+    "dl",
+    "فلا يضل ولا يشقى؛ فبما أغويتني",
+    "20:123; 7:16",
+    "NARRATIVE_PARALLEL",
+    "20:123"
+  ],
+  [
+    "ad",
+    "tw",
+    "ألست بربكم قالوا بلى",
+    "7:172",
+    "NARRATIVE_PARALLEL",
+    "7:172"
+  ],
+  [
+    "ad",
+    "sb",
+    "ألم أعهد إليكم يا بني آدم",
+    "36:60",
+    "LEGISLATIVE_STAGE",
+    "36:60"
+  ],
+  [
+    "ad",
+    "nh",
+    "اصطفى آدم ونوحاً؛ اهبط بسلام",
+    "3:33; 11:48",
+    "NARRATIVE_PARALLEL",
+    "3:33"
+  ],
+  [
+    "ad",
+    "ka",
+    "كان من الجن؛ بغير نفس",
+    "18:50; 18:74",
+    "NARRATIVE_PARALLEL",
+    "18:50"
+  ],
+  [
+    "ad",
+    "zw",
+    "اسكن أنت وزوجك",
+    "2:35",
+    "LEGISLATIVE_STAGE",
+    "2:35"
+  ],
+  [
+    "ad",
+    "rs",
+    "خليفة: آدم وداود",
+    "2:30; 38:26",
+    "NARRATIVE_PARALLEL",
+    "2:30"
+  ],
+  [
+    "ad",
+    "ib",
+    "اجتباه ربه",
+    "16:121; 20:122",
+    "NARRATIVE_PARALLEL",
+    "16:121"
+  ],
+  [
+    "ad",
+    "kt",
+    "كتبنا على بني إسرائيل",
+    "5:32",
+    "NARRATIVE_PARALLEL",
+    "5:32"
+  ],
+  [
+    "ad",
+    "ly",
+    "إنه لا يحب المسرفين",
+    "7:31",
+    "LEXICAL_FORMULA",
+    "7:31"
+  ],
+  [
+    "ad",
+    "sh",
+    "ولا تجد أكثرهم شاكرين",
+    "7:17",
+    "NARRATIVE_PARALLEL",
+    "7:17"
+  ],
+  [
+    "ia",
+    "lt",
+    "عيسى 25 وآدم 25",
+    "25 and 25",
+    "NARRATIVE_PARALLEL",
+    ""
+  ],
+  [
+    "ia",
+    "ka",
+    "لقد جئت شيئاً؛ آويناهما",
+    "19:27; 23:50",
+    "NARRATIVE_PARALLEL",
+    "19:27"
+  ],
+  [
+    "ia",
+    "am",
+    "ومريم ابنت عمران",
+    "66:12",
+    "NARRATIVE_PARALLEL",
+    "66:12"
+  ],
+  [
+    "ia",
+    "rh",
+    "إني أعوذ بالرحمن منك",
+    "19:18",
+    "LEXICAL_FORMULA",
+    "19:18"
+  ],
+  [
+    "ia",
+    "as",
+    "فإنك أنت العزيز الحكيم",
+    "5:118",
+    "LEXICAL_FORMULA",
+    "5:118"
+  ],
+  [
+    "ia",
+    "kt",
+    "وآتيناه الإنجيل",
+    "5:46",
+    "NARRATIVE_PARALLEL",
+    "5:46"
+  ],
+  [
+    "ia",
+    "rs",
+    "ما المسيح ابن مريم إلا رسول",
+    "5:75",
+    "NARRATIVE_PARALLEL",
+    "5:75"
+  ],
+  [
+    "ia",
+    "ml",
+    "وأيدناه بروح القدس",
+    "2:87",
+    "NARRATIVE_PARALLEL",
+    "2:87"
+  ],
+  [
+    "ia",
+    "tw",
+    "إن الله ربي وربكم فاعبدوه",
+    "3:51",
+    "NARRATIVE_PARALLEL",
+    "3:51"
+  ],
+  [
+    "ia",
+    "kf",
+    "لقد كفر الذين قالوا",
+    "5:17, 72-73",
+    "NARRATIVE_PARALLEL",
+    "5:17"
+  ],
+  [
+    "ia",
+    "ak",
+    "وإنه لعلم للساعة",
+    "43:61",
+    "NARRATIVE_PARALLEL",
+    "43:61"
+  ],
+  [
+    "ia",
+    "tv",
+    "فاتقوا الله وأطيعون",
+    "3:50",
+    "NARRATIVE_PARALLEL",
+    "3:50"
+  ],
+  [
+    "ia",
+    "sy",
+    "إني نذرت للرحمن صوماً",
+    "19:26",
+    "LEGISLATIVE_STAGE",
+    "19:26"
+  ],
+  [
+    "ia",
+    "sl",
+    "اقنتي لربك واسجدي واركعي",
+    "3:43",
+    "LEGISLATIVE_STAGE",
+    "3:43"
+  ],
+  [
+    "ia",
+    "hd",
+    "فيه هدى ونور",
+    "5:46",
+    "NARRATIVE_PARALLEL",
+    "5:46"
+  ],
+  [
+    "ia",
+    "jn",
+    "هذا يوم ينفع الصادقين صدقهم",
+    "5:119",
+    "NARRATIVE_PARALLEL",
+    "5:119"
+  ],
+  [
+    "ia",
+    "ik",
+    "لم يلد ولم يولد؛ ما كان لله أن يتخذ من ولد",
+    "112:3; 19:35",
+    "NARRATIVE_PARALLEL",
+    "112:3"
+  ],
+  [
+    "ia",
+    "sb",
+    "ولأحل لكم بعض الذي حرم عليكم",
+    "3:50",
+    "LEGISLATIVE_STAGE",
+    "3:50"
+  ],
+  [
+    "ia",
+    "mu",
+    "مصدقاً لما بين يدي من التوراة",
+    "3:50; 61:6",
+    "NARRATIVE_PARALLEL",
+    "3:50"
+  ],
+  [
+    "my",
+    "ia",
+    "ابن مريم",
+    "son of Mary",
+    "NARRATIVE_PARALLEL",
+    ""
+  ],
+  [
+    "my",
+    "lt",
+    "مريم 34؛ ابن مريم 23",
+    "34; 23",
+    "NARRATIVE_PARALLEL",
+    "مريم 34"
+  ],
+  [
+    "my",
+    "am",
+    "ومريم ابنت عمران",
+    "66:12",
+    "NARRATIVE_PARALLEL",
+    "66:12"
+  ],
+  [
+    "my",
+    "mu",
+    "لا تحزني؛ يكفله؛ قرة العين",
+    "28:7, 12, 13",
+    "NARRATIVE_PARALLEL",
+    "28:7"
+  ],
+  [
+    "my",
+    "ad",
+    "اصطفى آدم... وآل عمران",
+    "3:33",
+    "NARRATIVE_PARALLEL",
+    "3:33"
+  ],
+  [
+    "my",
+    "ys",
+    "امرأة العزيز",
+    "12:51",
+    "NARRATIVE_PARALLEL",
+    "12:51"
+  ],
+  [
+    "my",
+    "ib",
+    "امرأته قائمة فضحكت",
+    "11:71",
+    "NARRATIVE_PARALLEL",
+    "11:71"
+  ],
+  [
+    "my",
+    "rh",
+    "إني أعوذ بالرحمن منك",
+    "19:18",
+    "LEXICAL_FORMULA",
+    "19:18"
+  ],
+  [
+    "my",
+    "sl",
+    "اقنتي لربك واسجدي واركعي",
+    "3:43",
+    "LEGISLATIVE_STAGE",
+    "3:43"
+  ],
+  [
+    "my",
+    "sy",
+    "إني نذرت للرحمن صوماً",
+    "19:26",
+    "LEGISLATIVE_STAGE",
+    "19:26"
+  ],
+  [
+    "my",
+    "tl",
+    "المجادلة؛ أن أرضعيه",
+    "58:1; 28:7",
+    "LEGISLATIVE_STAGE",
+    "58:1"
+  ],
+  [
+    "my",
+    "zw",
+    "ابنتا صاحب مدين",
+    "28:23-27",
+    "LEGISLATIVE_STAGE",
+    "28:23"
+  ],
+  [
+    "my",
+    "kt",
+    "وصدقت بكلمات ربها وكتبه",
+    "66:12",
+    "NARRATIVE_PARALLEL",
+    "66:12"
+  ],
+  [
+    "my",
+    "ml",
+    "إذ قالت الملائكة يا مريم",
+    "3:42",
+    "NARRATIVE_PARALLEL",
+    "مريم 3"
+  ],
+  [
+    "my",
+    "nh",
+    "امرأة نوح",
+    "66:10",
+    "NARRATIVE_PARALLEL",
+    "66:10"
+  ],
+  [
+    "my",
+    "jn",
+    "رب ابن لي عندك بيتاً في الجنة",
+    "66:11",
+    "NARRATIVE_PARALLEL",
+    "66:11"
+  ],
+  [
+    "my",
+    "sr",
+    "ألا تحزني",
+    "19:24",
+    "NARRATIVE_PARALLEL",
+    "19:24"
+  ],
+  [
+    "my",
+    "as",
+    "إنك أنت السميع العليم",
+    "3:35",
+    "LEXICAL_FORMULA",
+    "3:35"
+  ],
+  [
+    "aq",
+    "nh",
+    "قوم نوح أو قوم هود أو قوم صالح",
+    "11:89",
+    "NARRATIVE_PARALLEL",
+    "11:89"
+  ],
+  [
+    "aq",
+    "ib",
+    "فآمن له لوط؛ ضيف إبراهيم",
+    "29:26; 11:69-76",
+    "NARRATIVE_PARALLEL",
+    "29:26"
+  ],
+  [
+    "aq",
+    "mu",
+    "ولما توجه تلقاء مدين",
+    "28:22",
+    "NARRATIVE_PARALLEL",
+    "28:22"
+  ],
+  [
+    "aq",
+    "my",
+    "امرأت نوح وامرأت لوط",
+    "66:10",
+    "NARRATIVE_PARALLEL",
+    "66:10"
+  ],
+  [
+    "aq",
+    "ka",
+    "أو آوي إلى ركن شديد",
+    "11:80",
+    "NARRATIVE_PARALLEL",
+    "11:80"
+  ],
+  [
+    "aq",
+    "rs",
+    "إني لكم رسول أمين",
+    "26:125",
+    "NARRATIVE_PARALLEL",
+    "26:125"
+  ],
+  [
+    "aq",
+    "tv",
+    "ألا تتقون",
+    "26:124",
+    "NARRATIVE_PARALLEL",
+    "26:124"
+  ],
+  [
+    "aq",
+    "is",
+    "استغفروا ربكم ثم توبوا إليه",
+    "11:52, 61, 90",
+    "NARRATIVE_PARALLEL",
+    "11:52"
+  ],
+  [
+    "aq",
+    "tb",
+    "ثم توبوا إليه",
+    "11:52, 61, 90",
+    "NARRATIVE_PARALLEL",
+    "11:52"
+  ],
+  [
+    "aq",
+    "sh",
+    "فاذكروا آلاء الله",
+    "7:69, 74",
+    "NARRATIVE_PARALLEL",
+    "7:69"
+  ],
+  [
+    "aq",
+    "as",
+    "قريب مجيب؛ رحيم ودود؛ العزيز الرحيم",
+    "11:61, 90; 26:140",
+    "LEXICAL_FORMULA",
+    "11:61"
+  ],
+  [
+    "aq",
+    "ly",
+    "ولا تعثوا في الأرض مفسدين",
+    "26:183",
+    "LEXICAL_FORMULA",
+    "26:183"
+  ],
+  [
+    "aq",
+    "jn",
+    "في جنات وعيون",
+    "26:134, 147",
+    "NARRATIVE_PARALLEL",
+    "26:134"
+  ],
+  [
+    "aq",
+    "kf",
+    "ألا إن عاداً كفروا ربهم",
+    "11:60",
+    "NARRATIVE_PARALLEL",
+    "11:60"
+  ],
+  [
+    "aq",
+    "rb",
+    "ولا تبخسوا الناس أشياءهم",
+    "7:85",
+    "LEGISLATIVE_STAGE",
+    "7:85"
+  ],
+  [
+    "aq",
+    "hd",
+    "فهديناهم فاستحبوا العمى على الهدى",
+    "41:17",
+    "NARRATIVE_PARALLEL",
+    "41:17"
+  ],
+  [
+    "aq",
+    "tw",
+    "اعبدوا الله ما لكم من إله غيره",
+    "7:65",
+    "NARRATIVE_PARALLEL",
+    "7:65"
+  ],
+  [
+    "aq",
+    "ad",
+    "إني لكما لمن الناصحين",
+    "7:21",
+    "NARRATIVE_PARALLEL",
+    "7:21"
+  ],
+  [
+    "aq",
+    "ia",
+    "ربي وربكم",
+    "11:56",
+    "NARRATIVE_PARALLEL",
+    "11:56"
+  ],
+  [
+    "aq",
+    "zw",
+    "إني أريد أن أنكحك",
+    "28:27",
+    "LEGISLATIVE_STAGE",
+    "28:27"
+  ],
+  [
+    "aq",
+    "sl",
+    "أصلاتك تأمرك",
+    "11:87",
+    "LEGISLATIVE_STAGE",
+    "11:87"
+  ],
+  [
+    "aq",
+    "rh",
+    "برحمة منا",
+    "11:58, 66, 94",
+    "LEXICAL_FORMULA",
+    "11:58"
+  ],
+  [
+    "aq",
+    "mw",
+    "وأوفوا الكيل والميزان",
+    "6:152; 7:85",
+    "LEGISLATIVE_STAGE",
+    "6:152"
+  ],
+  [
+    "aq",
+    "ak",
+    "وإنكم لتمرون عليهم مصبحين",
+    "37:137",
+    "NARRATIVE_PARALLEL",
+    "37:137"
+  ],
+  [
+    "ds",
+    "ad",
+    "إنا جعلناك خليفة في الأرض",
+    "2:30; 38:26",
+    "NARRATIVE_PARALLEL",
+    "2:30"
+  ],
+  [
+    "ds",
+    "mu",
+    "التابوت؛ الصرح؛ أفرغ علينا صبراً",
+    "2:248; 28:38; 7:126",
+    "NARRATIVE_PARALLEL",
+    "2:248"
+  ],
+  [
+    "ds",
+    "ka",
+    "زبر الحديد والقطر؛ ما مكني فيه ربي خير",
+    "18:95-96; 34:10-12",
+    "NARRATIVE_PARALLEL",
+    "18:95"
+  ],
+  [
+    "ds",
+    "my",
+    "المحراب؛ ملكة سبأ",
+    "38:21; 27:44",
+    "NARRATIVE_PARALLEL",
+    "سبأ 38"
+  ],
+  [
+    "ds",
+    "ys",
+    "آتيناه حكماً وعلماً",
+    "12:22; 21:79",
+    "NARRATIVE_PARALLEL",
+    "12:22"
+  ],
+  [
+    "ds",
+    "aq",
+    "بسطة؛ ولوطاً آتيناه حكماً وعلماً",
+    "2:247; 7:69; 21:74",
+    "NARRATIVE_PARALLEL",
+    "2:247"
+  ],
+  [
+    "ds",
+    "ib",
+    "ما هذه التماثيل؛ ومن ذريته داوود وسليمان",
+    "21:52; 34:13; 6:84",
+    "NARRATIVE_PARALLEL",
+    "21:52"
+  ],
+  [
+    "ds",
+    "kt",
+    "وآتينا داوود زبوراً",
+    "4:163; 17:55; 21:105",
+    "NARRATIVE_PARALLEL",
+    "4:163"
+  ],
+  [
+    "ds",
+    "rs",
+    "ولقد فضلنا بعض النبيين على بعض",
+    "17:55; 27:15",
+    "NARRATIVE_PARALLEL",
+    "17:55"
+  ],
+  [
+    "ds",
+    "sh",
+    "اعملوا آل داوود شكراً",
+    "34:13; 27:19, 40",
+    "NARRATIVE_PARALLEL",
+    "34:13"
+  ],
+  [
+    "ds",
+    "sr",
+    "اصبر على ما يقولون واذكر عبدنا داوود",
+    "38:17; 2:249-250",
+    "NARRATIVE_PARALLEL",
+    "38:17"
+  ],
+  [
+    "ds",
+    "is",
+    "فاستغفر ربه وخر راكعاً وأناب",
+    "38:24, 35",
+    "NARRATIVE_PARALLEL",
+    "38:24"
+  ],
+  [
+    "ds",
+    "tb",
+    "إنه أواب؛ ثم أناب",
+    "38:17, 30, 34",
+    "NARRATIVE_PARALLEL",
+    "38:17"
+  ],
+  [
+    "ds",
+    "mw",
+    "وورث سليمان داوود",
+    "27:16",
+    "LEGISLATIVE_STAGE",
+    "27:16"
+  ],
+  [
+    "ds",
+    "jh",
+    "ولولا دفع الله الناس بعضهم ببعض",
+    "2:246-251",
+    "LEGISLATIVE_STAGE",
+    "2:246"
+  ],
+  [
+    "ds",
+    "as",
+    "إنك أنت الوهاب",
+    "38:35",
+    "LEXICAL_FORMULA",
+    "38:35"
+  ],
+  [
+    "ds",
+    "rh",
+    "إنه من سليمان وإنه بسم الله الرحمن الرحيم",
+    "27:30",
+    "LEXICAL_FORMULA",
+    "27:30"
+  ],
+  [
+    "ds",
+    "ml",
+    "هاروت وماروت؛ تحمله الملائكة",
+    "2:102, 248",
+    "NARRATIVE_PARALLEL",
+    "2:102"
+  ],
+  [
+    "ds",
+    "kf",
+    "ليبلوني أأشكر أم أكفر؛ وما كفر سليمان",
+    "27:40; 2:102",
+    "NARRATIVE_PARALLEL",
+    "27:40"
+  ],
+  [
+    "ds",
+    "dl",
+    "ولا تتبع الهوى فيضلك عن سبيل الله",
+    "38:26",
+    "NARRATIVE_PARALLEL",
+    "38:26"
+  ],
+  [
+    "ds",
+    "tw",
+    "رب العرش العظيم",
+    "27:24-26",
+    "NARRATIVE_PARALLEL",
+    "27:24"
+  ],
+  [
+    "ds",
+    "jn",
+    "جنتان عن يمين وشمال؛ قوارير",
+    "34:15; 76:15-16",
+    "NARRATIVE_PARALLEL",
+    "34:15"
+  ],
+  [
+    "ds",
+    "ia",
+    "على لسان داوود وعيسى ابن مريم",
+    "5:78",
+    "NARRATIVE_PARALLEL",
+    "مريم 5"
+  ],
+  [
+    "ds",
+    "sb",
+    "لعن الذين كفروا من بني إسرائيل",
+    "5:78",
+    "LEGISLATIVE_STAGE",
+    "5:78"
+  ],
+  [
+    "zy",
+    "my",
+    "كفلها زكريا؛ أنى لك هذا",
+    "3:37",
+    "NARRATIVE_PARALLEL",
+    "3:37"
+  ],
+  [
+    "zy",
+    "ia",
+    "مصدقاً بكلمة من الله؛ وسلام عليه",
+    "3:39; 19:15, 33",
+    "NARRATIVE_PARALLEL",
+    "3:39"
+  ],
+  [
+    "zy",
+    "ib",
+    "وهب لي على الكبر؛ سميع الدعاء؛ رحمت الله وبركاته",
+    "14:39; 3:38; 11:73",
+    "NARRATIVE_PARALLEL",
+    "14:39"
+  ],
+  [
+    "zy",
+    "nh",
+    "إذ نادى من قبل فاستجبنا له",
+    "21:76",
+    "NARRATIVE_PARALLEL",
+    "21:76"
+  ],
+  [
+    "zy",
+    "ds",
+    "رب هب لي؛ المحراب",
+    "38:35; 38:21",
+    "NARRATIVE_PARALLEL",
+    "38:35"
+  ],
+  [
+    "zy",
+    "mu",
+    "فخذها بقوة؛ جباراً",
+    "7:145; 28:19",
+    "NARRATIVE_PARALLEL",
+    "7:145"
+  ],
+  [
+    "zy",
+    "aq",
+    "ثلاثة أيام",
+    "11:65",
+    "NARRATIVE_PARALLEL",
+    "11:65"
+  ],
+  [
+    "zy",
+    "rs",
+    "كل من الصالحين",
+    "6:85",
+    "NARRATIVE_PARALLEL",
+    "6:85"
+  ],
+  [
+    "zy",
+    "ml",
+    "فنادته الملائكة",
+    "3:39",
+    "NARRATIVE_PARALLEL",
+    "3:39"
+  ],
+  [
+    "zy",
+    "mw",
+    "يرثني ويرث من آل يعقوب؛ خير الوارثين",
+    "19:6; 21:89",
+    "LEGISLATIVE_STAGE",
+    "19:6"
+  ],
+  [
+    "zy",
+    "rh",
+    "ذكر رحمت ربك عبده زكريا",
+    "19:2",
+    "LEXICAL_FORMULA",
+    "19:2"
+  ],
+  [
+    "zy",
+    "as",
+    "سميع الدعاء؛ خير الوارثين",
+    "3:38; 21:89",
+    "LEXICAL_FORMULA",
+    "3:38"
+  ],
+  [
+    "zy",
+    "sl",
+    "وهو قائم يصلي في المحراب",
+    "3:39",
+    "LEGISLATIVE_STAGE",
+    "3:39"
+  ],
+  [
+    "zy",
+    "tv",
+    "وكان تقياً",
+    "19:13",
+    "NARRATIVE_PARALLEL",
+    "19:13"
+  ],
+  [
+    "zy",
+    "jn",
+    "بكرة وعشياً؛ من كان تقياً",
+    "19:62-63",
+    "NARRATIVE_PARALLEL",
+    "19:62"
+  ],
+  [
+    "zy",
+    "is",
+    "إني كنت من الظالمين",
+    "21:87",
+    "NARRATIVE_PARALLEL",
+    "21:87"
+  ],
+  [
+    "zy",
+    "im",
+    "يسارعون في الخيرات",
+    "21:90; 23:61",
+    "NARRATIVE_PARALLEL",
+    "21:90"
+  ],
+  [
+    "zy",
+    "sb",
+    "خذوا ما آتيناكم بقوة",
+    "2:63",
+    "LEGISLATIVE_STAGE",
+    "2:63"
+  ],
+  [
+    "zy",
+    "zk",
+    "وحناناً من لدنا وزكاة",
+    "19:13",
+    "LEGISLATIVE_STAGE",
+    "19:13"
+  ],
+  [
+    "zy",
+    "ak",
+    "ويوم يبعث حياً",
+    "19:15",
+    "NARRATIVE_PARALLEL",
+    "19:15"
+  ],
+  [
+    "zy",
+    "kt",
+    "يا يحيى خذ الكتاب بقوة",
+    "19:12",
+    "NARRATIVE_PARALLEL",
+    "19:12"
+  ],
+  [
+    "yn",
+    "zy",
+    "فاستجبنا له: سلسلة الأنبياء",
+    "21:76-90",
+    "NARRATIVE_PARALLEL",
+    "الأنبياء 21"
+  ],
+  [
+    "yn",
+    "nh",
+    "الفلك المشحون",
+    "26:119; 37:140",
+    "NARRATIVE_PARALLEL",
+    "26:119"
+  ],
+  [
+    "yn",
+    "mu",
+    "وهو مليم؛ من الغم؛ إيمان فرعون",
+    "51:40; 20:40; 10:90",
+    "NARRATIVE_PARALLEL",
+    "51:40"
+  ],
+  [
+    "yn",
+    "ad",
+    "اجتباه ربه",
+    "20:122; 68:50",
+    "NARRATIVE_PARALLEL",
+    "20:122"
+  ],
+  [
+    "yn",
+    "ib",
+    "إني سقيم",
+    "37:89",
+    "NARRATIVE_PARALLEL",
+    "37:89"
+  ],
+  [
+    "yn",
+    "ys",
+    "فهو كظيم",
+    "12:84",
+    "NARRATIVE_PARALLEL",
+    "12:84"
+  ],
+  [
+    "yn",
+    "ka",
+    "نسيا حوتهما",
+    "18:61",
+    "NARRATIVE_PARALLEL",
+    "18:61"
+  ],
+  [
+    "yn",
+    "aq",
+    "فلم يك ينفعهم إيمانهم",
+    "40:85",
+    "NARRATIVE_PARALLEL",
+    "40:85"
+  ],
+  [
+    "yn",
+    "rs",
+    "وإن يونس لمن المرسلين",
+    "37:139",
+    "NARRATIVE_PARALLEL",
+    "37:139"
+  ],
+  [
+    "yn",
+    "tw",
+    "لا إله إلا أنت",
+    "21:87",
+    "NARRATIVE_PARALLEL",
+    "21:87"
+  ],
+  [
+    "yn",
+    "is",
+    "إني كنت من الظالمين",
+    "21:87",
+    "NARRATIVE_PARALLEL",
+    "21:87"
+  ],
+  [
+    "yn",
+    "tb",
+    "إلا قوم يونس لما آمنوا",
+    "10:98",
+    "NARRATIVE_PARALLEL",
+    "10:98"
+  ],
+  [
+    "yn",
+    "sr",
+    "فاصبر لحكم ربك ولا تكن كصاحب الحوت",
+    "68:48",
+    "NARRATIVE_PARALLEL",
+    "68:48"
+  ],
+  [
+    "yn",
+    "sb",
+    "حيتانهم يوم سبتهم",
+    "7:163",
+    "LEGISLATIVE_STAGE",
+    "7:163"
+  ],
+  [
+    "yn",
+    "ak",
+    "إلى يوم يبعثون",
+    "37:144",
+    "NARRATIVE_PARALLEL",
+    "37:144"
+  ],
+  [
+    "yn",
+    "im",
+    "فلولا كانت قرية آمنت فنفعها إيمانها",
+    "10:98",
+    "NARRATIVE_PARALLEL",
+    "10:98"
+  ],
+  [
+    "ay",
+    "ib",
+    "الذبيح؛ وهب لي على الكبر إسماعيل وإسحاق",
+    "37:102; 14:39",
+    "NARRATIVE_PARALLEL",
+    "37:102"
+  ],
+  [
+    "ay",
+    "mu",
+    "هارون أخي؛ يا ابن أم",
+    "20:30; 20:94",
+    "NARRATIVE_PARALLEL",
+    "20:30"
+  ],
+  [
+    "ay",
+    "ys",
+    "أرحم الراحمين",
+    "12:64, 92",
+    "NARRATIVE_PARALLEL",
+    "12:64"
+  ],
+  [
+    "ay",
+    "ds",
+    "نعم العبد إنه أواب",
+    "38:30, 44",
+    "NARRATIVE_PARALLEL",
+    "38:30"
+  ],
+  [
+    "ay",
+    "zy",
+    "فاستجبنا له: الأنبياء 83-90",
+    "21:83-90",
+    "NARRATIVE_PARALLEL",
+    "الأنبياء 83"
+  ],
+  [
+    "ay",
+    "yn",
+    "وتركنا عليه في الآخرين",
+    "37:129",
+    "NARRATIVE_PARALLEL",
+    "37:129"
+  ],
+  [
+    "ay",
+    "ia",
+    "ورفعناه مكاناً علياً؛ بل رفعه الله إليه",
+    "19:57; 4:158",
+    "NARRATIVE_PARALLEL",
+    "19:57"
+  ],
+  [
+    "ay",
+    "my",
+    "واذكر في الكتاب؛ يا أخت هارون",
+    "19:54-56; 19:28",
+    "NARRATIVE_PARALLEL",
+    "19:54"
+  ],
+  [
+    "ay",
+    "ka",
+    "ستجدني إن شاء الله صابراً",
+    "18:69",
+    "NARRATIVE_PARALLEL",
+    "18:69"
+  ],
+  [
+    "ay",
+    "rs",
+    "قوائم الأنبياء",
+    "6:83-90",
+    "NARRATIVE_PARALLEL",
+    "الأنبياء 6"
+  ],
+  [
+    "ay",
+    "hj",
+    "وإذ يرفع إبراهيم القواعد من البيت وإسماعيل",
+    "2:127",
+    "LEGISLATIVE_STAGE",
+    "2:127"
+  ],
+  [
+    "ay",
+    "sl",
+    "وكان يأمر أهله بالصلاة",
+    "19:55",
+    "LEGISLATIVE_STAGE",
+    "19:55"
+  ],
+  [
+    "ay",
+    "zk",
+    "وكان يأمر أهله بالصلاة والزكاة",
+    "19:55",
+    "LEGISLATIVE_STAGE",
+    "19:55"
+  ],
+  [
+    "ay",
+    "sr",
+    "إنا وجدناه صابراً؛ كل من الصابرين",
+    "38:44; 21:85",
+    "NARRATIVE_PARALLEL",
+    "38:44"
+  ],
+  [
+    "ay",
+    "tw",
+    "أتدعون بعلاً وتذرون أحسن الخالقين",
+    "37:125",
+    "NARRATIVE_PARALLEL",
+    "37:125"
+  ],
+  [
+    "ay",
+    "as",
+    "وأنت أرحم الراحمين",
+    "21:83",
+    "LEXICAL_FORMULA",
+    "21:83"
+  ],
+  [
+    "sq",
+    "nf",
+    "والله يشهد إن المنافقين لكاذبون",
+    "63:1",
+    "DOCTRINAL_ROOT",
+    "63:1"
+  ],
+  [
+    "sq",
+    "im",
+    "أولئك هم الصادقون",
+    "49:15",
+    "DOCTRINAL_ROOT",
+    "49:15"
+  ],
+  [
+    "sq",
+    "tb",
+    "وعلى الثلاثة الذين خلفوا؛ وكونوا مع الصادقين",
+    "9:118-119",
+    "DOCTRINAL_ROOT",
+    "9:118"
+  ],
+  [
+    "sq",
+    "sr",
+    "الصابرين والصادقين",
+    "3:17; 33:35",
+    "DOCTRINAL_ROOT",
+    "3:17"
+  ],
+  [
+    "sq",
+    "tq",
+    "أولئك الذين صدقوا وأولئك هم المتقون",
+    "2:177; 39:33",
+    "LEXICAL_FORMULA",
+    "2:177"
+  ],
+  [
+    "sq",
+    "kt",
+    "مصدقا لما بين يديه",
+    "3:3",
+    "DOCTRINAL_ROOT",
+    "3:3"
+  ],
+  [
+    "sq",
+    "rs",
+    "إن كنت من الصادقين؛ كذبت قوم نوح المرسلين",
+    "7:70; 26:105",
+    "DOCTRINAL_ROOT",
+    "7:70"
+  ],
+  [
+    "sq",
+    "ak",
+    "هذا يوم ينفع الصادقين صدقهم",
+    "5:119",
+    "DOCTRINAL_ROOT",
+    "5:119"
+  ],
+  [
+    "sq",
+    "zk",
+    "إنما الصدقات للفقراء",
+    "9:60",
+    "LEGISLATIVE_STAGE",
+    "9:60"
+  ],
+  [
+    "sq",
+    "zw",
+    "وآتوا النساء صدقاتهن نحلة",
+    "4:4",
+    "LEGISLATIVE_STAGE",
+    "4:4"
+  ],
+  [
+    "sq",
+    "tl",
+    "اللعان: إنه لمن الصادقين",
+    "24:6-9",
+    "LEGISLATIVE_STAGE",
+    "24:6"
+  ],
+  [
+    "sq",
+    "ys",
+    "بدم كذب؛ أيها الصديق",
+    "12:18; 12:46",
+    "NARRATIVE_PARALLEL",
+    "12:18"
+  ],
+  [
+    "sq",
+    "ib",
+    "صديقا نبيا؛ قد صدقت الرؤيا",
+    "19:41; 37:105",
+    "NARRATIVE_PARALLEL",
+    "19:41"
+  ],
+  [
+    "sq",
+    "my",
+    "وأمه صديقة؛ وصدقت بكلمات ربها",
+    "5:75; 66:12",
+    "NARRATIVE_PARALLEL",
+    "5:75"
+  ],
+  [
+    "sq",
+    "ia",
+    "فنجعل لعنت الله على الكاذبين",
+    "3:61",
+    "NARRATIVE_PARALLEL",
+    "3:61"
+  ],
+  [
+    "sq",
+    "aq",
+    "كذاب أشر؛ وعد غير مكذوب",
+    "54:25; 11:65",
+    "NARRATIVE_PARALLEL",
+    "54:25"
+  ],
+  [
+    "sq",
+    "ay",
+    "صادق الوعد؛ صديقا نبيا",
+    "19:54; 19:56",
+    "NARRATIVE_PARALLEL",
+    "19:54"
+  ],
+  [
+    "sq",
+    "sl",
+    "فلا صدق ولا صلى",
+    "75:31",
+    "LEGISLATIVE_STAGE",
+    "75:31"
+  ],
+  [
+    "sq",
+    "ds",
+    "سننظر أصدقت أم كنت من الكاذبين",
+    "27:27",
+    "NARRATIVE_PARALLEL",
+    "27:27"
+  ],
+  [
+    "sm",
+    "tw",
+    "جعل لكم الأرض فراشا... فلا تجعلوا لله أندادا",
+    "2:22",
+    "LEXICAL_FORMULA",
+    "2:22"
+  ],
+  [
+    "sm",
+    "as",
+    "فاطر السماوات؛ الاسم من السمو",
+    "6:14; 2:31",
+    "LEXICAL_FORMULA",
+    "6:14"
+  ],
+  [
+    "sm",
+    "ml",
+    "يتفطرن من فوقهن والملائكة يسبحون",
+    "42:5",
+    "LEXICAL_FORMULA",
+    "42:5"
+  ],
+  [
+    "sm",
+    "ak",
+    "يحيي الأرض بعد موتها وكذلك تخرجون",
+    "30:19",
+    "LEXICAL_FORMULA",
+    "30:19"
+  ],
+  [
+    "sm",
+    "jn",
+    "عرضها السماوات والأرض",
+    "3:133",
+    "LEXICAL_FORMULA",
+    "3:133"
+  ],
+  [
+    "sm",
+    "hd",
+    "الله نور السماوات والأرض",
+    "24:35",
+    "LEXICAL_FORMULA",
+    "24:35"
+  ],
+  [
+    "sm",
+    "im",
+    "لآيات لأولي الألباب",
+    "3:190",
+    "LEXICAL_FORMULA",
+    "3:190"
+  ],
+  [
+    "sm",
+    "is",
+    "يرسل السماء عليكم مدرارا",
+    "71:11",
+    "LEXICAL_FORMULA",
+    "71:11"
+  ],
+  [
+    "sm",
+    "ad",
+    "إني جاعل في الأرض خليفة",
+    "2:30",
+    "LEXICAL_FORMULA",
+    "2:30"
+  ],
+  [
+    "sm",
+    "nh",
+    "يا أرض ابلعي ماءك ويا سماء أقلعي",
+    "11:44",
+    "LEXICAL_FORMULA",
+    "11:44"
+  ],
+  [
+    "sm",
+    "ib",
+    "ملكوت السماوات والأرض",
+    "6:75",
+    "LEXICAL_FORMULA",
+    "6:75"
+  ],
+  [
+    "sm",
+    "mu",
+    "فما بكت عليهم السماء والأرض؛ الأرض المقدسة",
+    "44:29; 5:21",
+    "LEXICAL_FORMULA",
+    "44:29"
+  ],
+  [
+    "sm",
+    "my",
+    "تكاد السماوات يتفطرن منه",
+    "19:90",
+    "LEXICAL_FORMULA",
+    "19:90"
+  ],
+  [
+    "sm",
+    "aq",
+    "أنشأكم من الأرض واستعمركم فيها",
+    "11:61",
+    "LEXICAL_FORMULA",
+    "11:61"
+  ],
+  [
+    "sm",
+    "lt",
+    "سبع سماوات",
+    "67:3",
+    "LEXICAL_FORMULA",
+    "67:3"
+  ],
+  [
+    "hs",
+    "ih",
+    "للذين أحسنوا الحسنى وزيادة",
+    "10:26",
+    "DOCTRINAL_ROOT",
+    "10:26"
+  ],
+  [
+    "hs",
+    "tb",
+    "يبدل الله سيئاتهم حسنات",
+    "25:70",
+    "DOCTRINAL_ROOT",
+    "25:70"
+  ],
+  [
+    "hs",
+    "is",
+    "ويعفو عن السيئات؛ لولا تستغفرون الله",
+    "42:25; 27:46",
+    "DOCTRINAL_ROOT",
+    "42:25"
+  ],
+  [
+    "hs",
+    "sr",
+    "ويدرءون بالحسنة السيئة... بما صبروا",
+    "13:22; 28:54; 41:35",
+    "DOCTRINAL_ROOT",
+    "13:22"
+  ],
+  [
+    "hs",
+    "tv",
+    "ومن يتق الله يكفر عنه سيئاته",
+    "65:5; 8:29",
+    "DOCTRINAL_ROOT",
+    "65:5"
+  ],
+  [
+    "hs",
+    "sl",
+    "وأقم الصلاة... إن الحسنات يذهبن السيئات",
+    "11:114",
+    "LEGISLATIVE_STAGE",
+    "11:114"
+  ],
+  [
+    "hs",
+    "zk",
+    "ويكفر عنكم من سيئاتكم؛ قرضا حسنا",
+    "2:271; 2:245",
+    "LEGISLATIVE_STAGE",
+    "2:271"
+  ],
+  [
+    "hs",
+    "as",
+    "ولله الأسماء الحسنى",
+    "7:180",
+    "LEXICAL_FORMULA",
+    "7:180"
+  ],
+  [
+    "hs",
+    "kf",
+    "التكفير: الستر",
+    "4:31",
+    "DOCTRINAL_ROOT",
+    "4:31"
+  ],
+  [
+    "hs",
+    "nf",
+    "إن تمسسكم حسنة تسؤهم",
+    "3:120; 9:50",
+    "DOCTRINAL_ROOT",
+    "3:120"
+  ],
+  [
+    "hs",
+    "ak",
+    "من جاء بالحسنة فله عشر أمثالها",
+    "6:160",
+    "DOCTRINAL_ROOT",
+    "6:160"
+  ],
+  [
+    "hs",
+    "ml",
+    "وقهم السيئات",
+    "40:9",
+    "DOCTRINAL_ROOT",
+    "40:9"
+  ],
+  [
+    "hs",
+    "mu",
+    "وإن تصبهم سيئة يطيروا بموسى",
+    "7:131",
+    "NARRATIVE_PARALLEL",
+    "7:131"
+  ],
+  [
+    "hs",
+    "ib",
+    "أسوة حسنة في إبراهيم",
+    "60:4",
+    "NARRATIVE_PARALLEL",
+    "60:4"
+  ],
+  [
+    "hs",
+    "aq",
+    "لم تستعجلون بالسيئة قبل الحسنة",
+    "27:46",
+    "NARRATIVE_PARALLEL",
+    "27:46"
+  ],
+  [
+    "hs",
+    "sq",
+    "إن تبدوا الصدقات... ويكفر عنكم",
+    "2:271",
+    "DOCTRINAL_ROOT",
+    "2:271"
+  ],
+  [
+    "hs",
+    "sb",
+    "وبلوناهم بالحسنات والسيئات",
+    "7:168",
+    "LEGISLATIVE_STAGE",
+    "7:168"
+  ],
+  [
+    "dk",
+    "tw",
+    "لا إله إلا الله؛ سبحانه وتعالى عما يشركون",
+    "47:19; 16:1",
+    "LEXICAL_FORMULA",
+    "47:19"
+  ],
+  [
+    "dk",
+    "as",
+    "الحميد؛ المتكبر؛ سبح اسم ربك",
+    "14:8; 59:23; 87:1",
+    "LEXICAL_FORMULA",
+    "14:8"
+  ],
+  [
+    "dk",
+    "sh",
+    "فاذكروني أذكركم واشكروا لي",
+    "2:152",
+    "LEXICAL_FORMULA",
+    "2:152"
+  ],
+  [
+    "dk",
+    "is",
+    "فسبح بحمد ربك واستغفره",
+    "110:3",
+    "LEXICAL_FORMULA",
+    "110:3"
+  ],
+  [
+    "dk",
+    "sl",
+    "ولذكر الله أكبر؛ وأقم الصلاة لذكري",
+    "29:45; 20:14",
+    "LEGISLATIVE_STAGE",
+    "29:45"
+  ],
+  [
+    "dk",
+    "hj",
+    "فاذكروا الله عند المشعر الحرام؛ لتكبروا الله",
+    "2:198; 22:37",
+    "LEGISLATIVE_STAGE",
+    "2:198"
+  ],
+  [
+    "dk",
+    "sy",
+    "ولتكبروا الله على ما هداكم",
+    "2:185",
+    "LEGISLATIVE_STAGE",
+    "2:185"
+  ],
+  [
+    "dk",
+    "ml",
+    "يسبحون الليل والنهار لا يفترون",
+    "21:20",
+    "LEXICAL_FORMULA",
+    "21:20"
+  ],
+  [
+    "dk",
+    "kt",
+    "إنا نحن نزلنا الذكر",
+    "15:9",
+    "LEXICAL_FORMULA",
+    "15:9"
+  ],
+  [
+    "dk",
+    "jn",
+    "دعواهم فيها سبحانك اللهم... الحمد لله",
+    "10:10",
+    "LEXICAL_FORMULA",
+    "10:10"
+  ],
+  [
+    "dk",
+    "sm",
+    "تسبح له السماوات السبع",
+    "17:44",
+    "LEXICAL_FORMULA",
+    "17:44"
+  ],
+  [
+    "dk",
+    "yn",
+    "فلولا أنه كان من المسبحين",
+    "37:143",
+    "LEXICAL_FORMULA",
+    "37:143"
+  ],
+  [
+    "dk",
+    "ds",
+    "الجبال يسبحن والطير",
+    "21:79",
+    "LEXICAL_FORMULA",
+    "21:79"
+  ],
+  [
+    "dk",
+    "mu",
+    "كي نسبحك كثيرا ونذكرك كثيرا",
+    "20:33-34",
+    "LEXICAL_FORMULA",
+    "20:33"
+  ],
+  [
+    "dk",
+    "ka",
+    "واذكر ربك إذا نسيت؛ الباقيات الصالحات",
+    "18:24; 18:46",
+    "LEXICAL_FORMULA",
+    "18:24"
+  ],
+  [
+    "dk",
+    "ia",
+    "سبحانك ما يكون لي؛ اسمه أحمد",
+    "5:116; 61:6",
+    "LEXICAL_FORMULA",
+    "5:116"
+  ],
+  [
+    "dn",
+    "ak",
+    "وإن الدار الآخرة لهي الحيوان",
+    "29:64",
+    "DOCTRINAL_ROOT",
+    "29:64"
+  ],
+  [
+    "dn",
+    "jn",
+    "فأولئك لهم الدرجات العلى",
+    "20:75",
+    "DOCTRINAL_ROOT",
+    "20:75"
+  ],
+  [
+    "dn",
+    "nr",
+    "وآثر الحياة الدنيا فإن الجحيم هي المأوى",
+    "79:38-39",
+    "DOCTRINAL_ROOT",
+    "79:38"
+  ],
+  [
+    "dn",
+    "nf",
+    "في الدرك الأسفل من النار",
+    "4:145",
+    "DOCTRINAL_ROOT",
+    "4:145"
+  ],
+  [
+    "dn",
+    "im",
+    "لهم درجات عند ربهم؛ وبالآخرة هم يوقنون",
+    "8:4; 2:4",
+    "DOCTRINAL_ROOT",
+    "8:4"
+  ],
+  [
+    "dn",
+    "rs",
+    "ورفع بعضهم درجات",
+    "2:253",
+    "DOCTRINAL_ROOT",
+    "2:253"
+  ],
+  [
+    "dn",
+    "tv",
+    "وللدار الآخرة خير للذين يتقون",
+    "6:32",
+    "DOCTRINAL_ROOT",
+    "6:32"
+  ],
+  [
+    "dn",
+    "hs",
+    "آتنا في الدنيا حسنة وفي الآخرة حسنة",
+    "2:201",
+    "DOCTRINAL_ROOT",
+    "2:201"
+  ],
+  [
+    "dn",
+    "jh",
+    "فضل الله المجاهدين على القاعدين درجة",
+    "4:95",
+    "LEGISLATIVE_STAGE",
+    "4:95"
+  ],
+  [
+    "dn",
+    "tl",
+    "وللرجال عليهن درجة",
+    "2:228",
+    "LEGISLATIVE_STAGE",
+    "2:228"
+  ],
+  [
+    "dn",
+    "sb",
+    "يأخذون عرض هذا الأدنى",
+    "7:169",
+    "LEGISLATIVE_STAGE",
+    "7:169"
+  ],
+  [
+    "dn",
+    "am",
+    "إنما مثل الحياة الدنيا كماء",
+    "10:24; 18:45",
+    "NARRATIVE_PARALLEL",
+    "10:24"
+  ],
+  [
+    "dn",
+    "mu",
+    "ولا تنس نصيبك من الدنيا؛ والله خير وأبقى",
+    "28:77; 20:73",
+    "NARRATIVE_PARALLEL",
+    "28:77"
+  ],
+  [
+    "dn",
+    "ib",
+    "نرفع درجات من نشاء",
+    "6:83",
+    "NARRATIVE_PARALLEL",
+    "6:83"
+  ],
+  [
+    "dn",
+    "ys",
+    "نرفع درجات من نشاء وفوق كل ذي علم عليم",
+    "12:76",
+    "NARRATIVE_PARALLEL",
+    "12:76"
+  ],
+  [
+    "dn",
+    "lt",
+    "الدنيا 115 والآخرة 115",
+    "—",
+    "DOCTRINAL_ROOT",
+    ""
+  ],
+  [
+    "dn",
+    "ka",
+    "مثل الحياة الدنيا؛ زينة الحياة الدنيا",
+    "18:45-46",
+    "NARRATIVE_PARALLEL",
+    "18:45"
+  ],
+  [
+    "qd",
+    "tw",
+    "وخلق كل شيء فقدره تقديرا",
+    "25:2",
+    "DOCTRINAL_ROOT",
+    "25:2"
+  ],
+  [
+    "qd",
+    "hd",
+    "والذي قدر فهدى؛ يهدي من يشاء",
+    "87:3; 28:56",
+    "DOCTRINAL_ROOT",
+    "87:3"
+  ],
+  [
+    "qd",
+    "dl",
+    "يضل من يشاء ويهدي من يشاء",
+    "16:93",
+    "DOCTRINAL_ROOT",
+    "16:93"
+  ],
+  [
+    "qd",
+    "kf",
+    "فمن شاء فليؤمن ومن شاء فليكفر",
+    "18:29",
+    "DOCTRINAL_ROOT",
+    "18:29"
+  ],
+  [
+    "qd",
+    "as",
+    "على كل شيء قدير؛ مليك مقتدر",
+    "2:20; 54:55",
+    "LEXICAL_FORMULA",
+    "2:20"
+  ],
+  [
+    "qd",
+    "ak",
+    "وقضي بينهم بالحق",
+    "39:69",
+    "DOCTRINAL_ROOT",
+    "39:69"
+  ],
+  [
+    "qd",
+    "sm",
+    "فقضاهن سبع سماوات... ذلك تقدير العزيز العليم",
+    "41:12",
+    "LEXICAL_FORMULA",
+    "41:12"
+  ],
+  [
+    "qd",
+    "nz",
+    "إنا أنزلناه في ليلة القدر",
+    "97:1",
+    "DOCTRINAL_ROOT",
+    "97:1"
+  ],
+  [
+    "qd",
+    "sr",
+    "لكيلا تأسوا على ما فاتكم",
+    "57:23",
+    "DOCTRINAL_ROOT",
+    "57:23"
+  ],
+  [
+    "qd",
+    "hs",
+    "قل كل من عند الله",
+    "4:78",
+    "DOCTRINAL_ROOT",
+    "4:78"
+  ],
+  [
+    "qd",
+    "jh",
+    "لبرز الذين كتب عليهم القتل إلى مضاجعهم",
+    "3:154",
+    "LEGISLATIVE_STAGE",
+    "3:154"
+  ],
+  [
+    "qd",
+    "ka",
+    "إلا أن يشاء الله؛ ما شاء الله لا قوة إلا بالله",
+    "18:24; 18:39",
+    "NARRATIVE_PARALLEL",
+    "18:24"
+  ],
+  [
+    "qd",
+    "mu",
+    "ثم جئت على قدر يا موسى",
+    "20:40",
+    "NARRATIVE_PARALLEL",
+    "20:40"
+  ],
+  [
+    "qd",
+    "yn",
+    "فظن أن لن نقدر عليه",
+    "21:87",
+    "NARRATIVE_PARALLEL",
+    "21:87"
+  ],
+  [
+    "qd",
+    "my",
+    "وكان أمرا مقضيا",
+    "19:21",
+    "NARRATIVE_PARALLEL",
+    "19:21"
+  ],
+  [
+    "qd",
+    "ib",
+    "والله خلقكم وما تعملون",
+    "37:96",
+    "NARRATIVE_PARALLEL",
+    "37:96"
+  ],
+  [
+    "ji",
+    "ml",
+    "بل كانوا يعبدون الجن",
+    "34:41",
+    "DOCTRINAL_ROOT",
+    "34:41"
+  ],
+  [
+    "ji",
+    "rs",
+    "شياطين الإنس والجن؛ مجنون",
+    "6:112; 68:2",
+    "DOCTRINAL_ROOT",
+    "6:112"
+  ],
+  [
+    "ji",
+    "kt",
+    "إنا سمعنا كتابا أنزل من بعد موسى",
+    "46:30",
+    "DOCTRINAL_ROOT",
+    "46:30"
+  ],
+  [
+    "ji",
+    "tw",
+    "وما خلقت الجن والإنس إلا ليعبدون",
+    "51:56",
+    "DOCTRINAL_ROOT",
+    "51:56"
+  ],
+  [
+    "ji",
+    "dl",
+    "ولأضلنهم ولأمنينهم",
+    "4:119",
+    "DOCTRINAL_ROOT",
+    "4:119"
+  ],
+  [
+    "ji",
+    "nf",
+    "كمثل الشيطان إذ قال للإنسان اكفر",
+    "59:16",
+    "DOCTRINAL_ROOT",
+    "59:16"
+  ],
+  [
+    "ji",
+    "ik",
+    "إلا عبادك منهم المخلصين",
+    "15:40",
+    "DOCTRINAL_ROOT",
+    "15:40"
+  ],
+  [
+    "ji",
+    "rh",
+    "يا معشر الجن والإنس؛ ربكما تكذبان",
+    "55:33",
+    "LEXICAL_FORMULA",
+    "55:33"
+  ],
+  [
+    "ji",
+    "nr",
+    "لأملأن جهنم من الجنة والناس أجمعين",
+    "11:119",
+    "DOCTRINAL_ROOT",
+    "11:119"
+  ],
+  [
+    "ji",
+    "ak",
+    "وقال الشيطان لما قضي الأمر",
+    "14:22",
+    "DOCTRINAL_ROOT",
+    "14:22"
+  ],
+  [
+    "ji",
+    "sm",
+    "وحفظا من كل شيطان مارد",
+    "37:7",
+    "LEXICAL_FORMULA",
+    "37:7"
+  ],
+  [
+    "ji",
+    "dk",
+    "ومن يعش عن ذكر الرحمن نقيض له شيطانا",
+    "43:36",
+    "CONTRAST_PAIR",
+    "43:36"
+  ],
+  [
+    "ji",
+    "hs",
+    "وإما ينزغنك من الشيطان نزغ",
+    "41:36",
+    "DOCTRINAL_ROOT",
+    "41:36"
+  ],
+  [
+    "ji",
+    "ad",
+    "إلا إبليس أبى واستكبر",
+    "2:34",
+    "NARRATIVE_PARALLEL",
+    "2:34"
+  ],
+  [
+    "ji",
+    "ds",
+    "تبينت الجن أن لو كانوا يعلمون الغيب",
+    "34:14",
+    "NARRATIVE_PARALLEL",
+    "34:14"
+  ],
+  [
+    "ji",
+    "ys",
+    "إن الشيطان للإنسان عدو مبين",
+    "12:5",
+    "NARRATIVE_PARALLEL",
+    "12:5"
+  ],
+  [
+    "ji",
+    "qd",
+    "فبما أغويتني",
+    "7:16",
+    "DOCTRINAL_ROOT",
+    "7:16"
+  ],
+  [
+    "ta",
+    "kh",
+    "إنما الخمر والميسر والأنصاب والأزلام رجس",
+    "5:90",
+    "LEGISLATIVE_STAGE",
+    "5:90"
+  ],
+  [
+    "ta",
+    "rb",
+    "وأحل الله البيع وحرم الربا",
+    "2:275",
+    "LEGISLATIVE_STAGE",
+    "2:275"
+  ],
+  [
+    "ta",
+    "zw",
+    "وطعام الذين أوتوا الكتاب... والمحصنات",
+    "5:5",
+    "LEGISLATIVE_STAGE",
+    "5:5"
+  ],
+  [
+    "ta",
+    "hj",
+    "ليذكروا اسم الله على ما رزقهم من بهيمة الأنعام",
+    "22:34",
+    "LEGISLATIVE_STAGE",
+    "الأنعام 22"
+  ],
+  [
+    "ta",
+    "sy",
+    "وكلوا واشربوا حتى يتبين لكم",
+    "2:187",
+    "LEGISLATIVE_STAGE",
+    "2:187"
+  ],
+  [
+    "ta",
+    "zk",
+    "وآتوا حقه يوم حصاده ولا تسرفوا",
+    "6:141",
+    "LEGISLATIVE_STAGE",
+    "6:141"
+  ],
+  [
+    "ta",
+    "sb",
+    "وعلى الذين هادوا حرمنا",
+    "6:146",
+    "LEGISLATIVE_STAGE",
+    "6:146"
+  ],
+  [
+    "ta",
+    "tw",
+    "وما أهل لغير الله به",
+    "6:145",
+    "LEGISLATIVE_STAGE",
+    "6:145"
+  ],
+  [
+    "ta",
+    "sh",
+    "كلوا من طيبات ما رزقناكم واشكروا لله",
+    "2:172",
+    "LEGISLATIVE_STAGE",
+    "2:172"
+  ],
+  [
+    "ta",
+    "sq",
+    "هذا حلال وهذا حرام لتفتروا على الله الكذب",
+    "16:116",
+    "LEGISLATIVE_STAGE",
+    "16:116"
+  ],
+  [
+    "ta",
+    "ly",
+    "ولا تسرفوا إنه لا يحب المسرفين",
+    "7:31",
+    "LEGISLATIVE_STAGE",
+    "7:31"
+  ],
+  [
+    "ta",
+    "dk",
+    "فكلوا مما ذكر اسم الله عليه",
+    "6:118",
+    "LEGISLATIVE_STAGE",
+    "6:118"
+  ],
+  [
+    "ta",
+    "kt",
+    "من قبل أن تنزل التوراة",
+    "3:93",
+    "LEGISLATIVE_STAGE",
+    "3:93"
+  ],
+  [
+    "ta",
+    "rs",
+    "يا أيها الرسل كلوا من الطيبات",
+    "23:51",
+    "LEGISLATIVE_STAGE",
+    "23:51"
+  ],
+  [
+    "ta",
+    "ia",
+    "ولأحل لكم بعض الذي حرم عليكم",
+    "3:50",
+    "LEGISLATIVE_STAGE",
+    "3:50"
+  ],
+  [
+    "ta",
+    "mu",
+    "وأنزلنا عليكم المن والسلوى",
+    "2:57",
+    "LEGISLATIVE_STAGE",
+    "2:57"
+  ],
+  [
+    "qs",
+    "tl",
+    "ذلك لتؤمنوا بالله ورسوله وتلك حدود الله",
+    "58:4",
+    "LEGISLATIVE_STAGE",
+    "58:4"
+  ],
+  [
+    "qs",
+    "mw",
+    "تلك حدود الله ومن يطع الله ورسوله",
+    "4:13",
+    "LEGISLATIVE_STAGE",
+    "4:13"
+  ],
+  [
+    "qs",
+    "zw",
+    "فعليهن نصف ما على المحصنات من العذاب",
+    "4:25",
+    "LEGISLATIVE_STAGE",
+    "4:25"
+  ],
+  [
+    "qs",
+    "ta",
+    "أو كفارة طعام مساكين أو عدل ذلك صياما",
+    "5:95",
+    "LEGISLATIVE_STAGE",
+    "5:95"
+  ],
+  [
+    "qs",
+    "sy",
+    "كتب عليكم الصيام؛ فدية طعام مسكين",
+    "2:183-184",
+    "LEGISLATIVE_STAGE",
+    "2:183"
+  ],
+  [
+    "qs",
+    "hj",
+    "ففدية من صيام أو صدقة أو نسك",
+    "2:196",
+    "LEGISLATIVE_STAGE",
+    "2:196"
+  ],
+  [
+    "qs",
+    "tb",
+    "إلا الذين تابوا من قبل أن تقدروا عليهم",
+    "5:34",
+    "LEGISLATIVE_STAGE",
+    "5:34"
+  ],
+  [
+    "qs",
+    "hs",
+    "وجزاء سيئة سيئة مثلها فمن عفا وأصلح",
+    "42:40",
+    "LEGISLATIVE_STAGE",
+    "42:40"
+  ],
+  [
+    "qs",
+    "sr",
+    "ولئن صبرتم لهو خير للصابرين",
+    "16:126",
+    "LEGISLATIVE_STAGE",
+    "16:126"
+  ],
+  [
+    "qs",
+    "tq",
+    "ولكم في القصاص حياة يا أولي الألباب لعلكم تتقون",
+    "2:179",
+    "LEGISLATIVE_STAGE",
+    "2:179"
+  ],
+  [
+    "qs",
+    "as",
+    "نكالا من الله والله عزيز حكيم",
+    "5:38",
+    "LEGISLATIVE_STAGE",
+    "5:38"
+  ],
+  [
+    "qs",
+    "dn",
+    "ذلك لهم خزي في الدنيا ولهم في الآخرة عذاب عظيم",
+    "5:33",
+    "LEGISLATIVE_STAGE",
+    "5:33"
+  ],
+  [
+    "qs",
+    "kt",
+    "وكتبنا عليهم فيها أن النفس بالنفس",
+    "5:45",
+    "LEGISLATIVE_STAGE",
+    "5:45"
+  ],
+  [
+    "qs",
+    "ad",
+    "من قتل نفسا بغير نفس أو فساد في الأرض",
+    "5:32",
+    "LEGISLATIVE_STAGE",
+    "5:32"
+  ],
+  [
+    "qs",
+    "mu",
+    "لأقطعن أيديكم وأرجلكم من خلاف",
+    "7:124",
+    "LEGISLATIVE_STAGE",
+    "7:124"
+  ],
+  [
+    "qs",
+    "my",
+    "سبحانك هذا بهتان عظيم",
+    "24:16",
+    "LEGISLATIVE_STAGE",
+    "24:16"
+  ],
+  [
+    "ym",
+    "qs",
+    "فكفارته إطعام عشرة مساكين",
+    "5:89",
+    "LEGISLATIVE_STAGE",
+    "5:89"
+  ],
+  [
+    "ym",
+    "tl",
+    "للذين يؤلون من نسائهم تربص أربعة أشهر",
+    "2:226",
+    "LEGISLATIVE_STAGE",
+    "2:226"
+  ],
+  [
+    "ym",
+    "mw",
+    "والذين عقدت أيمانكم فآتوهم نصيبهم",
+    "4:33",
+    "LEGISLATIVE_STAGE",
+    "4:33"
+  ],
+  [
+    "ym",
+    "ta",
+    "لم تحرم ما أحل الله لك؛ تحلة أيمانكم",
+    "66:1-2",
+    "LEGISLATIVE_STAGE",
+    "66:1"
+  ],
+  [
+    "ym",
+    "jh",
+    "وإن نكثوا أيمانهم من بعد عهدهم",
+    "9:12",
+    "LEGISLATIVE_STAGE",
+    "9:12"
+  ],
+  [
+    "ym",
+    "sb",
+    "وأوفوا بالعهد إن العهد كان مسئولا",
+    "17:34",
+    "LEGISLATIVE_STAGE",
+    "17:34"
+  ],
+  [
+    "ym",
+    "hj",
+    "وليوفوا نذورهم",
+    "22:29",
+    "LEGISLATIVE_STAGE",
+    "22:29"
+  ],
+  [
+    "ym",
+    "nf",
+    "اتخذوا أيمانهم جنة",
+    "58:16; 63:2",
+    "LEGISLATIVE_STAGE",
+    "58:16"
+  ],
+  [
+    "ym",
+    "sq",
+    "ويحلفون على الكذب وهم يعلمون",
+    "58:14",
+    "LEGISLATIVE_STAGE",
+    "58:14"
+  ],
+  [
+    "ym",
+    "jn",
+    "يوفون بالنذر ويخافون يوما",
+    "76:7",
+    "LEGISLATIVE_STAGE",
+    "76:7"
+  ],
+  [
+    "ym",
+    "ay",
+    "وخذ بيدك ضغثا فاضرب به ولا تحنث",
+    "38:44",
+    "LEGISLATIVE_STAGE",
+    "38:44"
+  ],
+  [
+    "ym",
+    "my",
+    "إني نذرت للرحمن صوما",
+    "19:26",
+    "LEGISLATIVE_STAGE",
+    "19:26"
+  ],
+  [
+    "ym",
+    "ka",
+    "إلا أن يشاء الله",
+    "18:24",
+    "LEGISLATIVE_STAGE",
+    "18:24"
+  ],
+  [
+    "ym",
+    "ys",
+    "تالله لقد آثرك الله علينا",
+    "12:91",
+    "LEGISLATIVE_STAGE",
+    "12:91"
+  ],
+  [
+    "ym",
+    "ib",
+    "وتالله لأكيدن أصنامكم",
+    "21:57",
+    "LEGISLATIVE_STAGE",
+    "21:57"
+  ],
+  [
+    "ym",
+    "ad",
+    "وقاسمهما إني لكما لمن الناصحين",
+    "7:21",
+    "LEGISLATIVE_STAGE",
+    "7:21"
+  ],
+  [
+    "si",
+    "jh",
+    "ولا تنازعوا فتفشلوا وتذهب ريحكم",
+    "8:46",
+    "LEGISLATIVE_STAGE",
+    "8:46"
+  ],
+  [
+    "si",
+    "zw",
+    "فلما قضى زيد منها وطرا زوجناكها",
+    "33:37",
+    "LEGISLATIVE_STAGE",
+    "33:37"
+  ],
+  [
+    "si",
+    "sl",
+    "فول وجهك شطر المسجد الحرام",
+    "2:144",
+    "LEGISLATIVE_STAGE",
+    "2:144"
+  ],
+  [
+    "si",
+    "hj",
+    "لتدخلن المسجد الحرام إن شاء الله آمنين",
+    "48:27",
+    "LEGISLATIVE_STAGE",
+    "48:27"
+  ],
+  [
+    "si",
+    "nz",
+    "اقرأ باسم ربك الذي خلق",
+    "96:1",
+    "NARRATIVE_PARALLEL",
+    "96:1"
+  ],
+  [
+    "si",
+    "nf",
+    "لئن رجعنا إلى المدينة ليخرجن الأعز منها الأذل",
+    "63:8",
+    "NARRATIVE_PARALLEL",
+    "63:8"
+  ],
+  [
+    "si",
+    "qd",
+    "قل إن الأمر كله لله",
+    "3:154",
+    "NARRATIVE_PARALLEL",
+    "3:154"
+  ],
+  [
+    "si",
+    "tb",
+    "وعلى الثلاثة الذين خلفوا",
+    "9:118",
+    "NARRATIVE_PARALLEL",
+    "9:118"
+  ],
+  [
+    "si",
+    "sr",
+    "بلى إن تصبروا وتتقوا",
+    "3:125",
+    "NARRATIVE_PARALLEL",
+    "3:125"
+  ],
+  [
+    "si",
+    "sq",
+    "من المؤمنين رجال صدقوا ما عاهدوا الله عليه",
+    "33:23",
+    "NARRATIVE_PARALLEL",
+    "33:23"
+  ],
+  [
+    "si",
+    "sh",
+    "ولقد نصركم الله ببدر وأنتم أذلة... لعلكم تشكرون",
+    "3:123",
+    "NARRATIVE_PARALLEL",
+    "3:123"
+  ],
+  [
+    "si",
+    "dn",
+    "منكم من يريد الدنيا ومنكم من يريد الآخرة",
+    "3:152",
+    "NARRATIVE_PARALLEL",
+    "3:152"
+  ],
+  [
+    "si",
+    "ml",
+    "أني ممدكم بألف من الملائكة مردفين",
+    "8:9",
+    "NARRATIVE_PARALLEL",
+    "8:9"
+  ],
+  [
+    "si",
+    "rs",
+    "وما محمد إلا رسول قد خلت من قبله الرسل",
+    "3:144",
+    "NARRATIVE_PARALLEL",
+    "3:144"
+  ],
+  [
+    "si",
+    "ji",
+    "وإذ صرفنا إليك نفرا من الجن",
+    "46:29",
+    "NARRATIVE_PARALLEL",
+    "46:29"
+  ],
+  [
+    "si",
+    "my",
+    "سبحانك هذا بهتان عظيم",
+    "24:16",
+    "NARRATIVE_PARALLEL",
+    "24:16"
+  ],
+  [
+    "gn",
+    "mu",
+    "وجاء رجل من أقصى المدينة يسعى",
+    "28:20",
+    "NARRATIVE_PARALLEL",
+    "28:20"
+  ],
+  [
+    "gn",
+    "aq",
+    "وقارون وفرعون وهامان",
+    "29:39",
+    "NARRATIVE_PARALLEL",
+    "29:39"
+  ],
+  [
+    "gn",
+    "ys",
+    "ولقد جاءكم يوسف من قبل بالبينات",
+    "40:34",
+    "NARRATIVE_PARALLEL",
+    "40:34"
+  ],
+  [
+    "gn",
+    "am",
+    "واضرب لهم مثلا أصحاب القرية",
+    "36:13",
+    "NARRATIVE_PARALLEL",
+    "36:13"
+  ],
+  [
+    "gn",
+    "si",
+    "لإيلاف قريش",
+    "106:1",
+    "NARRATIVE_PARALLEL",
+    "106:1"
+  ],
+  [
+    "gn",
+    "sh",
+    "ولقد آتينا لقمان الحكمة أن اشكر لله",
+    "31:12",
+    "NARRATIVE_PARALLEL",
+    "31:12"
+  ],
+  [
+    "gn",
+    "ih",
+    "ووصينا الإنسان بوالديه",
+    "31:14",
+    "NARRATIVE_PARALLEL",
+    "31:14"
+  ],
+  [
+    "gn",
+    "sr",
+    "واصبر على ما أصابك إن ذلك من عزم الأمور",
+    "31:17",
+    "NARRATIVE_PARALLEL",
+    "31:17"
+  ],
+  [
+    "gn",
+    "tb",
+    "إن الذين فتنوا المؤمنين والمؤمنات ثم لم يتوبوا",
+    "85:10",
+    "NARRATIVE_PARALLEL",
+    "85:10"
+  ],
+  [
+    "gn",
+    "sq",
+    "وإن يك كاذبا فعليه كذبه وإن يك صادقا",
+    "40:28",
+    "NARRATIVE_PARALLEL",
+    "40:28"
+  ],
+  [
+    "gn",
+    "ly",
+    "إن الله لا يحب الفرحين",
+    "28:76",
+    "LEXICAL_FORMULA",
+    "28:76"
+  ],
+  [
+    "gn",
+    "tw",
+    "يا بني لا تشرك بالله إن الشرك لظلم عظيم",
+    "31:13",
+    "NARRATIVE_PARALLEL",
+    "31:13"
+  ],
+  [
+    "gn",
+    "dn",
+    "وابتغ فيما آتاك الله الدار الآخرة ولا تنس نصيبك من الدنيا",
+    "28:77",
+    "NARRATIVE_PARALLEL",
+    "28:77"
+  ],
+  [
+    "gn",
+    "nr",
+    "النار ذات الوقود",
+    "85:5",
+    "NARRATIVE_PARALLEL",
+    "85:5"
+  ],
+  [
+    "gn",
+    "jn",
+    "قيل ادخل الجنة قال يا ليت قومي يعلمون",
+    "36:26",
+    "NARRATIVE_PARALLEL",
+    "36:26"
+  ],
+  [
+    "gn",
+    "rs",
+    "إذ أرسلنا إليهم اثنين فكذبوهما فعززنا بثالث",
+    "36:14",
+    "NARRATIVE_PARALLEL",
+    "36:14"
+  ],
+  [
+    "ud",
+    "ih",
+    "إن الله يأمر بالعدل والإحسان",
+    "16:90",
+    "DOCTRINAL_ROOT",
+    "16:90"
+  ],
+  [
+    "ud",
+    "sq",
+    "كونوا قوامين بالقسط شهداء لله",
+    "4:135",
+    "DOCTRINAL_ROOT",
+    "4:135"
+  ],
+  [
+    "ud",
+    "hs",
+    "إن الله لا يظلم مثقال ذرة وإن تك حسنة يضاعفها",
+    "4:40",
+    "DOCTRINAL_ROOT",
+    "4:40"
+  ],
+  [
+    "ud",
+    "is",
+    "رب إني ظلمت نفسي فاغفر لي",
+    "28:16",
+    "DOCTRINAL_ROOT",
+    "28:16"
+  ],
+  [
+    "ud",
+    "yh",
+    "إن الله يحب المقسطين",
+    "49:9",
+    "LEXICAL_FORMULA",
+    "49:9"
+  ],
+  [
+    "ud",
+    "ly",
+    "والله لا يحب الظالمين",
+    "3:57",
+    "LEXICAL_FORMULA",
+    "3:57"
+  ],
+  [
+    "ud",
+    "tw",
+    "إن الشرك لظلم عظيم",
+    "31:13",
+    "DOCTRINAL_ROOT",
+    "31:13"
+  ],
+  [
+    "ud",
+    "hd",
+    "والله لا يهدي القوم الظالمين",
+    "2:258",
+    "DOCTRINAL_ROOT",
+    "2:258"
+  ],
+  [
+    "ud",
+    "zw",
+    "فإن خفتم ألا تعدلوا فواحدة",
+    "4:3",
+    "LEGISLATIVE_STAGE",
+    "4:3"
+  ],
+  [
+    "ud",
+    "rb",
+    "لا تظلمون ولا تظلمون",
+    "2:279",
+    "LEGISLATIVE_STAGE",
+    "2:279"
+  ],
+  [
+    "ud",
+    "qs",
+    "ومن قتل مظلوما فقد جعلنا لوليه سلطانا",
+    "17:33",
+    "LEGISLATIVE_STAGE",
+    "17:33"
+  ],
+  [
+    "ud",
+    "aq",
+    "وأوفوا الكيل والميزان بالقسط",
+    "11:85",
+    "NARRATIVE_PARALLEL",
+    "11:85"
+  ],
+  [
+    "ud",
+    "ib",
+    "لا ينال عهدي الظالمين",
+    "2:124",
+    "NARRATIVE_PARALLEL",
+    "2:124"
+  ],
+  [
+    "ud",
+    "yn",
+    "سبحانك إني كنت من الظالمين",
+    "21:87",
+    "NARRATIVE_PARALLEL",
+    "21:87"
+  ],
+  [
+    "ud",
+    "rs",
+    "وأنزلنا معهم الكتاب والميزان ليقوم الناس بالقسط",
+    "57:25",
+    "DOCTRINAL_ROOT",
+    "57:25"
+  ],
+  [
+    "ud",
+    "ak",
+    "ونضع الموازين القسط ليوم القيامة",
+    "21:47",
+    "DOCTRINAL_ROOT",
+    "21:47"
+  ],
+  [
+    "mn",
+    "ym",
+    "وأوفوا بعهد الله إذا عاهدتم ولا تنقضوا الأيمان",
+    "16:91",
+    "LEGISLATIVE_STAGE",
+    "16:91"
+  ],
+  [
+    "mn",
+    "sb",
+    "وأوفوا بعهدي أوف بعهدكم",
+    "2:40",
+    "LEGISLATIVE_STAGE",
+    "2:40"
+  ],
+  [
+    "mn",
+    "zw",
+    "وأخذن منكم ميثاقا غليظا",
+    "4:21",
+    "LEGISLATIVE_STAGE",
+    "4:21"
+  ],
+  [
+    "mn",
+    "jh",
+    "فأتموا إليهم عهدهم إلى مدتهم",
+    "9:4",
+    "LEGISLATIVE_STAGE",
+    "9:4"
+  ],
+  [
+    "mn",
+    "sq",
+    "رجال صدقوا ما عاهدوا الله عليه",
+    "33:23",
+    "DOCTRINAL_ROOT",
+    "33:23"
+  ],
+  [
+    "mn",
+    "ud",
+    "أن تؤدوا الأمانات إلى أهلها",
+    "4:58",
+    "DOCTRINAL_ROOT",
+    "4:58"
+  ],
+  [
+    "mn",
+    "ly",
+    "إن الله لا يحب الخائنين",
+    "8:58",
+    "LEXICAL_FORMULA",
+    "8:58"
+  ],
+  [
+    "mn",
+    "nf",
+    "وكان عهد الله مسئولا",
+    "33:15",
+    "DOCTRINAL_ROOT",
+    "33:15"
+  ],
+  [
+    "mn",
+    "sm",
+    "إنا عرضنا الأمانة على السماوات والأرض والجبال",
+    "33:72",
+    "LEXICAL_FORMULA",
+    "33:72"
+  ],
+  [
+    "mn",
+    "rs",
+    "وإذ أخذ الله ميثاق النبيين",
+    "3:81",
+    "DOCTRINAL_ROOT",
+    "3:81"
+  ],
+  [
+    "mn",
+    "si",
+    "فمن نكث فإنما ينكث على نفسه",
+    "48:10",
+    "NARRATIVE_PARALLEL",
+    "48:10"
+  ],
+  [
+    "mn",
+    "ad",
+    "ألست بربكم قالوا بلى شهدنا",
+    "7:172",
+    "NARRATIVE_PARALLEL",
+    "7:172"
+  ],
+  [
+    "mn",
+    "ys",
+    "ذلك ليعلم أني لم أخنه بالغيب",
+    "12:52",
+    "NARRATIVE_PARALLEL",
+    "12:52"
+  ],
+  [
+    "mn",
+    "ib",
+    "وإبراهيم الذي وفى",
+    "53:37",
+    "NARRATIVE_PARALLEL",
+    "53:37"
+  ],
+  [
+    "mn",
+    "my",
+    "إنه كان صادق الوعد",
+    "19:54",
+    "NARRATIVE_PARALLEL",
+    "19:54"
+  ],
+  [
+    "mn",
+    "aq",
+    "إني لكم رسول أمين",
+    "26:107",
+    "NARRATIVE_PARALLEL",
+    "26:107"
+  ],
+  [
+    "wd",
+    "ih",
+    "وبالوالدين إحسانا",
+    "17:23",
+    "DOCTRINAL_ROOT",
+    "17:23"
+  ],
+  [
+    "wd",
+    "sh",
+    "أن اشكر لي ولوالديك",
+    "31:14",
+    "DOCTRINAL_ROOT",
+    "31:14"
+  ],
+  [
+    "wd",
+    "is",
+    "رب اغفر لي ولوالدي",
+    "71:28",
+    "DOCTRINAL_ROOT",
+    "71:28"
+  ],
+  [
+    "wd",
+    "ud",
+    "إن الله يأمر بالعدل والإحسان وإيتاء ذي القربى",
+    "16:90",
+    "DOCTRINAL_ROOT",
+    "16:90"
+  ],
+  [
+    "wd",
+    "tw",
+    "ألا تشركوا به شيئا وبالوالدين إحسانا",
+    "6:151",
+    "DOCTRINAL_ROOT",
+    "6:151"
+  ],
+  [
+    "wd",
+    "mw",
+    "وأولو الأرحام بعضهم أولى ببعض",
+    "8:75",
+    "LEGISLATIVE_STAGE",
+    "8:75"
+  ],
+  [
+    "wd",
+    "tl",
+    "وحمله وفصاله ثلاثون شهرا",
+    "46:15",
+    "LEGISLATIVE_STAGE",
+    "46:15"
+  ],
+  [
+    "wd",
+    "zk",
+    "وآت ذا القربى حقه والمسكين وابن السبيل",
+    "17:26",
+    "LEGISLATIVE_STAGE",
+    "17:26"
+  ],
+  [
+    "wd",
+    "ib",
+    "يا أبت لم تعبد ما لا يسمع ولا يبصر",
+    "19:42",
+    "NARRATIVE_PARALLEL",
+    "19:42"
+  ],
+  [
+    "wd",
+    "nh",
+    "إنه ليس من أهلك إنه عمل غير صالح",
+    "11:46",
+    "NARRATIVE_PARALLEL",
+    "11:46"
+  ],
+  [
+    "wd",
+    "ys",
+    "ورفع أبويه على العرش",
+    "12:100",
+    "NARRATIVE_PARALLEL",
+    "12:100"
+  ],
+  [
+    "wd",
+    "zy",
+    "وبرا بوالديه ولم يكن جبارا عصيا",
+    "19:14",
+    "NARRATIVE_PARALLEL",
+    "19:14"
+  ],
+  [
+    "wd",
+    "mu",
+    "فرددناه إلى أمه كي تقر عينها",
+    "28:13",
+    "NARRATIVE_PARALLEL",
+    "28:13"
+  ],
+  [
+    "wd",
+    "gn",
+    "ووصينا الإنسان بوالديه حملته أمه وهنا على وهن",
+    "31:14",
+    "NARRATIVE_PARALLEL",
+    "31:14"
+  ],
+  [
+    "wd",
+    "ds",
+    "رب أوزعني أن أشكر نعمتك التي أنعمت علي وعلى والدي",
+    "27:19",
+    "NARRATIVE_PARALLEL",
+    "27:19"
+  ],
+  [
+    "wd",
+    "ak",
+    "يوم يفر المرء من أخيه وأمه وأبيه",
+    "80:34-35",
+    "DOCTRINAL_ROOT",
+    "80:34"
+  ],
+  [
+    "kb",
+    "ji",
+    "أبى واستكبر وكان من الكافرين",
+    "2:34",
+    "DOCTRINAL_ROOT",
+    "2:34"
+  ],
+  [
+    "kb",
+    "ml",
+    "إن الذين عند ربك لا يستكبرون عن عبادته",
+    "7:206",
+    "DOCTRINAL_ROOT",
+    "7:206"
+  ],
+  [
+    "kb",
+    "ad",
+    "أنا خير منه خلقتني من نار",
+    "7:12",
+    "NARRATIVE_PARALLEL",
+    "7:12"
+  ],
+  [
+    "kb",
+    "mu",
+    "واستكبر هو وجنوده في الأرض بغير الحق",
+    "28:39",
+    "NARRATIVE_PARALLEL",
+    "28:39"
+  ],
+  [
+    "kb",
+    "nh",
+    "وأصروا واستكبروا استكبارا",
+    "71:7",
+    "NARRATIVE_PARALLEL",
+    "71:7"
+  ],
+  [
+    "kb",
+    "aq",
+    "فأما عاد فاستكبروا في الأرض بغير الحق",
+    "41:15",
+    "NARRATIVE_PARALLEL",
+    "41:15"
+  ],
+  [
+    "kb",
+    "gn",
+    "ولا تصعر خدك للناس ولا تمش في الأرض مرحا",
+    "31:18",
+    "NARRATIVE_PARALLEL",
+    "31:18"
+  ],
+  [
+    "kb",
+    "ka",
+    "واصبر نفسك مع الذين يدعون ربهم",
+    "18:28",
+    "NARRATIVE_PARALLEL",
+    "18:28"
+  ],
+  [
+    "kb",
+    "ly",
+    "إنه لا يحب المستكبرين",
+    "16:23",
+    "LEXICAL_FORMULA",
+    "16:23"
+  ],
+  [
+    "kb",
+    "dk",
+    "وكبره تكبيرا",
+    "17:111",
+    "LEXICAL_FORMULA",
+    "17:111"
+  ],
+  [
+    "kb",
+    "as",
+    "العزيز الجبار المتكبر",
+    "59:23",
+    "LEXICAL_FORMULA",
+    "59:23"
+  ],
+  [
+    "kb",
+    "nf",
+    "ورأيتهم يصدون وهم مستكبرون",
+    "63:5",
+    "DOCTRINAL_ROOT",
+    "63:5"
+  ],
+  [
+    "kb",
+    "nr",
+    "فبئس مثوى المتكبرين",
+    "39:72",
+    "DOCTRINAL_ROOT",
+    "39:72"
+  ],
+  [
+    "kb",
+    "dn",
+    "للذين لا يريدون علوا في الأرض ولا فسادا",
+    "28:83",
+    "DOCTRINAL_ROOT",
+    "28:83"
+  ],
+  [
+    "kb",
+    "wd",
+    "واخفض لهما جناح الذل من الرحمة",
+    "17:24",
+    "DOCTRINAL_ROOT",
+    "17:24"
+  ],
+  [
+    "kb",
+    "sl",
+    "الذين هم في صلاتهم خاشعون",
+    "23:2",
+    "LEGISLATIVE_STAGE",
+    "23:2"
+  ],
+  [
+    "du",
+    "tw",
+    "أمن يجيب المضطر إذا دعاه أإله مع الله",
+    "27:62",
+    "LEGISLATIVE_STAGE",
+    "27:62"
+  ],
+  [
+    "du",
+    "dl",
+    "ومن أضل ممن يدعو من دون الله",
+    "46:5",
+    "LEGISLATIVE_STAGE",
+    "46:5"
+  ],
+  [
+    "du",
+    "ik",
+    "دعوا الله مخلصين له الدين",
+    "29:65",
+    "LEGISLATIVE_STAGE",
+    "29:65"
+  ],
+  [
+    "du",
+    "as",
+    "ولله الأسماء الحسنى فادعوه بها",
+    "7:180",
+    "LEGISLATIVE_STAGE",
+    "7:180"
+  ],
+  [
+    "du",
+    "dk",
+    "دعواهم فيها سبحانك اللهم",
+    "10:10",
+    "LEGISLATIVE_STAGE",
+    "10:10"
+  ],
+  [
+    "du",
+    "is",
+    "ربنا ظلمنا أنفسنا وإن لم تغفر لنا",
+    "7:23",
+    "LEGISLATIVE_STAGE",
+    "7:23"
+  ],
+  [
+    "du",
+    "kb",
+    "إن الذين يستكبرون عن عبادتي",
+    "40:60",
+    "LEGISLATIVE_STAGE",
+    "40:60"
+  ],
+  [
+    "du",
+    "sy",
+    "فإني قريب في آيات الصيام",
+    "2:186",
+    "LEGISLATIVE_STAGE",
+    "2:186"
+  ],
+  [
+    "du",
+    "hj",
+    "ربنا آتنا في الدنيا حسنة",
+    "2:201",
+    "LEGISLATIVE_STAGE",
+    "2:201"
+  ],
+  [
+    "du",
+    "zy",
+    "رب لا تذرني فردا وأنت خير الوارثين",
+    "21:89",
+    "LEGISLATIVE_STAGE",
+    "21:89"
+  ],
+  [
+    "du",
+    "yn",
+    "لا إله إلا أنت سبحانك إني كنت من الظالمين",
+    "21:87",
+    "LEGISLATIVE_STAGE",
+    "21:87"
+  ],
+  [
+    "du",
+    "nh",
+    "أني مغلوب فانتصر",
+    "54:10",
+    "LEGISLATIVE_STAGE",
+    "54:10"
+  ],
+  [
+    "du",
+    "mu",
+    "رب اشرح لي صدري",
+    "20:25",
+    "LEGISLATIVE_STAGE",
+    "20:25"
+  ],
+  [
+    "du",
+    "ib",
+    "ربنا وتقبل دعاء",
+    "14:40",
+    "LEGISLATIVE_STAGE",
+    "14:40"
+  ],
+  [
+    "du",
+    "wd",
+    "رب اغفر لي ولوالدي",
+    "71:28",
+    "LEGISLATIVE_STAGE",
+    "71:28"
+  ],
+  [
+    "du",
+    "qd",
+    "فيكشف ما تدعون إليه إن شاء",
+    "6:41",
+    "LEGISLATIVE_STAGE",
+    "6:41"
+  ],
+  [
+    "il",
+    "nz",
+    "اقرأ... علم بالقلم",
+    "96:1-5",
+    "LEXICAL_FORMULA",
+    "96:1"
+  ],
+  [
+    "il",
+    "kt",
+    "أفلا يتدبرون القرآن",
+    "4:82",
+    "LEXICAL_FORMULA",
+    "4:82"
+  ],
+  [
+    "il",
+    "ad",
+    "وعلم آدم الأسماء كلها",
+    "2:31",
+    "LEXICAL_FORMULA",
+    "2:31"
+  ],
+  [
+    "il",
+    "ml",
+    "لا علم لنا إلا ما علمتنا",
+    "2:32",
+    "LEXICAL_FORMULA",
+    "2:32"
+  ],
+  [
+    "il",
+    "ka",
+    "وعلمناه من لدنا علما",
+    "18:65",
+    "LEXICAL_FORMULA",
+    "18:65"
+  ],
+  [
+    "il",
+    "sm",
+    "ويتفكرون في خلق السماوات والأرض",
+    "3:191",
+    "LEXICAL_FORMULA",
+    "3:191"
+  ],
+  [
+    "il",
+    "am",
+    "وما يعقلها إلا العالمون",
+    "29:43",
+    "LEXICAL_FORMULA",
+    "29:43"
+  ],
+  [
+    "il",
+    "dl",
+    "لهم قلوب لا يفقهون بها",
+    "7:179",
+    "LEXICAL_FORMULA",
+    "7:179"
+  ],
+  [
+    "il",
+    "qs",
+    "ولكم في القصاص حياة يا أولي الألباب",
+    "2:179",
+    "LEGISLATIVE_STAGE",
+    "2:179"
+  ],
+  [
+    "il",
+    "hj",
+    "واتقون يا أولي الألباب",
+    "2:197",
+    "LEGISLATIVE_STAGE",
+    "2:197"
+  ],
+  [
+    "il",
+    "tl",
+    "لعلكم تعقلون",
+    "2:242",
+    "LEGISLATIVE_STAGE",
+    "2:242"
+  ],
+  [
+    "il",
+    "nr",
+    "لو كنا نسمع أو نعقل",
+    "67:10",
+    "LEXICAL_FORMULA",
+    "67:10"
+  ],
+  [
+    "il",
+    "tw",
+    "شهد الله... وأولو العلم",
+    "3:18",
+    "LEXICAL_FORMULA",
+    "3:18"
+  ],
+  [
+    "il",
+    "du",
+    "وقل رب زدني علما",
+    "20:114",
+    "LEGISLATIVE_STAGE",
+    "20:114"
+  ],
+  [
+    "il",
+    "dn",
+    "والذين أوتوا العلم درجات",
+    "58:11",
+    "LEXICAL_FORMULA",
+    "58:11"
+  ],
+  [
+    "il",
+    "kb",
+    "إنما أوتيته على علم عندي",
+    "28:78",
+    "LEXICAL_FORMULA",
+    "28:78"
+  ],
+  [
+    "ft",
+    "sr",
+    "ولنبلونكم... وبشر الصابرين",
+    "2:155",
+    "DOCTRINAL_ROOT",
+    "2:155"
+  ],
+  [
+    "ft",
+    "sh",
+    "ليبلوني أأشكر أم أكفر",
+    "27:40",
+    "DOCTRINAL_ROOT",
+    "27:40"
+  ],
+  [
+    "ft",
+    "qd",
+    "حتى نعلم المجاهدين منكم",
+    "47:31",
+    "DOCTRINAL_ROOT",
+    "47:31"
+  ],
+  [
+    "ft",
+    "im",
+    "أن يقولوا آمنا وهم لا يفتنون",
+    "29:2",
+    "DOCTRINAL_ROOT",
+    "29:2"
+  ],
+  [
+    "ft",
+    "ib",
+    "وإذ ابتلى إبراهيم ربه بكلمات",
+    "2:124",
+    "NARRATIVE_PARALLEL",
+    "2:124"
+  ],
+  [
+    "ft",
+    "mu",
+    "وفتناك فتونا",
+    "20:40",
+    "NARRATIVE_PARALLEL",
+    "20:40"
+  ],
+  [
+    "ft",
+    "ds",
+    "وظن داوود أنما فتناه",
+    "38:24",
+    "NARRATIVE_PARALLEL",
+    "38:24"
+  ],
+  [
+    "ft",
+    "ay",
+    "إنا وجدناه صابرا",
+    "38:44",
+    "NARRATIVE_PARALLEL",
+    "38:44"
+  ],
+  [
+    "ft",
+    "jh",
+    "والفتنة أشد من القتل",
+    "2:191",
+    "LEGISLATIVE_STAGE",
+    "2:191"
+  ],
+  [
+    "ft",
+    "dn",
+    "زهرة الحياة الدنيا لنفتنهم فيه",
+    "20:131",
+    "DOCTRINAL_ROOT",
+    "20:131"
+  ],
+  [
+    "ft",
+    "zw",
+    "إنما أموالكم وأولادكم فتنة",
+    "64:15",
+    "LEGISLATIVE_STAGE",
+    "64:15"
+  ],
+  [
+    "ft",
+    "sb",
+    "كذلك نبلوهم بما كانوا يفسقون",
+    "7:163",
+    "LEGISLATIVE_STAGE",
+    "7:163"
+  ],
+  [
+    "ft",
+    "si",
+    "وليمحص الله الذين آمنوا",
+    "3:141",
+    "NARRATIVE_PARALLEL",
+    "3:141"
+  ],
+  [
+    "ft",
+    "gn",
+    "إن الذين فتنوا المؤمنين والمؤمنات",
+    "85:10",
+    "NARRATIVE_PARALLEL",
+    "85:10"
+  ],
+  [
+    "ft",
+    "nr",
+    "إنا جعلناها فتنة للظالمين",
+    "37:63",
+    "DOCTRINAL_ROOT",
+    "37:63"
+  ],
+  [
+    "ft",
+    "du",
+    "ربنا لا تجعلنا فتنة",
+    "10:85",
+    "LEGISLATIVE_STAGE",
+    "10:85"
+  ],
+  [
+    "mf",
+    "nf",
+    "يأمرون بالمنكر وينهون عن المعروف",
+    "9:67",
+    "DOCTRINAL_ROOT",
+    "9:67"
+  ],
+  [
+    "mf",
+    "im",
+    "تأمرون بالمعروف... وتؤمنون بالله",
+    "3:110",
+    "DOCTRINAL_ROOT",
+    "3:110"
+  ],
+  [
+    "mf",
+    "sl",
+    "إن الصلاة تنهى عن الفحشاء والمنكر",
+    "29:45",
+    "LEGISLATIVE_STAGE",
+    "29:45"
+  ],
+  [
+    "mf",
+    "zk",
+    "ويقيمون الصلاة ويؤتون الزكاة",
+    "9:71",
+    "LEGISLATIVE_STAGE",
+    "9:71"
+  ],
+  [
+    "mf",
+    "sr",
+    "واصبر على ما أصابك",
+    "31:17",
+    "DOCTRINAL_ROOT",
+    "31:17"
+  ],
+  [
+    "mf",
+    "gn",
+    "يا بني أقم الصلاة وأمر بالمعروف",
+    "31:17",
+    "NARRATIVE_PARALLEL",
+    "31:17"
+  ],
+  [
+    "mf",
+    "sb",
+    "أنجينا الذين ينهون عن السوء",
+    "7:165",
+    "LEGISLATIVE_STAGE",
+    "7:165"
+  ],
+  [
+    "mf",
+    "ds",
+    "لعن... على لسان داوود وعيسى",
+    "5:78",
+    "NARRATIVE_PARALLEL",
+    "5:78"
+  ],
+  [
+    "mf",
+    "aq",
+    "وما أريد أن أخالفكم إلى ما أنهاكم عنه",
+    "11:88",
+    "NARRATIVE_PARALLEL",
+    "11:88"
+  ],
+  [
+    "mf",
+    "mu",
+    "فقولا له قولا لينا",
+    "20:44",
+    "NARRATIVE_PARALLEL",
+    "20:44"
+  ],
+  [
+    "mf",
+    "zw",
+    "وعاشروهن بالمعروف",
+    "4:19",
+    "LEGISLATIVE_STAGE",
+    "4:19"
+  ],
+  [
+    "mf",
+    "tl",
+    "فإمساك بمعروف أو تسريح بإحسان",
+    "2:229",
+    "LEGISLATIVE_STAGE",
+    "2:229"
+  ],
+  [
+    "mf",
+    "rs",
+    "يأمرهم بالمعروف وينهاهم عن المنكر",
+    "7:157",
+    "DOCTRINAL_ROOT",
+    "7:157"
+  ],
+  [
+    "mf",
+    "il",
+    "لولا ينهاهم الربانيون والأحبار",
+    "5:63",
+    "LEXICAL_FORMULA",
+    "5:63"
+  ],
+  [
+    "mf",
+    "ud",
+    "إن الله يأمر بالعدل والإحسان",
+    "16:90",
+    "DOCTRINAL_ROOT",
+    "16:90"
+  ],
+  [
+    "mf",
+    "hd",
+    "لا إكراه في الدين",
+    "2:256",
+    "DOCTRINAL_ROOT",
+    "2:256"
+  ],
+  [
+    "ls",
+    "sq",
+    "لما تصف ألسنتكم الكذب",
+    "16:116",
+    "DOCTRINAL_ROOT",
+    "16:116"
+  ],
+  [
+    "ls",
+    "kb",
+    "لا يسخر قوم من قوم",
+    "49:11",
+    "DOCTRINAL_ROOT",
+    "49:11"
+  ],
+  [
+    "ls",
+    "nf",
+    "يقولون بألسنتهم ما ليس في قلوبهم",
+    "48:11",
+    "DOCTRINAL_ROOT",
+    "48:11"
+  ],
+  [
+    "ls",
+    "mf",
+    "إلا من أمر بصدقة أو معروف",
+    "4:114",
+    "DOCTRINAL_ROOT",
+    "4:114"
+  ],
+  [
+    "ls",
+    "qs",
+    "والذين يرمون المحصنات",
+    "24:4",
+    "LEGISLATIVE_STAGE",
+    "24:4"
+  ],
+  [
+    "ls",
+    "ym",
+    "باللغو في أيمانكم",
+    "2:225",
+    "LEGISLATIVE_STAGE",
+    "2:225"
+  ],
+  [
+    "ls",
+    "si",
+    "إن الذين جاءوا بالإفك",
+    "24:11",
+    "NARRATIVE_PARALLEL",
+    "24:11"
+  ],
+  [
+    "ls",
+    "wd",
+    "فلا تقل لهما أف",
+    "17:23",
+    "DOCTRINAL_ROOT",
+    "17:23"
+  ],
+  [
+    "ls",
+    "tb",
+    "ومن لم يتب فأولئك هم الظالمون",
+    "49:11",
+    "DOCTRINAL_ROOT",
+    "49:11"
+  ],
+  [
+    "ls",
+    "il",
+    "ولا تقف ما ليس لك به علم",
+    "17:36",
+    "LEXICAL_FORMULA",
+    "17:36"
+  ],
+  [
+    "ls",
+    "ak",
+    "يوم تشهد عليهم ألسنتهم",
+    "24:24",
+    "DOCTRINAL_ROOT",
+    "24:24"
+  ],
+  [
+    "ls",
+    "ml",
+    "إلا لديه رقيب عتيد",
+    "50:18",
+    "DOCTRINAL_ROOT",
+    "50:18"
+  ],
+  [
+    "ls",
+    "am",
+    "مثلا كلمة طيبة",
+    "14:24",
+    "NARRATIVE_PARALLEL",
+    "14:24"
+  ],
+  [
+    "ls",
+    "hs",
+    "ادفع بالتي هي أحسن",
+    "41:34",
+    "DOCTRINAL_ROOT",
+    "41:34"
+  ],
+  [
+    "ls",
+    "gn",
+    "واغضض من صوتك",
+    "31:19",
+    "NARRATIVE_PARALLEL",
+    "31:19"
+  ],
+  [
+    "ls",
+    "tq",
+    "اتقوا الله وقولوا قولا سديدا",
+    "33:70",
+    "LEXICAL_FORMULA",
+    "33:70"
+  ],
+  [
+    "ns",
+    "tb",
+    "إنكم ظلمتم أنفسكم... فتوبوا",
+    "2:54",
+    "DOCTRINAL_ROOT",
+    "2:54"
+  ],
+  [
+    "ns",
+    "qd",
+    "فألهمها فجورها وتقواها",
+    "91:8",
+    "DOCTRINAL_ROOT",
+    "91:8"
+  ],
+  [
+    "ns",
+    "tv",
+    "ومن يوق شح نفسه",
+    "59:9",
+    "DOCTRINAL_ROOT",
+    "59:9"
+  ],
+  [
+    "ns",
+    "ys",
+    "إن النفس لأمارة بالسوء",
+    "12:53",
+    "NARRATIVE_PARALLEL",
+    "12:53"
+  ],
+  [
+    "ns",
+    "ad",
+    "خلقكم من نفس واحدة",
+    "4:1",
+    "NARRATIVE_PARALLEL",
+    "4:1"
+  ],
+  [
+    "ns",
+    "mu",
+    "وكذلك سولت لي نفسي",
+    "20:96",
+    "NARRATIVE_PARALLEL",
+    "20:96"
+  ],
+  [
+    "ns",
+    "ml",
+    "أخرجوا أنفسكم",
+    "6:93",
+    "DOCTRINAL_ROOT",
+    "6:93"
+  ],
+  [
+    "ns",
+    "zk",
+    "قد أفلح من تزكى",
+    "87:14",
+    "LEGISLATIVE_STAGE",
+    "87:14"
+  ],
+  [
+    "ns",
+    "ak",
+    "كل نفس بما كسبت رهينة",
+    "74:38",
+    "DOCTRINAL_ROOT",
+    "74:38"
+  ],
+  [
+    "ns",
+    "jn",
+    "ارجعي إلى ربك... وادخلي جنتي",
+    "89:28",
+    "DOCTRINAL_ROOT",
+    "89:28"
+  ],
+  [
+    "ns",
+    "kb",
+    "فلا تزكوا أنفسكم",
+    "53:32",
+    "DOCTRINAL_ROOT",
+    "53:32"
+  ],
+  [
+    "ns",
+    "nf",
+    "نسوا الله فأنساهم أنفسهم",
+    "59:19",
+    "DOCTRINAL_ROOT",
+    "59:19"
+  ],
+  [
+    "ns",
+    "dk",
+    "النفس المطمئنة",
+    "89:27",
+    "LEXICAL_FORMULA",
+    "89:27"
+  ],
+  [
+    "ns",
+    "ym",
+    "ولا أقسم بالنفس اللوامة",
+    "75:2",
+    "LEGISLATIVE_STAGE",
+    "75:2"
+  ],
+  [
+    "ns",
+    "ls",
+    "ولا تلمزوا أنفسكم",
+    "49:11",
+    "DOCTRINAL_ROOT",
+    "49:11"
+  ],
+  [
+    "ns",
+    "is",
+    "ربنا ظلمنا أنفسنا",
+    "7:23",
+    "DOCTRINAL_ROOT",
+    "7:23"
+  ],
+  [
+    "gf",
+    "is",
+    "استغفروا ربكم إنه كان غفارا",
+    "71:10",
+    "LEXICAL_FORMULA",
+    "71:10"
+  ],
+  [
+    "gf",
+    "tb",
+    "ثم تاب عليهم ليتوبوا",
+    "9:118",
+    "LEXICAL_FORMULA",
+    "9:118"
+  ],
+  [
+    "gf",
+    "as",
+    "غفور رحيم: 71",
+    "71 pairs",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "gf",
+    "rh",
+    "التواب الرحيم، الغفور الرحيم",
+    "2:37; 39:53",
+    "LEXICAL_FORMULA",
+    "2:37"
+  ],
+  [
+    "gf",
+    "nh",
+    "إنه كان غفارا",
+    "71:10",
+    "LEXICAL_FORMULA",
+    "71:10"
+  ],
+  [
+    "gf",
+    "mu",
+    "وأنت خير الغافرين",
+    "7:155",
+    "LEXICAL_FORMULA",
+    "7:155"
+  ],
+  [
+    "gf",
+    "ad",
+    "فتاب عليه إنه هو التواب الرحيم",
+    "2:37",
+    "LEXICAL_FORMULA",
+    "2:37"
+  ],
+  [
+    "gf",
+    "du",
+    "واعف عنا واغفر لنا وارحمنا",
+    "2:286",
+    "LEGISLATIVE_STAGE",
+    "2:286"
+  ],
+  [
+    "gf",
+    "ta",
+    "فمن اضطر... إن الله غفور رحيم",
+    "2:173",
+    "LEGISLATIVE_STAGE",
+    "2:173"
+  ],
+  [
+    "gf",
+    "qs",
+    "إلا الذين تابوا",
+    "5:34",
+    "LEGISLATIVE_STAGE",
+    "5:34"
+  ],
+  [
+    "gf",
+    "si",
+    "ولقد عفا الله عنهم",
+    "3:155",
+    "LEXICAL_FORMULA",
+    "3:155"
+  ],
+  [
+    "gf",
+    "ls",
+    "ألا تحبون أن يغفر الله لكم",
+    "24:22",
+    "LEXICAL_FORMULA",
+    "24:22"
+  ],
+  [
+    "gf",
+    "ih",
+    "والعافين عن الناس",
+    "3:134",
+    "LEXICAL_FORMULA",
+    "3:134"
+  ],
+  [
+    "gf",
+    "yh",
+    "يحب التوابين، الغفور الودود",
+    "2:222; 85:14",
+    "LEXICAL_FORMULA",
+    "2:222"
+  ],
+  [
+    "gf",
+    "zw",
+    "وإن تعفوا وتصفحوا وتغفروا",
+    "64:14",
+    "LEGISLATIVE_STAGE",
+    "64:14"
+  ],
+  [
+    "gf",
+    "nf",
+    "عفا الله عنك لم أذنت لهم",
+    "9:43",
+    "LEXICAL_FORMULA",
+    "9:43"
+  ],
+  [
+    "al",
+    "as",
+    "عليم: 152، خبير: 44",
+    "152 / 44",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "al",
+    "gf",
+    "غفور حليم، عليم حليم",
+    "2:235",
+    "LEXICAL_FORMULA",
+    "2:235"
+  ],
+  [
+    "al",
+    "il",
+    "وفوق كل ذي علم عليم",
+    "12:76",
+    "LEXICAL_FORMULA",
+    "12:76"
+  ],
+  [
+    "al",
+    "ak",
+    "إن الله عنده علم الساعة",
+    "31:34",
+    "LEXICAL_FORMULA",
+    "31:34"
+  ],
+  [
+    "al",
+    "sm",
+    "ذلك تقدير العزيز العليم",
+    "36:38",
+    "LEXICAL_FORMULA",
+    "36:38"
+  ],
+  [
+    "al",
+    "qd",
+    "وكل شيء عنده بمقدار",
+    "13:8",
+    "LEXICAL_FORMULA",
+    "13:8"
+  ],
+  [
+    "al",
+    "rs",
+    "إلا من ارتضى من رسول",
+    "72:27",
+    "LEXICAL_FORMULA",
+    "72:27"
+  ],
+  [
+    "al",
+    "ia",
+    "إنك أنت علام الغيوب",
+    "5:116",
+    "LEXICAL_FORMULA",
+    "5:116"
+  ],
+  [
+    "al",
+    "ys",
+    "إن ربي لطيف لما يشاء",
+    "12:100",
+    "LEXICAL_FORMULA",
+    "12:100"
+  ],
+  [
+    "al",
+    "gn",
+    "مثقال حبة من خردل",
+    "31:16",
+    "LEXICAL_FORMULA",
+    "31:16"
+  ],
+  [
+    "al",
+    "ns",
+    "يعلم ما في أنفسكم فاحذروه",
+    "2:235",
+    "LEXICAL_FORMULA",
+    "2:235"
+  ],
+  [
+    "al",
+    "nf",
+    "يثنون صدورهم ليستخفوا منه",
+    "11:5",
+    "LEXICAL_FORMULA",
+    "11:5"
+  ],
+  [
+    "al",
+    "ud",
+    "اعدلوا... إن الله خبير بما تعملون",
+    "5:8",
+    "LEXICAL_FORMULA",
+    "5:8"
+  ],
+  [
+    "al",
+    "ml",
+    "لا علم لنا إلا ما علمتنا",
+    "2:32",
+    "LEXICAL_FORMULA",
+    "2:32"
+  ],
+  [
+    "al",
+    "jn",
+    "لا تدركه الأبصار / إلى ربها ناظرة",
+    "6:103; 75:23",
+    "LEXICAL_FORMULA",
+    "6:103"
+  ],
+  [
+    "al",
+    "ls",
+    "إلا هو رابعهم",
+    "58:7",
+    "LEXICAL_FORMULA",
+    "58:7"
+  ],
+  [
+    "sa",
+    "as",
+    "سميع: 46، بصير: 43",
+    "46 / 43",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "sa",
+    "al",
+    "سميع عليم: 32، خبير بصير: 5",
+    "32 / 5",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "sa",
+    "tw",
+    "ليس كمثله شيء",
+    "42:11",
+    "LEXICAL_FORMULA",
+    "42:11"
+  ],
+  [
+    "sa",
+    "du",
+    "إنك سميع الدعاء",
+    "3:38",
+    "LEGISLATIVE_STAGE",
+    "3:38"
+  ],
+  [
+    "sa",
+    "tl",
+    "قد سمع الله قول التي تجادلك",
+    "58:1",
+    "LEGISLATIVE_STAGE",
+    "58:1"
+  ],
+  [
+    "sa",
+    "nh",
+    "واصنع الفلك بأعيننا",
+    "11:37",
+    "LEXICAL_FORMULA",
+    "11:37"
+  ],
+  [
+    "sa",
+    "mu",
+    "إنني معكما أسمع وأرى",
+    "20:46",
+    "LEXICAL_FORMULA",
+    "20:46"
+  ],
+  [
+    "sa",
+    "ib",
+    "لم تعبد ما لا يسمع ولا يبصر",
+    "19:42",
+    "LEXICAL_FORMULA",
+    "19:42"
+  ],
+  [
+    "sa",
+    "si",
+    "سبحان الذي أسرى بعبده",
+    "17:1",
+    "LEXICAL_FORMULA",
+    "17:1"
+  ],
+  [
+    "sa",
+    "il",
+    "إن السمع والبصر والفؤاد",
+    "17:36",
+    "LEXICAL_FORMULA",
+    "17:36"
+  ],
+  [
+    "sa",
+    "sh",
+    "السمع والأبصار والأفئدة لعلكم تشكرون",
+    "16:78",
+    "LEXICAL_FORMULA",
+    "16:78"
+  ],
+  [
+    "sa",
+    "kf",
+    "ختم الله على قلوبهم وعلى سمعهم",
+    "2:7",
+    "LEXICAL_FORMULA",
+    "2:7"
+  ],
+  [
+    "sa",
+    "mn",
+    "إن الله كان سميعا بصيرا",
+    "4:58",
+    "LEXICAL_FORMULA",
+    "4:58"
+  ],
+  [
+    "sa",
+    "sr",
+    "واصبر لحكم ربك فإنك بأعيننا",
+    "52:48",
+    "LEXICAL_FORMULA",
+    "52:48"
+  ],
+  [
+    "sa",
+    "sl",
+    "ألم يعلم بأن الله يرى",
+    "96:14",
+    "LEGISLATIVE_STAGE",
+    "96:14"
+  ],
+  [
+    "sa",
+    "ak",
+    "فبصرك اليوم حديد",
+    "50:22",
+    "LEXICAL_FORMULA",
+    "50:22"
+  ],
+  [
+    "az",
+    "as",
+    "عزيز حكيم: 46",
+    "46 pairs",
+    "LEXICAL_FORMULA",
+    ""
+  ],
+  [
+    "az",
+    "al",
+    "عليم حكيم، العزيز العليم",
+    "4:11; 36:38",
+    "LEXICAL_FORMULA",
+    "4:11"
+  ],
+  [
+    "az",
+    "gf",
+    "العزيز الغفار",
+    "38:66",
+    "LEXICAL_FORMULA",
+    "38:66"
+  ],
+  [
+    "az",
+    "aq",
+    "وإن ربك لهو العزيز الرحيم",
+    "26:9",
+    "LEXICAL_FORMULA",
+    "26:9"
+  ],
+  [
+    "az",
+    "nf",
+    "ولله العزة ولرسوله وللمؤمنين",
+    "63:8",
+    "LEXICAL_FORMULA",
+    "63:8"
+  ],
+  [
+    "az",
+    "kb",
+    "أخذته العزة بالإثم",
+    "2:206",
+    "LEXICAL_FORMULA",
+    "2:206"
+  ],
+  [
+    "az",
+    "dk",
+    "سبح لله... وهو العزيز الحكيم",
+    "57:1",
+    "LEXICAL_FORMULA",
+    "57:1"
+  ],
+  [
+    "az",
+    "nz",
+    "تنزيل الكتاب من الله العزيز الحكيم",
+    "39:1",
+    "LEXICAL_FORMULA",
+    "39:1"
+  ],
+  [
+    "az",
+    "kt",
+    "تلك آيات الكتاب الحكيم",
+    "10:1",
+    "LEXICAL_FORMULA",
+    "10:1"
+  ],
+  [
+    "az",
+    "ib",
+    "ويعلمهم الكتاب والحكمة ويزكيهم",
+    "2:129",
+    "LEXICAL_FORMULA",
+    "2:129"
+  ],
+  [
+    "az",
+    "ia",
+    "فإنك أنت العزيز الحكيم",
+    "5:118",
+    "LEXICAL_FORMULA",
+    "5:118"
+  ],
+  [
+    "az",
+    "gn",
+    "ولقد آتينا لقمان الحكمة",
+    "31:12",
+    "LEXICAL_FORMULA",
+    "31:12"
+  ],
+  [
+    "az",
+    "ds",
+    "وآتيناه الحكمة وفصل الخطاب",
+    "38:20",
+    "LEXICAL_FORMULA",
+    "38:20"
+  ],
+  [
+    "az",
+    "jh",
+    "ولينصرن الله من ينصره إن الله لقوي عزيز",
+    "22:40",
+    "LEGISLATIVE_STAGE",
+    "22:40"
+  ],
+  [
+    "az",
+    "ys",
+    "إن الحكم إلا لله",
+    "12:40",
+    "LEXICAL_FORMULA",
+    "12:40"
+  ],
+  [
+    "az",
+    "il",
+    "ومن يؤت الحكمة فقد أوتي خيرا كثيرا",
+    "2:269",
+    "LEXICAL_FORMULA",
+    "2:269"
+  ],
+  [
+    "hy",
+    "as",
+    "الحي القيوم، الأحد الصمد",
+    "2:255; 112:1-2",
+    "LEXICAL_FORMULA",
+    "2:255"
+  ],
+  [
+    "hy",
+    "tw",
+    "لو كان فيهما آلهة إلا الله لفسدتا",
+    "21:22",
+    "LEXICAL_FORMULA",
+    "21:22"
+  ],
+  [
+    "hy",
+    "ik",
+    "قل هو الله أحد",
+    "112:1",
+    "LEXICAL_FORMULA",
+    "112:1"
+  ],
+  [
+    "hy",
+    "az",
+    "القهار، العزيز",
+    "38:65-66",
+    "LEXICAL_FORMULA",
+    "38:65"
+  ],
+  [
+    "hy",
+    "al",
+    "ولا يحيطون بشيء من علمه",
+    "2:255",
+    "LEXICAL_FORMULA",
+    "2:255"
+  ],
+  [
+    "hy",
+    "rh",
+    "وإلهكم إله واحد... الرحمن الرحيم",
+    "2:163",
+    "LEXICAL_FORMULA",
+    "2:163"
+  ],
+  [
+    "hy",
+    "ys",
+    "أأرباب متفرقون خير أم الله الواحد القهار",
+    "12:39",
+    "LEXICAL_FORMULA",
+    "12:39"
+  ],
+  [
+    "hy",
+    "ib",
+    "ربي الذي يحيي ويميت",
+    "2:258",
+    "LEXICAL_FORMULA",
+    "2:258"
+  ],
+  [
+    "hy",
+    "ia",
+    "إن الله ثالث ثلاثة",
+    "5:73",
+    "LEXICAL_FORMULA",
+    "5:73"
+  ],
+  [
+    "hy",
+    "ak",
+    "لمن الملك اليوم لله الواحد القهار",
+    "40:16",
+    "LEXICAL_FORMULA",
+    "40:16"
+  ],
+  [
+    "hy",
+    "sm",
+    "يمسك السماوات والأرض أن تزولا",
+    "35:41",
+    "LEXICAL_FORMULA",
+    "35:41"
+  ],
+  [
+    "hy",
+    "kt",
+    "الحي القيوم نزل عليك الكتاب",
+    "3:2-3",
+    "LEXICAL_FORMULA",
+    "3:2"
+  ],
+  [
+    "hy",
+    "dn",
+    "كل من عليها فان",
+    "55:26",
+    "LEXICAL_FORMULA",
+    "55:26"
+  ],
+  [
+    "hy",
+    "kf",
+    "أجعل الآلهة إلها واحدا",
+    "38:5",
+    "LEXICAL_FORMULA",
+    "38:5"
+  ],
+  [
+    "hy",
+    "du",
+    "هو الحي... فادعوه مخلصين",
+    "40:65",
+    "LEGISLATIVE_STAGE",
+    "40:65"
+  ],
+  [
+    "hy",
+    "rs",
+    "يوحى إلي أنما إلهكم إله واحد",
+    "18:110",
+    "LEXICAL_FORMULA",
+    "18:110"
+  ]
 ];

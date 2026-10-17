@@ -41,34 +41,108 @@ function fillSiteLinks(){var T=window.TOPICS,PL=window.PILLARS;if(!T)return;var 
       list.forEach(function(t){if(t.f!==here)w.appendChild(pill(t))});d.appendChild(w);box.appendChild(d)})})}
 try{fillSiteLinks()}catch(e){console.error(e)}
 
-/* الخريطة العامة: window.NET='auto' تُبنى من السجل حلقةً مقسّمة بحسب المحاور */
-function buildAutoNet(){var T=window.TOPICS,A=window.AXES,LK=window.TLINKS||[];if(!T||!A)return null;
-  var PL=window.PILLARS,pk=PL?Object.keys(PL):[undefined],axes=Object.keys(A).filter(function(a){return T.some(function(t){return t.ax===a})}),nodes=[];
-  pk.forEach(function(p){axes.forEach(function(a){T.forEach(function(t){if(t.ax===a&&(!PL||t.p===p))nodes.push(t)})})});
-  /* فراغ صغير بين الأقسام، وأكبر بين المحاور الأربعة */
-  var gA=0.6,gP=1.8,gaps=0,pv=null;nodes.forEach(function(t){if(pv){gaps+=t.p!==pv.p?gP:(t.ax!==pv.ax?gA:0)}pv=t});if(nodes.length)gaps+=PL?gP:gA;
-  var cx=500,cy=380,r=228,step=2*Math.PI/(nodes.length+gaps),first=0;for(var i=0;i<nodes.length&&nodes[i].ax===nodes[0].ax&&nodes[i].p===nodes[0].p;i++)first++;
+/* الخريطة العامة المطوّرة: window.NET='auto' تضع سورة الأنعام (an) مركز ثقل في قلب الشبكة وتصنّف الروابط دلالياً */
+function buildAutoNet(){var T=window.TOPICS,A=window.AXES,LK=window.TLINKS||[],RT=window.REL_TYPES||{};if(!T||!A)return null;
+  var PL=window.PILLARS,pk=PL?Object.keys(PL):[undefined],axes=Object.keys(A).filter(function(a){return T.some(function(t){return t.ax===a})}),ringNodes=[],hubNode=null;
+  T.forEach(function(t){if(t.id==='an'||t.hub)hubNode=t});
+  pk.forEach(function(p){axes.forEach(function(a){T.forEach(function(t){if(t.id!=='an'&&!t.hub&&t.ax===a&&(!PL||t.p===p))ringNodes.push(t)})})});
+  var gA=0.6,gP=1.8,gaps=0,pv=null;ringNodes.forEach(function(t){if(pv){gaps+=t.p!==pv.p?gP:(t.ax!==pv.ax?gA:0)}pv=t});if(ringNodes.length)gaps+=PL?gP:gA;
+  var cx=500,cy=380,r=234,step=2*Math.PI/(ringNodes.length+gaps),first=0;for(var i=0;i<ringNodes.length&&ringNodes[i].ax===ringNodes[0].ax&&ringNodes[i].p===ringNodes[0].p;i++)first++;
   var ang=-Math.PI/2-(first-1)*step/2,prev=null,N=[],byId={};
-  nodes.forEach(function(t){if(prev)ang+=(t.p!==prev.p?gP:(t.ax!==prev.ax?gA:0))*step;prev=t;N.push({id:t.id,ar:t.ar,en:t.en,x:Math.round(cx+r*Math.cos(ang)),y:Math.round(cy+r*Math.sin(ang)),c:A[t.ax][0],dar:t.d?t.d[0]:'',den:t.d?t.d[1]:'',u:t.f,la:ang});byId[t.id]=t;ang+=step});
-  var E=LK.filter(function(l){return byId[l[0]]&&byId[l[1]]}).map(function(l){return[l[0],l[1],A[byId[l[0]].ax][0],l[2],l[3]]});
-  return{N:N,E:E,chord:true,radial:true,vb:'0 0 1000 760',cx:cx,cy:cy,fs:[15,13]}}
+  if(hubNode){
+    N.push({id:hubNode.id,ar:hubNode.ar,en:hubNode.en,x:cx,y:cy,c:'#d97706',dar:hubNode.d?hubNode.d[0]:'',den:hubNode.d?hubNode.d[1]:'',u:hubNode.f,hub:true});
+    byId[hubNode.id]=hubNode;
+  }
+  ringNodes.forEach(function(t){if(prev)ang+=(t.p!==prev.p?gP:(t.ax!==prev.ax?gA:0))*step;prev=t;N.push({id:t.id,ar:t.ar,en:t.en,x:Math.round(cx+r*Math.cos(ang)),y:Math.round(cy+r*Math.sin(ang)),c:A[t.ax][0],dar:t.d?t.d[0]:'',den:t.d?t.d[1]:'',u:t.f,la:ang});byId[t.id]=t;ang+=step});
+  var E=LK.filter(function(l){return byId[l[0]]&&byId[l[1]]}).map(function(l){
+    var rtype=l[4]||'DOCTRINAL_ROOT',rc=(RT[rtype]&&RT[rtype].color)||A[byId[l[0]].ax][0];
+    return[l[0],l[1],rc,l[2],l[3],0,rtype,l[5]||'']
+  });
+  return{N:N,E:E,chord:true,radial:true,vb:'0 0 1000 760',cx:cx,cy:cy,fs:[14,12.5]}}
 
-(function(){try{var NET=window.NET==='auto'?buildAutoNet():window.NET;if(!NET||!NET.N)return;var N=NET.N,E=NET.E;var s=document.getElementById('netsvg');if(!s)return;if(NET.vb)s.setAttribute('viewBox',NET.vb);var ns='http://www.w3.org/2000/svg',Pm={},cur=null,ch=!!NET.chord;N.forEach(function(n){Pm[n.id]=n});
-function curve(a,b,k){var mx=(a.x+b.x)/2,my=(a.y+b.y)/2;if(ch){var ccx=NET.cx||450,ccy=NET.cy||262;mx=ccx+(mx-ccx)*0.25;my=ccy+(my-ccy)*0.25}else my-=k;return 'M'+a.x+','+a.y+' Q'+mx+','+my+' '+b.x+','+b.y}
-var L=E.map(function(e){var a=Pm[e[0]],b=Pm[e[1]],p=document.createElementNS(ns,'path');p.setAttribute('d',curve(a,b,e[5]||0));p.setAttribute('fill','none');p.setAttribute('stroke',e[2]);p.setAttribute('stroke-width',ch?'1.8':'2.5');p.setAttribute('opacity',ch?'.55':'.8');if(e[2]=='#8e44ad')p.setAttribute('stroke-dasharray','6 5');s.appendChild(p);return{el:p,e:e}});
-function info(n){var ar=isAr(),x='<strong>'+(ar?n.ar:n.en)+'</strong>: '+(ar?n.dar:n.den)+(n.u?' &mdash; <a href="'+n.u+'">'+(ar?'افتح الصفحة':'Open page')+'</a>':'')+'<br>';L.forEach(function(o){if(o.e[0]==n.id||o.e[1]==n.id){var m=Pm[o.e[0]==n.id?o.e[1]:o.e[0]];x+=(ar?'&larr; ':'&rarr; ')+(ar?m.ar:m.en)+' ('+(ar?o.e[3]:o.e[4])+')<br>'}});document.getElementById('netinfo').innerHTML=x}
-var G=N.map(function(n){var g=document.createElementNS(ns,'g');g.setAttribute('class','node');g.setAttribute('tabindex','0');g.setAttribute('role','button');var c=document.createElementNS(ns,'circle');c.setAttribute('cx',n.x);c.setAttribute('cy',n.y);c.setAttribute('r',ch?13:15);c.setAttribute('fill',n.c);var t=document.createElementNS(ns,'text');t.setAttribute('class','node-label');g.appendChild(c);g.appendChild(t);s.appendChild(g);
-function pick(){if(cur===n&&n.u){location.href=n.u;return}cur=n;var nb={};nb[n.id]=1;L.forEach(function(o){var on=o.e[0]==n.id||o.e[1]==n.id;o.el.classList.toggle('dim',!on);if(on){nb[o.e[0]]=1;nb[o.e[1]]=1}});G.forEach(function(z){z.g.classList.toggle('dim',!nb[z.n.id])});info(n)}
-g.addEventListener('click',pick);g.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();pick()}});return{g:g,n:n,t:t}});
-window.netLabels=function(){var ar=isAr(),fs=NET.fs||[17,14];G.forEach(function(z){var n=z.n,t=z.t,size=ar?fs[0]:fs[1];t.textContent=ar?n.ar:n.en;z.g.setAttribute('aria-label',(ar?n.ar:n.en)+(n.u?(ar?' — انقر مرتين لفتح الصفحة':' — click twice to open the page'):''));t.setAttribute('direction',ar?'rtl':'ltr');t.style.fontFamily=ar?"'Noto Naskh Arabic','Amiri',serif":"'Inter',sans-serif";t.style.fontSize=size+'px';t.style.fontWeight='700';
+(function(){try{var NET=window.NET==='auto'?buildAutoNet():window.NET;if(!NET||!NET.N)return;var N=NET.N,E=NET.E,RT=window.REL_TYPES||{};var s=document.getElementById('netsvg');if(!s)return;if(NET.vb)s.setAttribute('viewBox',NET.vb);var ns='http://www.w3.org/2000/svg',Pm={},cur=null,activeFilter='ALL',ch=!!NET.chord;N.forEach(function(n){Pm[n.id]=n});
+
+var defs=document.createElementNS(ns,'defs'),mk=document.createElementNS(ns,'marker');
+mk.setAttribute('id','qkg-arrow');mk.setAttribute('viewBox','0 0 10 10');mk.setAttribute('refX','22');mk.setAttribute('refY','5');mk.setAttribute('markerWidth','5.5');mk.setAttribute('markerHeight','5.5');mk.setAttribute('orient','auto');
+var mp=document.createElementNS(ns,'path');mp.setAttribute('d','M 0 0 L 10 5 L 0 10 z');mp.setAttribute('fill','#d97706');mk.appendChild(mp);defs.appendChild(mk);s.appendChild(defs);
+
+if(ch&&window.REL_TYPES){
+  var wrap=s.parentNode;
+  var bar=document.createElement('div');
+  bar.id='qkg-filter-bar';
+  bar.style.cssText='display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;justify-content:center';
+  wrap.parentNode.insertBefore(bar,wrap);
+}
+
+function curve(a,b,k){if(a.hub||b.hub){var mx=(a.x+b.x)/2+16,my=(a.y+b.y)/2-16;return 'M'+a.x+','+a.y+' Q'+mx+','+my+' '+b.x+','+b.y}var mx=(a.x+b.x)/2,my=(a.y+b.y)/2;if(ch){var ccx=NET.cx||450,ccy=NET.cy||262;mx=ccx+(mx-ccx)*0.25;my=ccy+(my-ccy)*0.25}else my-=k;return 'M'+a.x+','+a.y+' Q'+mx+','+my+' '+b.x+','+b.y}
+var L=E.map(function(e){var a=Pm[e[0]],b=Pm[e[1]],p=document.createElementNS(ns,'path'),rtype=e[6]||'',rinfo=RT[rtype]||{};p.setAttribute('d',curve(a,b,e[5]||0));p.setAttribute('fill','none');p.setAttribute('stroke',e[2]);p.setAttribute('stroke-width',(a.hub||b.hub)?'2.6':(ch?'1.7':'2.5'));p.setAttribute('opacity',(a.hub||b.hub)?'.88':(ch?'.52':'.8'));if(rinfo.dash||e[2]=='#8e44ad')p.setAttribute('stroke-dasharray',rinfo.dash||'6 5');if(rinfo.directed||a.hub||b.hub)p.setAttribute('marker-end','url(#qkg-arrow)');s.appendChild(p);return{el:p,e:e}});
+
+function info(n){var ar=isAr(),x='<div style="padding:4px 0"><strong>'+(ar?n.ar:n.en)+'</strong>: '+(ar?n.dar:n.den)+(n.u?' &mdash; <a href="'+n.u+'">'+(ar?'افتح الصفحة':'Open page')+'</a>':'')+'</div>';
+L.forEach(function(o){
+  if(activeFilter!=='ALL'&&o.e[6]&&o.e[6]!==activeFilter)return;
+  if(o.e[0]==n.id||o.e[1]==n.id){
+    var isOut=(o.e[0]==n.id),m=Pm[isOut?o.e[1]:o.e[0]],rt=RT[o.e[6]]||{},badge=rt[ar?'ar':'en']||'';
+    var dirArrow=isOut?(ar?'يحيل/يرتبط بـ &larr; ':'Links to &rarr; '):(ar?'ترد إليه إحالة من &larr; ':'Referenced from &larr; ');
+    x+='<div style="margin:4px 0;padding:4px 8px;border-inline-start:3px solid '+(o.e[2]||'#888')+';background:rgba(128,128,128,0.08);border-radius:4px">'
+      +(badge?'<span style="font-size:0.8em;padding:1px 6px;border-radius:10px;background:'+(o.e[2]||'#555')+';color:#fff;margin-inline-end:6px">'+badge+'</span>':'')
+      +'<strong>'+dirArrow+(ar?m.ar:m.en)+'</strong>: '+(ar?o.e[3]:o.e[4])
+      +(o.e[7]?' <code style="font-size:0.85em;opacity:0.85">['+o.e[7]+']</code>':'')
+      +'</div>';
+  }
+});
+document.getElementById('netinfo').innerHTML=x}
+
+var G=N.map(function(n){var g=document.createElementNS(ns,'g');g.setAttribute('class','node');g.setAttribute('tabindex','0');g.setAttribute('role','button');var c=document.createElementNS(ns,'circle');c.setAttribute('cx',n.x);c.setAttribute('cy',n.y);c.setAttribute('r',n.hub?22:(ch?13:15));c.setAttribute('fill',n.c);if(n.hub){c.setAttribute('stroke','#fff');c.setAttribute('stroke-width','3');}var t=document.createElementNS(ns,'text');t.setAttribute('class','node-label');g.appendChild(c);g.appendChild(t);s.appendChild(g);
+function pick(){if(cur===n&&n.u){location.href=n.u;return}cur=n;var nb={};nb[n.id]=1;L.forEach(function(o){var matchType=(activeFilter==='ALL'||!o.e[6]||o.e[6]===activeFilter);var on=matchType&&(o.e[0]==n.id||o.e[1]==n.id);o.el.classList.toggle('dim',!on);if(on){nb[o.e[0]]=1;nb[o.e[1]]=1}});G.forEach(function(z){z.g.classList.toggle('dim',!nb[z.n.id])});info(n)}
+g.addEventListener('click',pick);g.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();pick()}});return{g:g,n:n,t:t,pick:pick}});
+
+function applyTypeFilter(flt){
+  activeFilter=flt;
+  var nb={};
+  L.forEach(function(o){
+    var show=(flt==='ALL'||!o.e[6]||o.e[6]===flt)&&(cur?(o.e[0]==cur.id||o.e[1]==cur.id):true);
+    o.el.classList.toggle('dim',!show);
+    if(show){nb[o.e[0]]=1;nb[o.e[1]]=1}
+  });
+  G.forEach(function(z){z.g.classList.toggle('dim',flt!=='ALL'&&!cur?!nb[z.n.id]:(cur?!nb[z.n.id]:false))});
+  if(cur)info(cur);
+  renderFilterBar();
+}
+
+function renderFilterBar(){
+  var bar=document.getElementById('qkg-filter-bar');if(!bar)return;
+  var ar=isAr();bar.innerHTML='';
+  var items=[['ALL',ar?'جميع الروابط (884)':'All Links (884)','#34495e']].concat(Object.keys(RT).map(function(k){return[k,RT[k][ar?'ar':'en'],RT[k].color]}));
+  items.forEach(function(it){
+    var b=document.createElement('button');
+    var isAct=(activeFilter===it[0]);
+    b.textContent=it[1];
+    b.style.cssText='padding:5px 11px;border-radius:16px;border:1px solid '+it[2]+';background:'+(isAct?it[2]:'transparent')+';color:'+(isAct?'#fff':'inherit')+';cursor:pointer;font-size:0.85rem;font-weight:600';
+    b.onclick=function(){cur=null;applyTypeFilter(it[0])};
+    bar.appendChild(b);
+  });
+  var hubBtn=document.createElement('button');
+  hubBtn.textContent=ar?'★ إبراز مركزية سورة الأنعام (35%)':'★ Highlight Surah Al-An'am Hub (35%)';
+  hubBtn.style.cssText='padding:5px 13px;border-radius:16px;border:2px solid #d97706;background:#d97706;color:#fff;cursor:pointer;font-size:0.85rem;font-weight:700';
+  hubBtn.onclick=function(){
+    activeFilter='ALL';
+    var anObj=G.find(function(z){return z.n.id==='an'});
+    if(anObj)anObj.pick();
+    renderFilterBar();
+  };
+  bar.appendChild(hubBtn);
+}
+
+window.netLabels=function(){var ar=isAr(),fs=NET.fs||[17,14];G.forEach(function(z){var n=z.n,t=z.t,size=n.hub?(ar?16:14):(ar?fs[0]:fs[1]);t.textContent=ar?n.ar:n.en;z.g.setAttribute('aria-label',(ar?n.ar:n.en)+(n.u?(ar?' — انقر مرتين لفتح الصفحة':' — click twice to open the page'):''));t.setAttribute('direction',ar?'rtl':'ltr');t.style.fontFamily=ar?"'Noto Naskh Arabic','Amiri',serif":"'Inter',sans-serif";t.style.fontSize=size+'px';t.style.fontWeight='700';
+  if(n.hub){t.setAttribute('x',n.x);t.setAttribute('y',n.y-28);t.setAttribute('text-anchor','middle');t.removeAttribute('transform');return}
   if(n.la===undefined){t.setAttribute('x',n.x);t.setAttribute('y',n.y-22);t.setAttribute('text-anchor','middle');return}
   var c=Math.cos(n.la),sn=Math.sin(n.la);
   if(NET.radial){var right=c>=0,deg=n.la*180/Math.PI+(right?0:180),lx=Math.round(n.x+c*20),ly=Math.round(n.y+sn*20);t.setAttribute('x',lx);t.setAttribute('y',ly);t.setAttribute('dy','0.35em');t.setAttribute('transform','rotate('+deg.toFixed(1)+' '+lx+' '+ly+')');t.setAttribute('text-anchor',right!==ar?'start':'end');return}
   var side=c>0.15?1:(c<-0.15?-1:0),x=n.x+c*22,y=n.y+sn*22;
   if(side===0)y+=sn>0?size*0.8:0;else y+=size*0.35;
   t.setAttribute('x',Math.round(x));t.setAttribute('y',Math.round(y));t.setAttribute('text-anchor',side===0?'middle':((side>0)!==ar?'start':'end'))});
-  if(cur)info(cur);else document.getElementById('netinfo').textContent=ar?'اختر عقدة.':'Select a node.'};netLabels()}catch(err){console.error(err)}})();
-
+  renderFilterBar();
+  if(cur)info(cur);else document.getElementById('netinfo').textContent=ar?'اختر عقدة أو اضغط على زر «إبراز مركزية سورة الأنعام».':'Select a node or click "Highlight Surah Al-An'am Hub".'};netLabels()}catch(err){console.error(err)}})();
 /* البحث في الموسوعة: يبدأ بالبحث في عناوين الموضوعات وكلماتها المفتاحية من السجل، ثم يُحمَّل عند أول استعمال
    فهرس كامل (assets/search.js) يبحث في نصوص الأقسام، ويردّ الكلمة إلى جذرها القرآني (مدونة ليدز)
    فيجد الأقسام التي تستشهد بآيات من الجذر نفسه، على طريقة المعاجم المفهرسة لألفاظ القرآن الكريم.
